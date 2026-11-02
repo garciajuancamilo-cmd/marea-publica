@@ -1,0 +1,673 @@
+<title>Marea Pública</title>
+<meta name="claude:viewport-fit-sides" content="cover">
+<meta name="description" content="Observatorio ciudadano de la contratación pública en el Caribe colombiano. Señales de riesgo, radar electoral y licitaciones abiertas con datos de SECOP II.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Schibsted+Grotesk:wght@500;700;800&family=Public+Sans:ital,wght@0,400;0,600;1,400&family=IBM+Plex+Mono:wght@400;500&display=swap">
+<style>
+/* Layout: carta náutica — una columna de lectura; arriba la región como mapa de casillas, abajo la ficha del alcance elegido. La boya naranja marca lo que pide revisión. */
+:root{
+  --salt:#eef3f2; --sheet:#ffffff; --ink:#0b2a33; --muted:#557078; --rule:#d3dfdd; --soft:#e2eceb;
+  --sea:#14646a; --sea-2:#3a8c8c; --buoy:#cf4a1c; --buoy-soft:#fbe6dc; --ok:#2e7a51; --warn:#a8740c;
+  --r0:#d9edea; --r1:#acd5d0; --r2:#73b6b1; --r3:#3a8c8c; --r4:#1b6266; --r5:#0d3f45;
+  --f-display:"Schibsted Grotesk","Arial Narrow",Arial,sans-serif;
+  --f-body:"Public Sans",system-ui,-apple-system,"Segoe UI",sans-serif;
+  --f-data:"IBM Plex Mono",ui-monospace,Menlo,Consolas,monospace;
+}
+@media (prefers-color-scheme:dark){:root:not([data-theme="light"]){
+  --salt:#09181c; --sheet:#0f2227; --ink:#e3eeec; --muted:#8fa8ad; --rule:#21393f; --soft:#14303a;
+  --sea:#5cbcc0; --sea-2:#3f9ea3; --buoy:#ff8a5c; --buoy-soft:#3a1d12; --ok:#6cc08f; --warn:#e0b347; color-scheme:dark}}
+:root[data-theme="dark"]{
+  --salt:#09181c; --sheet:#0f2227; --ink:#e3eeec; --muted:#8fa8ad; --rule:#21393f; --soft:#14303a;
+  --sea:#5cbcc0; --sea-2:#3f9ea3; --buoy:#ff8a5c; --buoy-soft:#3a1d12; --ok:#6cc08f; --warn:#e0b347; color-scheme:dark}
+*{box-sizing:border-box}
+html{scroll-padding-top:120px}
+body{background:var(--salt);color:var(--ink);font:16px/1.55 var(--f-body)}
+body::before{content:"";position:fixed;inset:0 0 auto;height:env(safe-area-inset-top,0px);z-index:10;background:var(--ink)}
+a{color:var(--sea)}
+h1,h2,h3{font-family:var(--f-display);margin:0;line-height:1.08;text-wrap:balance}
+h1{font-size:clamp(2rem,6.4vw,3.6rem);font-weight:800;letter-spacing:-.02em}
+h2{font-size:clamp(1.4rem,3.6vw,2rem);font-weight:800;letter-spacing:-.01em}
+h3{font-size:1.08rem;font-weight:700}
+p{margin:0;max-width:68ch}
+.mono{font-family:var(--f-data);font-variant-numeric:tabular-nums}
+.muted{color:var(--muted)}
+.eyebrow{font-family:var(--f-data);font-size:.72rem;letter-spacing:.09em;text-transform:uppercase;color:var(--muted)}
+.wrap{max-width:1120px;margin:0 auto;padding-left:max(16px,env(safe-area-inset-left,0px));padding-right:max(16px,env(safe-area-inset-right,0px))}
+button{font:inherit;color:inherit}
+:focus-visible{outline:2px solid var(--buoy);outline-offset:2px}
+
+/* Top bar */
+.top{position:sticky;top:env(safe-area-inset-top,0px);z-index:9;background:var(--ink);color:#e9f3f1}
+.top .wrap{display:flex;align-items:center;gap:16px;padding-block:10px;flex-wrap:wrap}
+.brand{display:flex;align-items:center;gap:10px;text-decoration:none;color:inherit;margin-right:auto}
+.brand b{font-family:var(--f-display);font-weight:800;font-size:1.15rem;letter-spacing:-.01em}
+.brand svg{width:30px;height:30px;flex:none}
+.nav{display:flex;gap:4px;flex-wrap:wrap}
+.nav a{color:#bcd3d0;text-decoration:none;font-weight:600;font-size:.88rem;padding:6px 10px;border-radius:999px}
+.nav a[aria-current="page"]{background:#e9f3f1;color:#0b2a33}
+.beta{font-family:var(--f-data);font-size:.66rem;letter-spacing:.08em;border:1px solid #6fb3b0;color:#9fd2cd;padding:2px 6px;border-radius:4px;text-transform:uppercase}
+
+main{padding-block:28px 72px;display:flex;flex-direction:column;gap:52px}
+section{display:flex;flex-direction:column;gap:18px}
+.sechead{display:flex;flex-direction:column;gap:8px}
+
+/* Hero */
+.hero{display:grid;grid-template-columns:minmax(0,1.25fr) minmax(0,1fr);gap:28px;align-items:end}
+.hero .lede{font-size:1.08rem;color:var(--muted)}
+.hero .figs{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:1px;background:var(--rule);border:1px solid var(--rule)}
+.fig{background:var(--sheet);padding:14px 16px;display:flex;flex-direction:column;gap:2px;min-width:0}
+.fig .v{font-family:var(--f-display);font-weight:800;font-size:clamp(1.3rem,3.6vw,1.75rem);letter-spacing:-.01em}
+.fig .k{font-size:.8rem;color:var(--muted)}
+.fig.alert .v{color:var(--buoy)}
+
+/* Scope bar */
+.scope{position:sticky;top:calc(env(safe-area-inset-top,0px) + 52px);z-index:8;background:var(--salt);padding-block:10px;border-bottom:1px solid var(--rule)}
+.scope .row{display:flex;gap:8px;flex-wrap:wrap;align-items:end}
+.fld{display:flex;flex-direction:column;gap:3px;flex:1 1 170px;min-width:0}
+.fld label{font-size:.72rem;color:var(--muted);font-family:var(--f-data);letter-spacing:.05em;text-transform:uppercase}
+select,input[type=search],input[type=text]{font:500 .92rem var(--f-body);padding:9px 10px;border:1px solid var(--rule);background:var(--sheet);color:var(--ink);border-radius:8px;width:100%;min-width:0}
+.crumbs{display:flex;gap:6px;flex-wrap:wrap;font-size:.85rem;margin-top:8px;align-items:center}
+.crumbs button{background:none;border:0;padding:0;color:var(--sea);cursor:pointer;font-weight:600;text-decoration:underline;text-underline-offset:3px}
+.crumbs span.sep{color:var(--muted)}
+
+/* Map + metric */
+.mapgrid{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1.1fr);gap:24px;align-items:start}
+.chips{display:flex;gap:6px;flex-wrap:wrap}
+.chip{border:1px solid var(--rule);background:var(--sheet);padding:6px 10px;border-radius:999px;font-size:.82rem;font-weight:600;cursor:pointer}
+.chip[aria-pressed="true"]{background:var(--ink);color:var(--salt);border-color:var(--ink)}
+.tiles{position:relative;display:grid;grid-template-columns:repeat(5,minmax(0,1fr));grid-template-rows:repeat(4,auto);gap:6px;margin-top:12px}
+.tile{aspect-ratio:1/1;max-width:100%;border:0;border-radius:10px;cursor:pointer;display:flex;flex-direction:column;justify-content:space-between;padding:8px;text-align:left;min-width:0;transition:transform .15s}
+.tile .tn{font-family:var(--f-display);font-weight:700;font-size:clamp(.66rem,1.9vw,.86rem);line-height:1.05}
+.tile .tv{font-family:var(--f-data);font-size:clamp(.72rem,2.2vw,1rem);font-weight:500}
+.tile[aria-pressed="true"]{outline:3px solid var(--buoy);outline-offset:2px}
+.tile:hover{transform:translateY(-2px)}
+.tile.isle{border:1.5px dashed var(--muted)}
+.ramp{display:flex;align-items:center;gap:8px;font-size:.75rem;color:var(--muted);margin-top:10px}
+.ramp i{display:inline-block;width:22px;height:10px}
+.maphint{font-size:.85rem;color:var(--muted);margin-top:8px}
+
+/* Ficha */
+.ficha{background:var(--sheet);border:1px solid var(--rule);border-radius:12px;overflow:hidden}
+.fhead{padding:18px 20px;border-bottom:1px solid var(--rule);display:flex;flex-direction:column;gap:6px}
+.fhead .idx{display:flex;align-items:center;gap:10px;flex-wrap:wrap}
+.badge{font-family:var(--f-data);font-size:.72rem;letter-spacing:.06em;text-transform:uppercase;padding:3px 8px;border-radius:4px;border:1px solid currentColor;white-space:nowrap}
+.b-vh{color:var(--buoy)} .b-h{color:var(--warn)} .b-m{color:var(--muted)} .b-mo{color:var(--sea)} .b-l{color:var(--ok)}
+.kpis{display:grid;grid-template-columns:repeat(auto-fit,minmax(140px,1fr));border-bottom:1px solid var(--rule)}
+.kpi{padding:12px 20px;border-right:1px solid var(--rule);border-bottom:1px solid var(--rule);margin-bottom:-1px;display:flex;flex-direction:column;gap:2px;min-width:0}
+.kpi .v{font-family:var(--f-display);font-weight:800;font-size:1.35rem}
+.kpi .k{font-size:.78rem;color:var(--muted)}
+.signals{padding:6px 20px 14px}
+.sig{display:grid;grid-template-columns:minmax(0,1.4fr) minmax(0,1fr) 70px;gap:14px;align-items:center;padding:11px 0;border-bottom:1px solid var(--rule)}
+.sig:last-child{border-bottom:0}
+.sig .nm{font-weight:600;font-size:.93rem}
+.sig .why{font-size:.8rem;color:var(--muted);line-height:1.4}
+.bar{position:relative;height:9px;background:var(--soft);border-radius:2px}
+.bar i{position:absolute;inset:0 auto 0 0;background:var(--sea);border-radius:2px}
+.bar i.hot{background:var(--buoy)}
+.bar b{position:absolute;top:-4px;bottom:-4px;width:2px;background:var(--ink)}
+.sig .val{font-family:var(--f-data);text-align:right;font-variant-numeric:tabular-nums;font-size:.92rem}
+.legendline{display:flex;gap:16px;flex-wrap:wrap;font-size:.76rem;color:var(--muted);padding:0 20px 14px}
+.legendline i{display:inline-block;width:14px;height:8px;margin-right:6px;vertical-align:0}
+.note{padding:12px 20px;background:var(--soft);font-size:.86rem;border-top:1px solid var(--rule)}
+
+/* Radar */
+.smalls{display:grid;grid-template-columns:repeat(auto-fill,minmax(240px,1fr));gap:14px}
+.sm{background:var(--sheet);border:1px solid var(--rule);border-radius:10px;padding:12px 12px 8px;display:flex;flex-direction:column;gap:6px;min-width:0}
+.sm .lab{display:flex;justify-content:space-between;gap:8px;font-size:.84rem;align-items:baseline}
+.sm svg{width:100%;height:auto;display:block}
+.sm rect.b{transition:opacity .15s}
+.sm rect.b:hover{opacity:.7}
+.radarbig{background:var(--ink);color:#e6f1ef;border-radius:12px;padding:22px;display:grid;grid-template-columns:auto minmax(0,1fr);gap:8px 22px;align-items:center}
+.radarbig .mult{font-family:var(--f-display);font-weight:800;font-size:clamp(3rem,10vw,5.2rem);line-height:.9;color:#ff9b70;letter-spacing:-.03em}
+.radarbig p{color:#c4d8d5}
+.radarbig b{color:#fff}
+
+/* Tables */
+.tw{overflow-x:auto;background:var(--sheet);border:1px solid var(--rule);border-radius:12px}
+table{border-collapse:collapse;width:100%;min-width:640px;font-size:.88rem}
+th,td{text-align:left;padding:10px 12px;border-bottom:1px solid var(--rule);vertical-align:top}
+th{font-family:var(--f-data);font-size:.68rem;letter-spacing:.06em;text-transform:uppercase;color:var(--muted);font-weight:500;white-space:nowrap}
+th button{background:none;border:0;padding:0;cursor:pointer;font:inherit;color:inherit;letter-spacing:inherit;text-transform:inherit}
+th button[aria-sort]::after{content:" ▾"}
+td.n,th.n{text-align:right;font-family:var(--f-data);font-variant-numeric:tabular-nums;white-space:nowrap}
+tbody tr{cursor:pointer}
+tbody tr:hover{background:var(--soft)}
+tr:last-child td{border-bottom:0}
+.more{align-self:flex-start;background:var(--sheet);border:1px solid var(--rule);border-radius:8px;padding:8px 14px;font-weight:600;cursor:pointer}
+.ttl{font-weight:600}
+.sub{font-size:.78rem;color:var(--muted)}
+
+/* Contract + petición */
+.ct{background:var(--sheet);border:1px solid var(--rule);border-radius:12px;padding:16px 18px;display:grid;grid-template-columns:minmax(0,1fr) auto;gap:8px 16px}
+.ct .amt{font-family:var(--f-display);font-weight:800;font-size:1.3rem;text-align:right;white-space:nowrap}
+.ct .obj{grid-column:1/-1;font-size:.86rem;color:var(--muted)}
+.ct .acts{grid-column:1/-1;display:flex;gap:12px;flex-wrap:wrap;align-items:center}
+.btn{font-weight:600;font-size:.86rem;padding:8px 14px;border-radius:8px;border:1px solid var(--sea);background:transparent;color:var(--sea);cursor:pointer}
+.btn.solid{background:var(--sea);color:var(--sheet)}
+.pet{background:var(--sheet);border:2px solid var(--ink);border-radius:12px;overflow:hidden}
+.pet .bar2{display:flex;flex-wrap:wrap;gap:10px;align-items:end;padding:14px 18px;border-bottom:1px solid var(--rule)}
+.pet pre{margin:0;padding:20px;white-space:pre-wrap;font:.9rem/1.6 var(--f-body);max-height:520px;overflow:auto}
+.okmsg{font-size:.82rem;color:var(--ok)}
+
+/* Licitaciones */
+.days{display:flex;gap:8px;overflow-x:auto;padding-bottom:4px}
+.day{flex:none;min-width:92px;background:var(--sheet);border:1px solid var(--rule);border-radius:10px;padding:8px 10px;cursor:pointer;text-align:left}
+.day[aria-pressed="true"]{background:var(--ink);color:var(--salt);border-color:var(--ink)}
+.day .d{font-family:var(--f-display);font-weight:800;font-size:1.2rem}
+.day .c{font-size:.74rem;opacity:.8}
+.lics{display:grid;grid-template-columns:repeat(auto-fill,minmax(300px,1fr));gap:12px}
+.lic{background:var(--sheet);border:1px solid var(--rule);border-radius:12px;padding:14px 16px;display:flex;flex-direction:column;gap:8px;min-width:0}
+.lic .tag{display:flex;gap:6px;flex-wrap:wrap}
+.pill{font-family:var(--f-data);font-size:.68rem;letter-spacing:.04em;text-transform:uppercase;padding:2px 7px;border-radius:999px;background:var(--soft);color:var(--ink)}
+.pill.urg{background:var(--buoy-soft);color:var(--buoy)}
+.lic .amt{font-family:var(--f-display);font-weight:800;font-size:1.15rem}
+.lic .ob{font-size:.88rem}
+.lic .foot{display:flex;justify-content:space-between;gap:8px;font-size:.8rem;color:var(--muted);margin-top:auto;flex-wrap:wrap}
+
+/* Método */
+.defs{display:grid;grid-template-columns:repeat(auto-fit,minmax(260px,1fr));gap:1px;background:var(--rule);border:1px solid var(--rule);border-radius:12px;overflow:hidden}
+.defs div{background:var(--sheet);padding:16px;display:flex;flex-direction:column;gap:6px;font-size:.9rem}
+.defs b{font-family:var(--f-display)}
+footer{border-top:2px solid var(--ink);padding-block:18px 40px;font-size:.84rem;color:var(--muted)}
+footer .wrap{display:flex;flex-direction:column;gap:8px}
+.empty{padding:20px;color:var(--muted);font-size:.9rem}
+@media (max-width:760px){
+  .hero,.mapgrid{grid-template-columns:1fr}
+  .sig{grid-template-columns:minmax(0,1fr) 66px}
+  .sig .bar{grid-column:1/-1;grid-row:2}
+  .radarbig{grid-template-columns:1fr}
+  .scope{top:calc(env(safe-area-inset-top,0px) + 92px)}
+  html{scroll-padding-top:200px}
+}
+@media (prefers-reduced-motion:reduce){*{transition:none!important}}
+</style>
+
+<header class="top">
+  <div class="wrap">
+    <a class="brand" href="#veeduria" aria-label="Marea Pública, inicio">
+      <svg viewBox="0 0 32 32" aria-hidden="true"><circle cx="16" cy="16" r="15" fill="#e9f3f1"/><path d="M4 18c3-3 5-3 8 0s5 3 8 0 5-3 8 0" stroke="#14646a" stroke-width="2.6" fill="none" stroke-linecap="round"/><path d="M6 23c2.5-2 4.5-2 7 0s4.5 2 7 0 4.5-2 6 0" stroke="#cf4a1c" stroke-width="2.2" fill="none" stroke-linecap="round"/><circle cx="16" cy="10" r="2.6" fill="#0b2a33"/></svg>
+      <b>Marea Pública</b><span class="beta">Beta</span>
+    </a>
+    <nav class="nav" aria-label="Secciones">
+      <a href="#veeduria" data-v="veeduria">Veeduría</a>
+      <a href="#licitaciones" data-v="licitaciones">Licitaciones</a>
+      <a href="#metodo" data-v="metodo">Cómo leemos</a>
+    </nav>
+  </div>
+</header>
+
+<!-- ===== VEEDURÍA ===== -->
+<div id="v-veeduria">
+<main class="wrap">
+  <section class="hero" aria-labelledby="h1">
+    <div class="sechead">
+      <span class="eyebrow">Caribe colombiano · 8 departamentos · desde enero de 2024</span>
+      <h1 id="h1">La plata pública del Caribe, a la vista</h1>
+      <p class="lede" id="lede">Cargando los contratos…</p>
+    </div>
+    <div class="figs" id="figs"></div>
+  </section>
+
+  <div class="scope" id="scope">
+    <div class="row">
+      <div class="fld"><label for="s-dep">Departamento</label><select id="s-dep"></select></div>
+      <div class="fld"><label for="s-mun">Municipio</label><select id="s-mun"></select></div>
+      <div class="fld" style="flex-basis:240px"><label for="s-ent">Entidad</label><input id="s-ent" type="search" list="dl-ent" placeholder="Escribe el nombre o NIT" autocomplete="off"><datalist id="dl-ent"></datalist></div>
+    </div>
+    <div class="crumbs" id="crumbs" aria-label="Ruta"></div>
+  </div>
+
+  <section aria-labelledby="h-mapa">
+    <div class="mapgrid">
+      <div>
+        <div class="sechead"><span class="eyebrow">Mapa de la región</span><h2 id="h-mapa">Elige qué mirar</h2></div>
+        <div class="chips" id="metrics" role="group" aria-label="Señal del mapa" style="margin-top:12px"></div>
+        <div class="tiles" id="tiles"></div>
+        <div class="ramp" id="ramp"></div>
+        <p class="maphint">Toca un departamento para bajar a sus municipios y entidades.</p>
+      </div>
+      <div class="ficha" id="ficha" aria-live="polite"></div>
+    </div>
+  </section>
+
+  <section aria-labelledby="h-radar">
+    <div class="sechead">
+      <span class="eyebrow">Radar electoral · Ley 996 de 2005</span>
+      <h2 id="h-radar">Enero de 2026: el Caribe firmó antes de la veda</h2>
+      <p>La Ley de Garantías restringe la contratación directa en los cuatro meses previos a la elección presidencial y hasta la segunda vuelta. Firmar antes es legal. La señal es la concentración: cuánto se adelantó y qué pasó durante la veda.</p>
+    </div>
+    <div class="radarbig" id="radarbig"></div>
+    <div class="legendline" style="padding:0"><span><i style="background:var(--sea)"></i>Contratos directos firmados por mes</span><span><i style="background:var(--buoy)"></i>Enero de 2026</span><span><i style="background:var(--buoy-soft);outline:1px solid var(--buoy)"></i>Veda (feb–jun 2026)</span></div>
+    <div class="smalls" id="smalls"></div>
+  </section>
+
+  <section aria-labelledby="h-rank">
+    <div class="sechead">
+      <span class="eyebrow">Ranking</span>
+      <h2 id="h-rank">Quién contrata más opaco en <span id="rank-scope">la región</span></h2>
+      <p>El índice Marea promedia nueve señales y compara a cada entidad con las de su mismo orden (territorial, nacional o autoridad ambiental). Va de 0 a 100: más alto, más señales. Solo entran entidades con 50 contratos o más.</p>
+    </div>
+    <div class="chips" id="rankmode" role="group" aria-label="Qué comparar">
+      <button class="chip" aria-pressed="true" data-m="ent">Entidades</button>
+      <button class="chip" aria-pressed="false" data-m="mun">Municipios</button>
+      <button class="chip" aria-pressed="false" data-m="dep">Departamentos</button>
+    </div>
+    <div class="tw"><table id="rank"></table></div>
+    <button class="more" id="rank-more" type="button">Ver más</button>
+  </section>
+
+  <section aria-labelledby="h-tri">
+    <div class="sechead">
+      <span class="eyebrow">Señal nueva · triangulación</span>
+      <h2 id="h-tri">Las intermediarias que más reciben</h2>
+      <p>Una entidad contrata a dedo a una empresa pública, una asociación de municipios o un fondo mixto como "gerente integral". La intermediaria contrata después con sus propias reglas, a veces de régimen especial, y el contrato final sale del radar de quien puso la plata.</p>
+    </div>
+    <div class="tw"><table id="tri"></table></div>
+  </section>
+
+  <section aria-labelledby="h-ct">
+    <div class="sechead">
+      <span class="eyebrow">Del dato a la acción</span>
+      <h2 id="h-ct">Pide los documentos de un contrato</h2>
+      <p id="ct-intro">El contrato directo más grande de cada entidad, listo para un derecho de petición. Elige una entidad arriba o revisa los más grandes de la región.</p>
+    </div>
+    <label style="display:flex;gap:8px;align-items:center;font-size:.88rem"><input type="checkbox" id="no-loans" checked> Ocultar empréstitos bancarios</label>
+    <div style="display:flex;flex-direction:column;gap:12px" id="contracts"></div>
+    <div class="pet" id="pet" hidden>
+      <div class="bar2">
+        <div class="fld"><label for="p-nom">Tu nombre</label><input id="p-nom" type="text" placeholder="Nombre completo"></div>
+        <div class="fld"><label for="p-cc">Cédula</label><input id="p-cc" type="text" placeholder="Número"></div>
+        <div class="fld"><label for="p-mail">Correo para notificaciones</label><input id="p-mail" type="text" placeholder="correo@ejemplo.com"></div>
+        <button class="btn solid" id="p-copy" type="button">Copiar texto</button>
+        <span class="okmsg" id="p-ok" hidden>Copiado</span>
+      </div>
+      <pre id="p-text"></pre>
+    </div>
+  </section>
+</main>
+</div>
+
+<!-- ===== LICITACIONES ===== -->
+<div id="v-licitaciones" hidden>
+<main class="wrap">
+  <section aria-labelledby="h-lic">
+    <div class="sechead">
+      <span class="eyebrow">Para oferentes · procesos competitivos abiertos</span>
+      <h1 id="h-lic">Licitaciones que cierran pronto en el Caribe</h1>
+      <p class="lede muted">Licitaciones, selecciones abreviadas, concursos de méritos y mínimas cuantías publicadas en SECOP II con fecha de cierre de ofertas próxima. Más oferentes significa más competencia y menos contratos a dedo.</p>
+    </div>
+    <div class="row" style="display:flex;gap:8px;flex-wrap:wrap">
+      <div class="fld"><label for="l-dep">Departamento</label><select id="l-dep"></select></div>
+      <div class="fld"><label for="l-mod">Modalidad</label><select id="l-mod"></select></div>
+      <div class="fld" style="flex-basis:240px"><label for="l-q">Buscar</label><input id="l-q" type="search" placeholder="Obra, suministro, interventoría…"></div>
+    </div>
+    <div class="days" id="days" role="group" aria-label="Fecha de cierre"></div>
+    <p class="sub" id="l-count"></p>
+    <div class="lics" id="lics"></div>
+    <p class="sub">El cronograma completo, los pliegos y las adendas están en SECOP II; esa es la fuente que prevalece. Las fechas pueden cambiar por adenda.</p>
+  </section>
+</main>
+</div>
+
+<!-- ===== MÉTODO ===== -->
+<div id="v-metodo" hidden>
+<main class="wrap">
+  <section aria-labelledby="h-met">
+    <div class="sechead">
+      <span class="eyebrow">Metodología abierta</span>
+      <h1 id="h-met">Cómo leemos los datos</h1>
+      <p class="lede muted">Marea Pública no afirma que una entidad sea corrupta. Muestra dónde está frente a sus pares en señales que la literatura internacional asocia con riesgo en compras públicas, y enlaza cada cifra a su fuente para que cualquiera la verifique.</p>
+    </div>
+    <div class="defs" id="defs"></div>
+  </section>
+  <section aria-labelledby="h-src">
+    <div class="sechead"><h2 id="h-src">Fuentes y límites</h2></div>
+    <div class="defs">
+      <div><b>Fuente</b>SECOP II en datos abiertos (datos.gov.co): contratos electrónicos (jbjy-vk9h) y procesos (p6dx-8zbt). Sin muestreo: todos los contratos firmados desde el 1 de enero de 2024 por entidades de los ocho departamentos.</div>
+      <div><b>Filtro de valores</b>Se excluyen contratos con valor menor a $1 o mayor a $1 billón, porque arriba de esa cifra conviven concesiones reales con errores de captura. Aun así, algunos valores pueden estar mal digitados en SECOP: el expediente es la fuente final.</div>
+      <div><b>Pares</b>Cada entidad se compara con las de su mismo orden de gobierno. El índice es el promedio de sus percentiles en las señales disponibles. Los rangos son cuantiles de la región: muy alta (5 % más alto), alta (15 %), media (30 %), moderada (30 %), baja (20 % más bajo).</div>
+      <div><b>Límites</b>Un dato alto puede tener explicación legal: los hospitales públicos contratan por régimen especial y las entidades de salud o educación renuevan personal en enero. Los datos abiertos tardan días en reflejar contratos nuevos. El campo de municipio de SECOP a veces viene vacío o mal asignado.</div>
+      <div><b>Privacidad</b>No publicamos nombres de personas naturales. Los proveedores con cédula no se nombran; las entidades y personas jurídicas aparecen con el nombre que publica SECOP II (Ley 1581 de 2012).</div>
+      <div><b>Corrección y réplica</b>Si una entidad o empresa encuentra un dato que no corresponde a la fuente, puede pedir revisión indicando la ficha, el dato y el documento que lo contradice. Si no hay error de dato sino desacuerdo con la lectura, publicamos su réplica en la ficha.</div>
+    </div>
+  </section>
+</main>
+</div>
+
+<footer>
+  <div class="wrap">
+    <p><b>Marea Pública</b> · Observatorio ciudadano e independiente de la contratación pública en el Caribe colombiano. Sin afiliación partidista ni institucional.</p>
+    <p id="foot-date">Datos de SECOP II consultados el 2 de noviembre de 2026.</p>
+  </div>
+</footer>
+
+<script>
+(function(){
+const $=s=>document.querySelector(s);
+const esc=s=>String(s==null?'':s).replace(/[&<>"]/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]));
+const nf=new Intl.NumberFormat('es-CO');
+const pct=(x,d=0)=>isFinite(x)?(x*100).toLocaleString('es-CO',{maximumFractionDigits:d,minimumFractionDigits:d})+' %':'—';
+function copM(m){ // millones
+  if(m>=1e6) return '$'+(m/1e6).toLocaleString('es-CO',{maximumFractionDigits:2})+' billones';
+  if(m>=1e3) return '$'+nf.format(Math.round(m/1e3))+' mil millones';
+  return '$'+nf.format(Math.round(m))+' millones';
+}
+const MES=['enero','febrero','marzo','abril','mayo','junio','julio','agosto','septiembre','octubre','noviembre','diciembre'];
+const fecha=s=>{const [y,m,d]=s.split('-');return (+d)+' de '+MES[m-1]+' de '+y;};
+const fCorta=s=>{const [y,m,d]=s.split('-');return (+d)+' '+MES[m-1].slice(0,3);};
+const SHORT=['Atlántico','Bolívar','Cesar','Córdoba','La Guajira','Magdalena','Sucre','San Andrés'];
+const ORD={T:'Territorial',N:'Nacional',C:'Autoridad ambiental u otra'};
+const MULTI={"899999034":"Atlántico 8.435, Bolívar 4.493, Cesar 3.808, Córdoba 3.653, La Guajira 2.855, Sucre 2.285 y San Andrés 1.234","899999239":"Bolívar 3.115, La Guajira 2.886, Córdoba 2.234, Magdalena 2.146, Cesar 1.198, Sucre 1.177 y San Andrés 392","899999067":"Bolívar 29, Sucre 27, Cesar 23, San Andrés 23 y Magdalena 21","899999069":"Sucre 26, Cesar 25, Magdalena 24, Córdoba 21, Bolívar 19, Atlántico 16 y La Guajira 15","800141257":"Atlántico 52 y Córdoba 12"};
+const NOTICE='https://community.secop.gov.co/Public/Tendering/OpportunityDetail/Index?noticeUID=';
+
+let D=null;
+fetch('data.json').then(r=>{if(!r.ok)throw new Error(r.status);return r.json();}).then(init).catch(()=>{
+  $('#lede').textContent='No se pudieron cargar los datos. Recarga la página para intentarlo de nuevo.';
+});
+
+/* ---------- model ---------- */
+let ENT=[], MUN=[], DEPS=[], REG=null, scope={dep:-1,mun:-1,ent:null}, metric='dir', rankMode='ent', rankShown=25, sortKey='idx';
+function blank(){return {n:0,v:0,nf:0,vf:0,dirN:0,dirV:0,pn:0,pro:0,sup:0,dic:0,pre26:0,giN:0,giV:0,jan:0,j26:0,veda:0,ents:0};}
+function add(a,e){a.n+=e.n;a.v+=e.v;a.ents++;if(e.full){a.nf+=e.n;a.vf+=e.v;for(const k of ['dirN','dirV','pn','pro','sup','dic','pre26','giN','giV','jan','j26','veda'])a[k]+=e[k];}}
+const SIG=[
+ {k:'dir',nm:'Contratación directa',why:'Contratos sin competencia sobre el total.',f:a=>a.dirN/a.nf},
+ {k:'dirv',nm:'Valor por contratación directa',why:'Parte de la plata asignada sin competencia.',f:a=>a.dirV/a.vf},
+ {k:'top1',nm:'Cuota del mayor proveedor',why:'Valor del proveedor número uno sobre el total.',f:a=>a.top1,ent:true},
+ {k:'hhi',nm:'Concentración (HHI)',why:'Sube cuando pocos proveedores se llevan casi todo.',f:a=>a.hhi,ent:true,fmt:v=>nf.format(Math.round(v*10000))},
+ {k:'gi',nm:'Triangulación',why:'Valor por gerencias integrales y convenios con intermediarias.',f:a=>a.giV/a.vf},
+ {k:'pro',nm:'Prórrogas',why:'Contratos a los que se les adicionaron días.',f:a=>a.pro/a.nf},
+ {k:'sup',nm:'Supervisor sin publicar',why:'Contratos sin supervisor registrado (Ley 1474, art. 83).',f:a=>a.sup/a.nf},
+ {k:'dic',nm:'Firmados en diciembre',why:'Afán de cierre de vigencia, 2024 y 2025.',f:a=>a.pre26?a.dic/a.pre26:NaN},
+ {k:'ene',nm:'Adelanto pre-veda',why:'Directos de enero 2026 frente al enero habitual.',f:a=>a.jan>0?a.j26/(a.jan/2):(a.j26>0?a.j26:NaN),fmt:v=>isFinite(v)?(v>=10?Math.round(v):v.toFixed(1))+'×':'—'},
+];
+const METRICS=[{k:'dir',l:'Contratación directa'},{k:'ene',l:'Adelanto pre-veda'},{k:'gi',l:'Triangulación'},{k:'sup',l:'Supervisor sin publicar'},{k:'idx',l:'Índice Marea'}];
+
+function init(data){
+  D=data;
+  D.munis.forEach((m,i)=>MUN.push({i,name:m[0]==='No Definido'?'Sin municipio registrado':m[0],dep:m[1],ents:[]}));
+  D.deps.forEach((d,i)=>DEPS.push({i,name:d,short:SHORT[i],ents:[]}));
+  ENT=D.E.map(r=>{const e={k:r[0],nm:r[1].replace(/\s+/g,' ').trim(),dep:r[2],mun:r[3],o:r[4],n:r[5],v:r[6],full:r.length>7};
+    if(MULTI[e.k])e.multi=MULTI[e.k];
+    if(e.full)Object.assign(e,{nf:r[5],vf:r[6],dirN:r[7],dirV:r[8],pn:r[9],pro:r[10],sup:r[11],dic:r[12],pre26:r[13],giN:r[14],giV:r[15],jan:r[16],j26:r[17],veda:r[18],top1:r[19]/1000,top1p:r[20],hhi:r[21]/1000});
+    return e;});
+  ENT.forEach(e=>{if(e.multi)return;DEPS[e.dep].ents.push(e);MUN[e.mun].ents.push(e);});
+  // index per entity: percentile within orden among ranked (n>=50)
+  const ranked=ENT.filter(e=>e.full&&e.n>=50);
+  for(const s of SIG){for(const o of ['T','N','C']){const g=ranked.filter(e=>e.o===o);const vals=g.map(e=>s.f(e)).filter(isFinite).sort((a,b)=>a-b);
+    g.forEach(e=>{const v=s.f(e);if(!isFinite(v))return;let lo=0;while(lo<vals.length&&vals[lo]<v)lo++;let hi=lo;while(hi<vals.length&&vals[hi]===v)hi++;(e.p=e.p||{})[s.k]=vals.length>1?((lo+hi-1)/2)/(vals.length-1)*100:50;});}}
+  ranked.forEach(e=>{const ps=Object.values(e.p||{});e.idx=ps.length>=5?ps.reduce((a,b)=>a+b,0)/ps.length:NaN;});
+  const idxs=ranked.map(e=>e.idx).filter(isFinite).sort((a,b)=>a-b);const q=p=>idxs[Math.floor(p*(idxs.length-1))];
+  D.cut={vh:q(.95),h:q(.80),m:q(.50),mo:q(.20)};
+  // aggregates
+  REG=blank();ENT.forEach(e=>add(REG,e));
+  DEPS.forEach(d=>{d.a=blank();d.ents.forEach(e=>add(d.a,e));d.idx=wIdx(d.ents);});
+  MUN.forEach(m=>{m.a=blank();m.ents.forEach(e=>add(m.a,e));m.idx=wIdx(m.ents);});
+  REG.idx=wIdx(ENT);
+  $('#foot-date').textContent='Datos de SECOP II consultados el '+fecha(D.meta.fecha)+'.';
+  hero(); scopeUI(); metricsUI(); radar(); triangulacion(); licInit(); metodo();
+  render();
+  route();
+}
+function wIdx(list){let s=0,w=0;for(const e of list){if(isFinite(e.idx)){s+=e.idx*e.v;w+=e.v;}}return w?s/w:NaN;}
+function rango(x){if(!isFinite(x))return ['b-m','sin dato'];const c=D.cut;return x>=c.vh?['b-vh','muy alta']:x>=c.h?['b-h','alta']:x>=c.m?['b-m','media']:x>=c.mo?['b-mo','moderada']:['b-l','baja'];}
+
+/* ---------- hero ---------- */
+function hero(){
+  const dirN=Object.values(D.mod).reduce((a,m)=>a+(m.D?m.D[0]:0),0), dirV=Object.values(D.mod).reduce((a,m)=>a+(m.D?m.D[1]:0),0);
+  const dm=Object.values(D.dm); const s=i=>dm.reduce((a,x)=>a+x[i],0);
+  const j26=s(24), jav=(s(0)+s(12))/2, veda=[25,26,27,28,29].reduce((a,i)=>a+s(i),0);
+  $('#lede').innerHTML='Desde enero de 2024, las entidades de los ocho departamentos firmaron <b>'+nf.format(REG.n)+'</b> contratos por <b>'+copM(REG.v)+'</b>. El '+pct(dirN/REG.n)+' se adjudicó por contratación directa. Explora por departamento, municipio o entidad, compara y pide los documentos.';
+  $('#figs').innerHTML=[
+    ['v',copM(REG.v),'contratado desde 2024'],
+    ['v',nf.format(REG.n),'contratos en SECOP II'],
+    ['v',pct(dirV/REG.v),'del valor fue a dedo'],
+    ['alert',nf.format(j26),'directos en enero de 2026, '+Math.round(j26/jav)+'× lo habitual'],
+  ].map(([c,v,k])=>'<div class="fig '+(c==='alert'?'alert':'')+'"><span class="v">'+v+'</span><span class="k">'+k+'</span></div>').join('');
+}
+
+/* ---------- scope ---------- */
+function scopeUI(){
+  $('#s-dep').innerHTML='<option value="-1">Toda la región</option>'+DEPS.map(d=>'<option value="'+d.i+'">'+esc(d.name)+'</option>').join('');
+  $('#s-dep').addEventListener('change',e=>setScope(+e.target.value,-1,null));
+  $('#s-mun').addEventListener('change',e=>setScope(scope.dep,+e.target.value,null));
+  const dl=$('#dl-ent');
+  $('#s-ent').addEventListener('change',e=>{const v=e.target.value.trim();const m=ENT.find(x=>x.nm+' · '+x.k===v)||ENT.find(x=>x.k===v);if(m)setScope(m.multi?-1:m.dep,m.multi?-1:m.mun,m.k);});
+  fillEntList();
+}
+function fillEntList(){
+  const list=ENT.filter(e=>(scope.dep<0||(!e.multi&&e.dep===scope.dep))&&(scope.mun<0||e.mun===scope.mun)).sort((a,b)=>b.v-a.v);
+  $('#dl-ent').innerHTML=list.map(e=>'<option value="'+esc(e.nm+' · '+e.k)+'">').join('');
+}
+function setScope(dep,mun,ent){
+  scope={dep,mun,ent};rankShown=25;
+  if(dep>=0&&rankMode==='dep')rankMode=mun>=0?'ent':'mun';
+  try{localStorage.setItem('mp-scope',JSON.stringify(scope));}catch(_){}
+  render();
+}
+function render(){
+  $('#s-dep').value=scope.dep;
+  const muns=MUN.filter(m=>scope.dep<0||m.dep===scope.dep).filter(m=>m.ents.length).sort((a,b)=>a.name.localeCompare(b.name,'es'));
+  $('#s-mun').innerHTML='<option value="-1">'+(scope.dep<0?'Todos los municipios':'Todo '+esc(DEPS[scope.dep].short))+'</option>'+muns.map(m=>'<option value="'+m.i+'">'+esc(m.name)+(scope.dep<0?' ('+SHORT[m.dep]+')':'')+'</option>').join('');
+  $('#s-mun').value=scope.mun;
+  const ent=scope.ent?ENT.find(e=>e.k===scope.ent):null;
+  $('#s-ent').value=ent?ent.nm+' · '+ent.k:'';
+  fillEntList();
+  // crumbs
+  const c=['<button data-c="reg">Región Caribe</button>'];
+  if(scope.dep>=0)c.push('<span class="sep">›</span><button data-c="dep">'+esc(DEPS[scope.dep].short)+'</button>');
+  if(scope.mun>=0)c.push('<span class="sep">›</span><button data-c="mun">'+esc(MUN[scope.mun].name)+'</button>');
+  if(ent)c.push('<span class="sep">›</span><span>'+esc(ent.nm)+'</span>');
+  $('#crumbs').innerHTML=c.join(' ');
+  tiles(); ficha(); rank(); contracts();
+  document.querySelectorAll('#rankmode .chip').forEach(b=>b.setAttribute('aria-pressed',b.dataset.m===rankMode));
+}
+$('#crumbs').addEventListener('click',e=>{const b=e.target.closest('button');if(!b)return;const c=b.dataset.c;if(c==='reg')setScope(-1,-1,null);else if(c==='dep')setScope(scope.dep,-1,null);else setScope(scope.dep,scope.mun,null);});
+
+/* ---------- map ---------- */
+const POS=[[2,1],[2,2],[4,1],[0,3],[4,0],[3,1],[1,2],[0,0]]; // col,row per dep idx
+function metricsUI(){
+  $('#metrics').innerHTML=METRICS.map(m=>'<button class="chip" data-k="'+m.k+'" aria-pressed="'+(m.k===metric)+'">'+m.l+'</button>').join('');
+  $('#metrics').addEventListener('click',e=>{const b=e.target.closest('.chip');if(!b)return;metric=b.dataset.k;document.querySelectorAll('#metrics .chip').forEach(x=>x.setAttribute('aria-pressed',x===b));tiles();});
+}
+function mval(a,idx,di){if(metric==='idx')return idx;if(metric==='dir'&&di!=null&&D.mod[di].D)return D.mod[di].D[0]/D.depTot[di][0];const s=SIG.find(x=>x.k===metric);return s.f(a);}
+function mfmt(v){if(metric==='idx')return isFinite(v)?Math.round(v):'—';const s=SIG.find(x=>x.k===metric);return s.fmt?s.fmt(v):pct(v);}
+function tiles(){
+  const vals=DEPS.map(d=>mval(d.a,d.idx,d.i));const fin=vals.filter(isFinite);const lo=Math.min(...fin),hi=Math.max(...fin);
+  const ramp=['var(--r0)','var(--r1)','var(--r2)','var(--r3)','var(--r4)','var(--r5)'];
+  const step=v=>!isFinite(v)?0:hi===lo?3:Math.min(5,Math.floor((v-lo)/(hi-lo)*5.999));
+  $('#tiles').innerHTML=DEPS.map((d,i)=>{const v=vals[i],s=step(v);const [c,r]=POS[i];
+    return '<button class="tile'+(i===7?' isle':'')+'" style="grid-column:'+(c+1)+';grid-row:'+(r+1)+';background:'+ramp[s]+';color:'+(s>=3?'#f2fbfa':'#0b2a33')+'" aria-pressed="'+(scope.dep===i)+'" data-i="'+i+'" aria-label="'+esc(d.name)+': '+mfmt(v)+'"><span class="tn">'+esc(d.short)+'</span><span class="tv">'+mfmt(v)+'</span></button>';}).join('');
+  $('#ramp').innerHTML='<span>'+mfmt(lo)+'</span>'+ramp.map(c=>'<i style="background:'+c+'"></i>').join('')+'<span>'+mfmt(hi)+'</span>';
+}
+$('#tiles').addEventListener('click',e=>{const b=e.target.closest('.tile');if(!b)return;const i=+b.dataset.i;setScope(scope.dep===i?-1:i,-1,null);});
+
+/* ---------- ficha ---------- */
+function ficha(){
+  const ent=scope.ent?ENT.find(e=>e.k===scope.ent):null;
+  let a,title,sub,idx,isEnt=false;
+  if(ent){isEnt=true;a=Object.assign(blank(),ent,{nf:ent.n,vf:ent.v});title=ent.nm;sub='NIT '+ent.k+' · '+ORD[ent.o]+' · '+(ent.multi?'varios departamentos':MUN[ent.mun].name+', '+SHORT[ent.dep]);idx=ent.idx;}
+  else if(scope.mun>=0){const m=MUN[scope.mun];a=m.a;title=m.name;sub=SHORT[m.dep]+' · '+m.ents.length+' entidades con contratos';idx=m.idx;}
+  else if(scope.dep>=0){const d=DEPS[scope.dep];a=Object.assign({},d.a,{n:D.depTot[d.i][0],v:D.depTot[d.i][1],dirOff:D.mod[d.i].D});title=d.name;sub=d.ents.length+' entidades con sede en el departamento';idx=d.idx;}
+  else {a=REG;title='Región Caribe';sub='8 departamentos · '+ENT.length+' entidades con contratos';idx=REG.idx;}
+  const rg=rango(idx);
+  let h='<div class="fhead"><span class="eyebrow">'+(isEnt?'Ficha de entidad':'Ficha agregada')+'</span><h3 style="font-size:1.45rem">'+esc(title)+'</h3><span class="sub">'+esc(sub)+'</span>';
+  h+='<div class="idx"><span class="mono" style="font-size:1.6rem;font-weight:500">'+(isFinite(idx)?Math.round(idx):'—')+'</span><span class="sub">índice Marea'+(isEnt?'':' (ponderado por valor)')+'</span><span class="badge '+rg[0]+'">'+rg[1]+'</span></div></div>';
+  h+='<div class="kpis">'+[[nf.format(a.n),'contratos'],[copM(a.v),'valor'],[a.dirOff?pct(a.dirOff[0]/a.n):a.nf?pct(a.dirN/a.nf):'—','por contratación directa'],[a.nf?pct(a.pn/a.nf):'—','a personas naturales']].map(([v,k])=>'<div class="kpi"><span class="v">'+v+'</span><span class="k">'+k+'</span></div>').join('')+'</div>';
+  if(isEnt&&!ent.full){h+='<div class="note">Esta entidad tiene menos de 15 contratos desde 2024; no se calculan señales.</div>';$('#ficha').innerHTML=h;return;}
+  // reference: region entity average (simple) for comparison
+  const refList=ENT.filter(e=>e.full&&e.n>=50);
+  const rows=SIG.filter(s=>isEnt||!s.ent).map(s=>{
+    const v=s.f(a);const refs=refList.map(e=>s.f(e)).filter(isFinite);const avg=refs.reduce((x,y)=>x+y,0)/refs.length;
+    const max=Math.max(v||0,...refs.slice().sort((x,y)=>x-y).slice(Math.floor(refs.length*.95)));
+    const w=isFinite(v)?Math.min(100,v/max*100):0, ap=Math.min(100,avg/max*100);
+    const hot=isEnt&&ent.p&&ent.p[s.k]>=80;
+    return '<div class="sig"><div><div class="nm">'+s.nm+'</div><div class="why">'+s.why+'</div></div><div class="bar" aria-hidden="true"><i class="'+(hot?'hot':'')+'" style="width:'+w.toFixed(1)+'%"></i><b style="left:'+ap.toFixed(1)+'%"></b></div><div class="val">'+(s.fmt?s.fmt(v):pct(v,1))+'</div></div>';}).join('');
+  h+='<div class="signals">'+rows+'</div><div class="legendline"><span><i style="background:var(--sea)"></i>'+(isEnt?'Esta entidad':'Este alcance')+'</span>'+(isEnt?'<span><i style="background:var(--buoy)"></i>En el 20 % más alto de sus pares</span>':'')+'<span><i style="background:var(--ink);width:2px;height:12px"></i>Promedio de las entidades del Caribe</span></div>';
+  if(isEnt){
+    const ja=ent.jan/2;h+='<div class="note"><b>Ley de Garantías:</b> en enero de 2026 firmó <b>'+nf.format(ent.j26)+'</b> contratos directos (un enero normal: '+nf.format(Math.round(ja))+') y <b>'+nf.format(ent.veda)+'</b> entre febrero y junio. '+(ent.top1p?'Su mayor proveedor es <b>'+esc(ent.top1p)+'</b>, con el '+pct(ent.top1)+' del valor.':'Su mayor proveedor es una persona natural, que no se nombra.')+(ent.top1>=.9?' Un solo contrato concentra casi todo el valor: revisa en SECOP que no sea un error de digitación.':'')+'</div>';
+  }
+  if(isEnt&&ent.multi)h+='<div class="note">Entidad nacional que contrata en varios departamentos del Caribe: '+ent.multi+' contratos. No se suma a ningún departamento ni municipio.</div>';
+  if(!isEnt&&scope.dep>=0&&scope.mun<0)h+='<div class="note">Contratos, valor y contratación directa son los totales oficiales del departamento. Las demás señales se calculan sobre sus entidades y excluyen a SENA, ICBF y otras entidades nacionales que contratan en varios departamentos.</div>';
+  $('#ficha').innerHTML=h;
+}
+
+/* ---------- radar ---------- */
+function radar(){
+  const tot=Array(Math.max(...Object.values(D.dm).map(x=>x.length))).fill(0);Object.values(D.dm).forEach(x=>x.forEach((n,i)=>tot[i]+=n));
+  const jav=(tot[0]+tot[12])/2, veda=tot.slice(25,30).reduce((a,b)=>a+b,0), mult=tot[24]/jav;
+  $('#radarbig').innerHTML='<div class="mult mono">'+Math.round(mult)+'×</div><p>En enero de 2026 la región firmó <b>'+nf.format(tot[24])+'</b> contratos directos, '+Math.round(mult)+' veces un enero normal ('+nf.format(Math.round(jav))+'). De febrero a junio, con la veda vigente, firmó <b>'+nf.format(veda)+'</b>. Buena parte son contratos de prestación de servicios con personas naturales, que suelen renovarse en enero. La pregunta para la veeduría es si cubren el año completo y qué se movió por intermediarias durante la veda.</p>';
+  const NM=Math.max(...Object.values(D.dm).map(x=>x.length));const W=300,H=96,pad=2,bw=(W-pad*2)/NM;
+  $('#smalls').innerHTML=DEPS.map((d,di)=>{const s=D.dm[di]||Array(NM).fill(0);const max=Math.max(...s);const ja=(s[0]+s[12])/2;const m=ja?s[24]/ja:0;
+    let g='<rect x="'+(pad+25*bw)+'" y="2" width="'+(5*bw)+'" height="'+(H-16)+'" fill="var(--buoy-soft)"/>';
+    [.5,1].forEach(f=>{const y=(H-14)-(H-18)*f;g+='<line x1="0" x2="'+W+'" y1="'+y+'" y2="'+y+'" stroke="var(--rule)" stroke-dasharray="2 3"/>';});
+    s.forEach((n,i)=>{const h=max?Math.max(n?1.5:0,n/max*(H-18)):0;g+='<rect class="b" x="'+(pad+i*bw+.6).toFixed(1)+'" y="'+(H-14-h).toFixed(1)+'" width="'+(bw-1.2).toFixed(1)+'" height="'+h.toFixed(1)+'" rx="1" fill="'+(i===24?'var(--buoy)':'var(--sea)')+'"><title>'+MES[i%12]+' '+(2024+Math.floor(i/12))+': '+nf.format(n)+' contratos directos</title></rect>';});
+    g+='<line x1="0" x2="'+W+'" y1="'+(H-14)+'" y2="'+(H-14)+'" stroke="var(--muted)" stroke-width=".6"/>';
+    [['2024',0],['2025',12],['2026',24]].forEach(([t,i])=>g+='<text x="'+(pad+i*bw)+'" y="'+(H-2)+'" font-size="9" fill="var(--muted)" font-family="IBM Plex Mono,monospace">'+t+'</text>');
+    g+='<text x="'+(W-2)+'" y="'+((H-14)-(H-18)+9)+'" font-size="9" text-anchor="end" fill="var(--muted)" font-family="IBM Plex Mono,monospace">'+nf.format(max)+'</text>';
+    return '<div class="sm"><div class="lab"><b>'+esc(d.short)+'</b><span class="mono muted">ene 26: '+nf.format(s[24])+' · '+(m>=10?Math.round(m):m.toFixed(1))+'×</span></div><svg viewBox="0 0 '+W+' '+H+'" role="img" aria-label="Contratos directos por mes en '+esc(d.name)+'">'+g+'</svg></div>';}).join('');
+}
+
+/* ---------- ranking ---------- */
+document.getElementById('rankmode').addEventListener('click',e=>{const b=e.target.closest('.chip');if(!b)return;rankMode=b.dataset.m;rankShown=25;render();});
+$('#rank-more').addEventListener('click',()=>{rankShown+=25;rank();});
+function rank(){
+  const sc=scope.mun>=0?MUN[scope.mun].name:scope.dep>=0?DEPS[scope.dep].short:'la región';
+  $('#rank-scope').textContent=sc;
+  let rows,head,html;
+  if(rankMode==='ent'){
+    rows=ENT.filter(e=>e.full&&e.n>=50&&isFinite(e.idx)&&(scope.dep<0||(!e.multi&&e.dep===scope.dep))&&(scope.mun<0||e.mun===scope.mun)).sort((a,b)=>b.idx-a.idx);
+    head='<tr><th class="n">#</th><th>Entidad</th><th>Ubicación</th><th class="n">Contratos</th><th class="n">Valor</th><th class="n">Directa</th><th class="n">Índice</th><th>Rango</th></tr>';
+    html=rows.slice(0,rankShown).map((e,i)=>{const r=rango(e.idx);return '<tr data-k="'+e.k+'"><td class="n">'+(i+1)+'</td><td><div class="ttl">'+esc(e.nm)+'</div><div class="sub">'+ORD[e.o]+'</div></td><td>'+(e.multi?'Varios departamentos':esc(MUN[e.mun].name)+'<div class="sub">'+SHORT[e.dep]+'</div>')+'</td><td class="n">'+nf.format(e.n)+'</td><td class="n">'+copM(e.v)+'</td><td class="n">'+pct(e.dirN/e.n)+'</td><td class="n">'+Math.round(e.idx)+'</td><td><span class="badge '+r[0]+'">'+r[1]+'</span></td></tr>';}).join('');
+  } else if(rankMode==='mun'){
+    rows=MUN.filter(m=>m.ents.length&&isFinite(m.idx)&&(scope.dep<0||m.dep===scope.dep)).sort((a,b)=>b.idx-a.idx);
+    head='<tr><th class="n">#</th><th>Municipio</th><th>Departamento</th><th class="n">Entidades</th><th class="n">Contratos</th><th class="n">Valor</th><th class="n">Directa</th><th class="n">Índice</th></tr>';
+    html=rows.slice(0,rankShown).map((m,i)=>'<tr data-m="'+m.i+'"><td class="n">'+(i+1)+'</td><td class="ttl">'+esc(m.name)+'</td><td>'+SHORT[m.dep]+'</td><td class="n">'+m.ents.length+'</td><td class="n">'+nf.format(m.a.n)+'</td><td class="n">'+copM(m.a.v)+'</td><td class="n">'+(m.a.nf?pct(m.a.dirN/m.a.nf):'—')+'</td><td class="n">'+Math.round(m.idx)+'</td></tr>').join('');
+  } else {
+    rows=DEPS.slice().sort((a,b)=>b.idx-a.idx);
+    head='<tr><th class="n">#</th><th>Departamento</th><th class="n">Entidades</th><th class="n">Contratos</th><th class="n">Valor</th><th class="n">Directa</th><th class="n">Triangulación</th><th class="n">Índice</th></tr>';
+    html=rows.map((d,i)=>'<tr data-d="'+d.i+'"><td class="n">'+(i+1)+'</td><td class="ttl">'+esc(d.name)+'</td><td class="n">'+d.ents.length+'</td><td class="n">'+nf.format(D.depTot[d.i][0])+'</td><td class="n">'+copM(D.depTot[d.i][1])+'</td><td class="n">'+pct(D.mod[d.i].D[0]/D.depTot[d.i][0])+'</td><td class="n">'+pct(d.a.giV/d.a.vf,1)+'</td><td class="n">'+Math.round(d.idx)+'</td></tr>').join('');
+  }
+  $('#rank').innerHTML='<thead>'+head+'</thead><tbody>'+(html||'<tr><td colspan="8" class="empty">No hay entidades con 50 contratos o más en este alcance.</td></tr>')+'</tbody>';
+  $('#rank-more').hidden=!(rows.length>rankShown)||rankMode==='dep';
+}
+$('#rank').addEventListener('click',e=>{const tr=e.target.closest('tr');if(!tr||!tr.dataset)return;
+  if(tr.dataset.k){const m=ENT.find(x=>x.k===tr.dataset.k);setScope(m.multi?-1:m.dep,m.multi?-1:m.mun,m.k);$('#scope').scrollIntoView({block:'start'});}
+  else if(tr.dataset.m){const m=MUN[+tr.dataset.m];setScope(m.dep,m.i,null);$('#scope').scrollIntoView({block:'start'});}
+  else if(tr.dataset.d){setScope(+tr.dataset.d,-1,null);$('#scope').scrollIntoView({block:'start'});}});
+
+/* ---------- triangulación ---------- */
+function triangulacion(){
+  $('#tri').innerHTML='<thead><tr><th>Intermediaria</th><th>NIT</th><th class="n">Contratos</th><th class="n">Valor recibido</th><th class="n">Entidades que le giran</th></tr></thead><tbody>'+
+    D.gi.map(g=>'<tr><td class="ttl">'+esc(g[0])+'</td><td class="mono">'+g[1]+'</td><td class="n">'+g[2]+'</td><td class="n">'+copM(g[3])+'</td><td class="n">'+g[4]+'</td></tr>').join('')+'</tbody>';
+}
+
+/* ---------- contratos + petición ---------- */
+let sel=null;
+const isLoan=c=>/empr[eé]stito|emprestito|pignoraci/i.test(c[4])||/^Banc|Bbva|Davivienda|Bancolombia|Financiera de Desarrollo/i.test(c[0]);
+$('#no-loans').addEventListener('change',contracts);
+function contracts(){
+  const noL=$('#no-loans').checked;
+  let list=Object.entries(D.big).map(([k,c])=>({k,c,e:ENT.find(x=>x.k===k)})).filter(x=>x.e);
+  list=list.filter(x=>(scope.dep<0||x.e.dep===scope.dep)&&(scope.mun<0||x.e.mun===scope.mun)&&(!scope.ent||x.k===scope.ent));
+  if(noL)list=list.filter(x=>!isLoan(x.c));
+  list.sort((a,b)=>b.c[2]-a.c[2]);list=list.slice(0,8);
+  const box=$('#contracts');
+  if(!list.length){box.innerHTML='<div class="ct"><div class="sub">No tenemos un contrato directo destacado para este alcance'+(noL?' (fuera de empréstitos)':'')+'. Prueba con otra entidad o desmarca el filtro.</div></div>';$('#pet').hidden=true;return;}
+  box.innerHTML=list.map((x,i)=>{const c=x.c;return '<article class="ct"><div><span class="eyebrow">'+esc(x.e.nm)+'</span><h3>'+esc(c[0])+'</h3><span class="mono sub">NIT '+c[1]+' · '+fecha(c[3])+' · '+c[5]+'</span></div><div class="amt">'+copM(c[2])+'</div><p class="obj">'+esc(c[4])+'…</p><div class="acts"><button class="btn solid" type="button" data-k="'+x.k+'">Generar derecho de petición</button><a href="'+NOTICE+encodeURIComponent(c[6])+'" target="_blank" rel="noopener">Ver en SECOP II</a></div></article>';}).join('');
+  $('#pet').hidden=true;
+}
+$('#contracts').addEventListener('click',e=>{const b=e.target.closest('button[data-k]');if(!b)return;sel={k:b.dataset.k,c:D.big[b.dataset.k],e:ENT.find(x=>x.k===b.dataset.k)};pet();const p=$('#pet');p.hidden=false;p.scrollIntoView({behavior:matchMedia('(prefers-reduced-motion: reduce)').matches?'auto':'smooth',block:'start'});});
+['p-nom','p-cc','p-mail'].forEach(id=>document.getElementById(id).addEventListener('input',pet));
+function pet(){
+  if(!sel)return;const c=sel.c,e=sel.e;
+  const nom=$('#p-nom').value.trim()||'[NOMBRE COMPLETO]',cc=$('#p-cc').value.trim()||'[NÚMERO]',mail=$('#p-mail').value.trim()||'[CORREO ELECTRÓNICO]';
+  $('#p-text').textContent=`${MUN[e.mun].name}, [fecha]
+
+Señores
+${e.nm.toUpperCase()}
+NIT ${e.k}
+Atención: Representante legal y oficina de contratación
+
+Asunto: Derecho de petición de información y documentos sobre el contrato ${c[5]}
+
+${nom}, identificado(a) con cédula de ciudadanía n.º ${cc}, en ejercicio del derecho fundamental de petición consagrado en el artículo 23 de la Constitución Política, regulado por la Ley 1755 de 2015, y del derecho de acceso a la información pública previsto en la Ley 1712 de 2014, respetuosamente solicito la información y los documentos que se relacionan a continuación.
+
+I. HECHOS
+
+1. Según la información publicada en el Sistema Electrónico de Contratación Pública (SECOP II), el ${fecha(c[3])} la entidad suscribió el contrato identificado con el número ${c[5]} con ${c[0]}, NIT ${c[1]}, por un valor reportado de ${copM(c[2])}.
+
+2. El contrato aparece celebrado bajo la modalidad de contratación directa.
+
+II. PETICIÓN
+
+Solicito copia, preferiblemente en formato digital, de los siguientes documentos:
+
+1. El acto administrativo de justificación de la contratación directa, con la causal invocada, conforme al artículo 2 de la Ley 1150 de 2007 y al artículo 2.2.1.2.1.4.1 del Decreto 1082 de 2015.
+2. Los estudios y documentos previos, incluido el análisis del sector y la justificación del valor del contrato.
+3. El certificado de disponibilidad presupuestal y el registro presupuestal.
+4. Si el contratista actúa como gerente integral, administrador o ejecutor de recursos, la relación de los contratos derivados que haya suscrito con cargo a este contrato, con indicación del contratista, el valor y la modalidad de selección de cada uno.
+5. La designación del supervisor o interventor y los informes de supervisión o interventoría expedidos a la fecha, en los términos de los artículos 83 y 84 de la Ley 1474 de 2011.
+6. Las modificaciones, adiciones, prórrogas y suspensiones del contrato, con sus justificaciones.
+7. La relación de pagos y anticipos efectuados al contratista, con fecha y valor.
+8. Las garantías constituidas y su aprobación.
+
+Si alguno de estos documentos ya está publicado en SECOP II, agradezco indicar el enlace exacto donde puede consultarse. Si la entidad considera que alguna información es reservada, solicito que así lo declare de manera motivada, con la norma legal que lo sustenta, conforme al artículo 28 de la Ley 1712 de 2014.
+
+III. TÉRMINO
+
+De acuerdo con el numeral 1 del artículo 14 de la Ley 1437 de 2011, sustituido por la Ley 1755 de 2015, las peticiones de documentos e información deben resolverse dentro de los diez (10) días hábiles siguientes a su recepción.
+
+IV. NOTIFICACIONES
+
+Recibiré respuesta en el correo electrónico ${mail}.
+
+Atentamente,
+
+
+${nom}
+C.C. ${cc}`;
+}
+$('#p-copy').addEventListener('click',()=>{const t=$('#p-text').textContent,ok=$('#p-ok');const done=()=>{ok.hidden=false;setTimeout(()=>ok.hidden=true,2000);};
+  const selectIt=()=>{const r=document.createRange();r.selectNodeContents($('#p-text'));const s=getSelection();s.removeAllRanges();s.addRange(r);};
+  try{navigator.clipboard.writeText(t).then(done,selectIt);}catch(_){selectIt();}});
+
+/* ---------- licitaciones ---------- */
+const MODL={L:'Licitación pública',S:'Selección abreviada',C:'Concurso de méritos',M:'Mínima cuantía',R:'Régimen especial con ofertas',O:'Otra'};
+let lday='';
+function licInit(){
+  $('#l-dep').innerHTML='<option value="-1">Toda la región</option>'+DEPS.map(d=>'<option value="'+d.i+'">'+esc(d.name)+'</option>').join('');
+  const mods=[...new Set(D.lic.map(l=>l[4]))];
+  $('#l-mod').innerHTML='<option value="">Todas</option>'+mods.map(m=>'<option value="'+m+'">'+MODL[m]+'</option>').join('');
+  ['l-dep','l-mod','l-q'].forEach(id=>document.getElementById(id).addEventListener('input',licRender));
+  $('#days').addEventListener('click',e=>{const b=e.target.closest('.day');if(!b)return;lday=lday===b.dataset.d?'':b.dataset.d;licRender();});
+  licRender();
+}
+function licRender(){
+  const dep=+$('#l-dep').value,mod=$('#l-mod').value,q=$('#l-q').value.trim().toLowerCase();
+  const base=D.lic.filter(l=>(dep<0||l[1]===dep)&&(!mod||l[4]===mod)&&(!q||(l[3]+' '+l[0]+' '+l[2]).toLowerCase().includes(q)));
+  const byDay={};base.forEach(l=>{byDay[l[7]]=(byDay[l[7]]||0)+1;});
+  const days=Object.keys(byDay).sort();
+  $('#days').innerHTML=days.map(d=>{const dt=new Date(d+'T12:00:00');return '<button class="day" data-d="'+d+'" aria-pressed="'+(lday===d)+'"><div class="c">'+['dom','lun','mar','mié','jue','vie','sáb'][dt.getDay()]+'</div><div class="d">'+fCorta(d)+'</div><div class="c">'+byDay[d]+' procesos</div></button>';}).join('');
+  const list=base.filter(l=>!lday||l[7]===lday);
+  const today=new Date(D.meta.fecha+'T12:00:00');
+  $('#l-count').textContent=list.length+' procesos'+(lday?' que cierran el '+fecha(lday):'')+' · presupuesto total '+copM(list.reduce((a,l)=>a+l[5],0));
+  $('#lics').innerHTML=list.length?list.map(l=>{const dd=Math.round((new Date(l[7]+'T12:00:00')-today)/864e5);
+    return '<article class="lic"><div class="tag"><span class="pill">'+MODL[l[4]]+'</span><span class="pill'+(dd<=2?' urg':'')+'">cierra '+(dd<=1?'mañana':'en '+dd+' días')+'</span></div><div class="amt">'+(l[5]>0?copM(l[5]):'Presupuesto en el pliego')+'</div><p class="ob">'+esc(l[3]==='No Definido'?'Objeto no publicado en datos abiertos':l[3]+'…')+'</p><div class="sub"><b>'+esc(l[0])+'</b> · '+esc(l[2]==='No Definido'?SHORT[l[1]]:l[2]+', '+SHORT[l[1]])+'</div><div class="foot"><span class="mono">'+esc(l[9])+'</span><a href="'+NOTICE+encodeURIComponent(l[8])+'" target="_blank" rel="noopener">Ver pliego en SECOP II</a></div></article>';}).join(''):'<p class="empty">No hay procesos con esos filtros.</p>';
+}
+
+/* ---------- método ---------- */
+function metodo(){
+  $('#defs').innerHTML=SIG.map(s=>'<div><b>'+s.nm+'</b>'+s.why+(s.ent?' Solo se calcula por entidad.':'')+'</div>').join('')+'<div><b>Índice Marea</b>Promedio de los percentiles de la entidad en las señales disponibles (mínimo cinco), frente a las entidades de su mismo orden de gobierno con 50 contratos o más. Para municipios y departamentos se pondera por valor contratado.</div>';
+}
+
+/* ---------- routing ---------- */
+function route(){
+  const v=(location.hash||'#veeduria').slice(1);const view=['veeduria','licitaciones','metodo'].includes(v)?v:'veeduria';
+  ['veeduria','licitaciones','metodo'].forEach(x=>document.getElementById('v-'+x).hidden=x!==view);
+  document.querySelectorAll('.nav a').forEach(a=>{if(a.dataset.v===view)a.setAttribute('aria-current','page');else a.removeAttribute('aria-current');});
+}
+window.addEventListener('hashchange',()=>{route();window.scrollTo(0,0);});
+try{const s=JSON.parse(localStorage.getItem('mp-scope')||'null');if(s&&typeof s.dep==='number')scope=s;}catch(_){}
+route();
+})();
+</script>
