@@ -18,6 +18,7 @@ import os
 import re
 import sys
 import time
+import unicodedata
 import urllib.parse
 import urllib.request
 from collections import defaultdict
@@ -112,6 +113,81 @@ def num(x) -> float:
         return float(x)
     except (TypeError, ValueError):
         return 0.0
+
+
+# ---------------------------------------------------------------- clasificador UNSPSC
+# SECOP II casi nunca publica el código UNSPSC de los procesos abiertos en datos abiertos.
+# Si viene, se usa el oficial; si no, se estima el segmento a partir del objeto.
+SEGMENTOS = {
+ "10":"Material vivo vegetal y animal, accesorios y suministros","14":"Materiales y productos de papel",
+ "15":"Combustibles, aditivos, lubricantes y anticorrosivos","25":"Vehículos comerciales, militares y particulares, accesorios y componentes",
+ "26":"Maquinaria y accesorios para generación y distribución de energía","30":"Componentes y suministros para estructuras, edificación, construcción y obras civiles",
+ "39":"Componentes, accesorios y suministros de sistemas eléctricos e iluminación","40":"Componentes y equipos para distribución y sistemas de acondicionamiento",
+ "42":"Equipo médico, accesorios y suministros","43":"Tecnologías de la información y telecomunicaciones",
+ "44":"Equipos de oficina, accesorios y suministros","46":"Equipos y suministros de defensa, orden público, protección, vigilancia y seguridad",
+ "47":"Equipos de limpieza y suministros","49":"Equipos, suministros y accesorios para deportes y recreación",
+ "50":"Alimentos, bebidas y tabaco","51":"Medicamentos y productos farmacéuticos","53":"Ropa, maletas y productos de aseo personal",
+ "56":"Muebles, mobiliario y decoración","60":"Instrumentos musicales, juegos, artes, artesanías y equipo educativo",
+ "72":"Servicios de edificación, construcción de instalaciones y mantenimiento","76":"Servicios de limpieza industrial",
+ "77":"Servicios medioambientales","78":"Servicios de transporte, almacenaje y correo",
+ "80":"Servicios de gestión, servicios profesionales de empresa y servicios administrativos",
+ "81":"Servicios basados en ingeniería, investigación y tecnología","82":"Servicios editoriales, de diseño, de artes gráficas y bellas artes",
+ "84":"Servicios financieros y de seguros","85":"Servicios de salud","86":"Servicios educativos y de formación",
+ "90":"Servicios de viajes, alimentación, alojamiento y entretenimiento","92":"Servicios de defensa nacional, orden público, seguridad y vigilancia",
+ "93":"Servicios políticos y de asuntos cívicos",
+}
+COMPRA = r"(suministro|adquisicion|adquirir|compra|compraventa|dotacion de elementos|elementos)"
+REGLAS = [  # (segmento, patron) — el orden importa: la primera que coincide gana
+ ("81", r"interventor|consultor|estudios y disenos|disenos|estudio tecnico|estudios tecnicos|topograf|diagnostico|formulacion de alternativas"),
+ ("84", r"\bseguro|soat|poliza"),
+ ("50", r"agua potable|alimentacion escolar|\bpae\b|complementos? alimentari|raciones|refrigerio|alimentos|viveres|aceites y grasas|mercados"),
+ ("51", r"medicament|farmac"),
+ ("42", r"dotacion hospitalaria|ayudas tecnicas|equipos? (biomedic|medic)|insumos medic|lentes|monturas|oftalm|odontolog"),
+ ("85", r"hospitalari|servicios? (de salud|medic|integrales medic)|terapias|consulta externa|imagenes diagnosticas|laboratorio clinico|atencion integral de pacientes|alergolog"),
+ ("15", r"combustible|gasolina|acpm|diesel|lubricante"),
+ ("25", r"vehicul|camioneta|llantas|parque automotor|motocicleta|repuestos"),
+ ("92", r"vigilancia|seguridad privada"),
+ ("47", COMPRA + r".{0,60}(aseo|limpieza|desinfeccion)"),
+ ("76", r"aseo|limpieza|desinfeccion|cafeteria|fumigacion"),
+ ("53", r"calzado|vestido|uniforme|dotacion"),
+ ("40", r"aires? acondicionad|refrigeracion|neveras"),
+ ("39", r"transformador|alumbrado|iluminacion|electric"),
+ ("46", r"cctv|camaras de seguridad|circuito cerrado|equipos de seguridad"),
+ ("43", r"switch|swicth|elementos de red|lectores|dispositivos de lectura|software|licencia|computo|computador|tecnologic|conectividad|internet|telecomunicacion|apropiacion digital|redes de datos"),
+ ("82", r"plan de medios|medios de comunicacion|difusion|impresion|fotocopiado|publicidad|avisos|piezas graficas|editorial"),
+ ("78", r"tecnico-mecanica|tecnicomecanica|transporte|traslado|grua|mensajeria|acarreo"),
+ ("90", r"tiquetes|festividad|turistic|cultural|recreativ|logistic|evento|feria|hospedaje|alojamiento|festival|celebracion|conmemoracion"),
+ ("49", COMPRA + r".{0,60}deport"),
+ ("86", r"capacitacion|formacion|curso|diplomado|educativ|pedagog"),
+ ("77", r"conservacion|ambiental|reforestacion|residuos|arborizacion|poda|cesped|maleza|hidrolog"),
+ ("56", r"estanteria|mobiliario|muebles|enseres"),
+ ("44", r"papeleria|utiles de oficina|insumos de oficina"),
+ ("10", r"material vegetal|semillas|plantulas|insumos agricolas|agropecuari|pecuari"),
+ ("93", r"victima|sensibilizacion|tenencia responsable|participacion ciudadana|convivencia"),
+ ("72", r"construccion|obra|pavimento|adecuacion|rehabilitacion|mejoramiento|optimizacion de red|mitigacion|mantenimiento|reparacion|cerramiento|acueducto|alcantarillado"),
+ ("30", COMPRA + r".{0,60}(ferreteria|materiales de construccion|cemento)"),
+ ("80", r"apoyo a la gestion|asesoria|administrativ|servicios profesionales|fortalecimiento|acompanamiento|operador|aunar esfuerzos"),
+]
+def norm(s):
+    s = unicodedata.normalize("NFD", (s or "").lower())
+    return "".join(c for c in s if unicodedata.category(c) != "Mn")
+def clasificar(codigo, objeto):
+    """Devuelve (codigo8, segmento, estimado)."""
+    m = re.match(r"V1\.(\d{8})", codigo or "")
+    if m:
+        return m.group(1), m.group(1)[:2], False
+    t = norm(objeto)
+    for seg, pat in REGLAS:
+        if re.search(pat, t):
+            return "", seg, True
+    if re.search(COMPRA, t):
+        return "", "B", True   # bien sin categoría precisa
+    return "", "", True
+def tipo(seg):
+    if seg == "72": return "obra"
+    if seg == "B" or (seg.isdigit() and int(seg) < 70): return "bien"
+    if seg: return "servicio"
+    return ""
 
 
 # ---------------------------------------------------------------- consultas
@@ -228,7 +304,8 @@ def main() -> None:
     lic_raw = q(PROCESOS, {
         "$select": "entidad, departamento_entidad, ciudad_entidad, id_del_proceso, referencia_del_proceso, "
                    "descripci_n_del_procedimiento, modalidad_de_contratacion, precio_base, "
-                   "fecha_de_publicacion_del, fecha_de_recepcion_de, estado_del_procedimiento, urlproceso",
+                   "fecha_de_publicacion_del, fecha_de_recepcion_de, estado_del_procedimiento, urlproceso, "
+                   "codigo_principal_de_categoria, nit_entidad, visualizaciones_del, proveedores_que_manifestaron",
         "$where": f"departamento_entidad in {DEPS_SQL} AND fecha_de_recepcion_de >= '{manana}' "
                   f"AND fecha_de_recepcion_de <= '{hasta}' AND estado_del_procedimiento = 'Publicado' "
                   "AND modalidad_de_contratacion not in ('Contratación directa','Contratación Directa (con ofertas)',"
@@ -239,18 +316,75 @@ def main() -> None:
         if x["id_del_proceso"] in seen:
             continue
         seen.add(x["id_del_proceso"])
+        cod, seg, est = clasificar(x.get("codigo_principal_de_categoria"), x.get("descripci_n_del_procedimiento"))
         lic.append([tc(x["entidad"])[:40].strip(), DEPS.index(x["departamento_entidad"]), tc(x.get("ciudad_entidad")),
                     tc(x.get("descripci_n_del_procedimiento"))[:80].strip(), grp(x["modalidad_de_contratacion"]),
-                    round(num(x.get("precio_base")) / 1e5) / 10, str(x.get("fecha_de_publicacion_del", ""))[:10],
+                    round(num(x.get("precio_base")) / 1e5) / 10, (x.get("fecha_de_publicacion_del") or "")[:10],
                     str(x["fecha_de_recepcion_de"])[:10], uid(x.get("urlproceso")),
-                    str(x.get("referencia_del_proceso", ""))[:28]])
+                    str(x.get("referencia_del_proceso", ""))[:28], cod, seg, 1 if est else 0, "",
+                    x.get("nit_entidad", ""), int(num(x.get("visualizaciones_del"))),
+                    int(num(x.get("proveedores_que_manifestaron")))])
+
+    familias = sorted({r[10][:4] for r in lic if r[10]})
+    if familias:
+        log("Nombres de familias UNSPSC oficiales")
+        lista = ",".join("'" + f + "'" for f in familias)
+        nombres = {r["id_familia"]: r["nf"] for r in q("f789-7hwg", {
+            "$select": "id_familia, max(nombre_familia) as nf",
+            "$where": f"id_familia in ({lista})", "$group": "id_familia", "$limit": 500})}
+        for r in lic:
+            if r[10]:
+                r[13] = nombres.get(r[10][:4], "")
+
+    log("Historial de competencia (oferente único, plazos y topes)")
+    hist = q_all(PROCESOS, {
+        "$select": "nit_entidad as k, departamento_entidad as dp, modalidad_de_contratacion as m, "
+                   "proveedores_unicos_con as u, precio_base as p, fecha_de_publicacion_del as fp, "
+                   "fecha_de_recepcion_de as fr, descripci_n_del_procedimiento as o",
+        "$where": f"departamento_entidad in {DEPS_SQL} AND adjudicado='Si' AND fecha_de_publicacion_del >= '{DESDE}' "
+                  "AND modalidad_de_contratacion in ('Licitación pública','Licitación pública Obra Publica',"
+                  "'Mínima cuantía','Selección Abreviada de Menor Cuantía','Selección abreviada subasta inversa',"
+                  "'Concurso de méritos abierto','Seleccion Abreviada Menor Cuantia Sin Manifestacion Interes')",
+        "$order": "id_del_proceso"}, page=20000)
+    c_ent, c_seg, c_dep, dias, mc = defaultdict(lambda: [0, 0]), defaultdict(lambda: [0, 0]), defaultdict(lambda: [0, 0]), defaultdict(list), defaultdict(list)
+    tot = uno = 0
+    for h in hist:
+        u = int(num(h.get("u")))
+        if u < 1:
+            continue
+        g = grp(h.get("m", ""))
+        sg = clasificar("", h.get("o"))[1] or "-"
+        d = str(DEPS.index(h["dp"])) if h.get("dp") in DEPS else None
+        one = 1 if u == 1 else 0
+        tot += 1; uno += one
+        for bucket, key in ((c_ent, h.get("k")), (c_seg, sg), (c_dep, d)):
+            if key is not None:
+                bucket[key][0] += 1; bucket[key][1] += one
+        try:
+            dd = (dt.date.fromisoformat(h["fr"][:10]) - dt.date.fromisoformat(h["fp"][:10])).days
+            if 0 <= dd < 200:
+                dias[g].append(dd)
+        except (KeyError, TypeError, ValueError):
+            pass
+        if g == "M" and num(h.get("p")) > 0:
+            mc[h.get("k")].append(num(h.get("p")))
+    plazo = {g: sorted(v)[len(v) // 2] for g, v in dias.items() if v}
+    tope = {}
+    for k, v in mc.items():
+        if len(v) >= 10:
+            v.sort()
+            tope[k] = round(v[int(0.97 * (len(v) - 1))] / 1e5) / 10
+    comp = {"tot": tot, "uno": uno, "ent": dict(c_ent), "seg": dict(c_seg), "dep": dict(c_dep),
+            "plazo": plazo, "tope": tope}
 
     data = {
         "meta": {"fecha": hoy.isoformat(), "desde": DESDE,
                  "fuente": f"SECOP II · datos.gov.co ({CONTRATOS}, {PROCESOS})"},
         "deps": DEPS,
         "depTot": [list(dep_tot.get(d, (0, 0))) for d in DEPS],
-        "E": E, "lic": lic, "munis": munis, "dm": dm, "mod": mod, "gi": gi, "big": big,
+        "E": E, "lic": lic,
+        "seg": {k: v for k, v in SEGMENTOS.items() if any(r[11] == k for r in lic) or k in comp["seg"]},
+        "comp": comp, "munis": munis, "dm": dm, "mod": mod, "gi": gi, "big": big,
     }
 
     # control de calidad: la suma por entidad debe coincidir con los totales oficiales
