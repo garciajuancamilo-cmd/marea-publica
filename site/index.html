@@ -162,6 +162,9 @@ tr:last-child td{border-bottom:0}
 .pill.urg{background:var(--buoy-soft);color:var(--buoy)}
 .lic .amt{font-family:var(--f-display);font-weight:800;font-size:1.15rem}
 .lic .ob{font-size:.88rem}
+.unspsc{font-size:.78rem;line-height:1.35;color:var(--ink);border-left:3px solid var(--sea-2);padding-left:8px}
+.unspsc .est{font-family:var(--f-data);font-size:.64rem;letter-spacing:.05em;text-transform:uppercase;color:var(--muted);border:1px solid var(--rule);border-radius:4px;padding:0 4px;margin-left:4px;white-space:nowrap}
+.unspsc .est.of{color:var(--ok);border-color:currentColor}
 .lic .foot{display:flex;justify-content:space-between;gap:8px;font-size:.8rem;color:var(--muted);margin-top:auto;flex-wrap:wrap}
 
 /* Método */
@@ -171,6 +174,39 @@ tr:last-child td{border-bottom:0}
 footer{border-top:2px solid var(--ink);padding-block:18px 40px;font-size:.84rem;color:var(--muted)}
 footer .wrap{display:flex;flex-direction:column;gap:8px}
 .empty{padding:20px;color:var(--muted);font-size:.9rem}
+
+/* Alerta temprana */
+.sat-head{display:flex;flex-direction:column;gap:10px;border-bottom:2px solid var(--ink);padding-bottom:20px}
+.basis{font-size:.86rem;line-height:1.7;max-width:none}
+.basis b{font-family:var(--f-data);font-size:.7rem;letter-spacing:.08em;text-transform:uppercase;margin-right:6px}
+.chip.tog[aria-pressed="true"]{background:var(--buoy);border-color:var(--buoy);color:#fff}
+.termbig{background:var(--ink);color:#e6f1ef;border-radius:12px;padding:22px;display:grid;grid-template-columns:auto minmax(0,1fr);gap:8px 22px;align-items:center}
+.termbig .mult{font-family:var(--f-display);font-weight:800;font-size:clamp(2.6rem,9vw,4.6rem);line-height:.9;color:#ff9b70;letter-spacing:-.03em}
+.termbig p{color:#c4d8d5}.termbig b{color:#fff}
+.termcols{display:grid;grid-template-columns:repeat(auto-fit,minmax(300px,1fr));gap:22px;margin-top:16px}
+.termcols h3{margin-bottom:2px}
+.tb{display:grid;grid-template-columns:minmax(0,1.3fr) minmax(0,1fr) 46px 52px;gap:10px;align-items:center;padding:7px 0;border-bottom:1px solid var(--rule);font-size:.86rem}
+.tb .tl{min-width:0;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.tbar{height:9px;background:var(--soft);border-radius:2px;position:relative}
+.tbar i{position:absolute;inset:0 auto 0 0;background:var(--buoy);border-radius:2px}
+.tv{text-align:right}.tn{text-align:right;color:var(--muted);font-size:.78rem}
+.semaf{display:inline-flex;align-items:center;gap:6px;font-family:var(--f-data);font-size:.68rem;letter-spacing:.04em;text-transform:uppercase;padding:2px 8px 2px 6px;border-radius:999px;border:1px solid currentColor}
+.semaf i{width:9px;height:9px;border-radius:50%;background:currentColor}
+.s-ok{color:var(--ok)}.s-amb{color:var(--warn)}.s-nar{color:var(--buoy)}
+.pill.pyme{background:var(--sea);color:var(--sheet)}
+details.flags{border:1px solid var(--rule);border-radius:8px;padding:6px 10px;font-size:.84rem;background:var(--salt)}
+details.flags summary{cursor:pointer;font-weight:600;color:var(--buoy)}
+details.flags ul{margin:8px 0 2px;padding-left:18px;display:flex;flex-direction:column;gap:6px}
+details.flags .ref{display:block;color:var(--muted);font-size:.74rem;font-family:var(--f-data)}
+.acts2{display:flex;gap:8px;flex-wrap:wrap}
+.acts2 .btn{text-decoration:none;text-align:center}
+.obs-head{padding:16px 18px 0;display:flex;flex-direction:column;gap:6px}
+.checks{display:flex;flex-direction:column;gap:8px;padding:6px 18px 14px;font-size:.9rem}
+.checks label{display:flex;gap:8px;align-items:flex-start}
+textarea{font:400 .92rem var(--f-body);padding:9px 10px;border:1px solid var(--rule);background:var(--sheet);color:var(--ink);border-radius:8px;width:100%;resize:vertical}
+.guide{margin:0;padding-left:22px;display:flex;flex-direction:column;gap:10px;max-width:72ch}
+.refs{margin:0;padding-left:22px;display:flex;flex-direction:column;gap:8px;font-size:.9rem;max-width:90ch}
+@media (max-width:760px){.termbig{grid-template-columns:1fr}.tb{grid-template-columns:minmax(0,1fr) 46px 52px}.tb .tbar{grid-column:1/-1;grid-row:2}}
 @media (max-width:760px){
   .hero,.mapgrid{grid-template-columns:1fr}
   .sig{grid-template-columns:minmax(0,1fr) 66px}
@@ -290,21 +326,98 @@ footer .wrap{display:flex;flex-direction:column;gap:8px}
 <!-- ===== LICITACIONES ===== -->
 <div id="v-licitaciones" hidden>
 <main class="wrap">
-  <section aria-labelledby="h-lic">
+  <section class="sat-head" aria-labelledby="h-lic">
+    <span class="eyebrow">Sistema de Alerta Temprana · Banderas rojas (red flags) en contratación pública</span>
+    <h1 id="h-lic">Licitaciones abiertas del Caribe: participa, compite y vigila</h1>
+    <p class="lede muted">Evaluamos cada proceso abierto con indicadores de riesgo reconocidos por la literatura internacional, antes de que se adjudique. Cuando una sola empresa se presenta, pierden el Estado y todas las que no se enteraron. Más oferentes, menos contratos a dedo.</p>
+    <p class="basis"><b>Base metodológica</b>
+      <a href="https://www.open-contracting.org/es/resources/red-flags-in-public-procurement-a-guide-to-using-data-to-detect-and-mitigate-risks/" target="_blank" rel="noopener">Open Contracting Partnership (2024)</a> ·
+      <a href="https://blogs.worldbank.org/en/governance/proact-using-data-strengthen-efficiency-and-integrity-public-procurement" target="_blank" rel="noopener">Banco Mundial, ProACT</a> ·
+      <a href="https://www.oecd.org/en/publications/oecd-guidelines-for-fighting-bid-rigging-in-public-procurement-2025-update_cbe05a56-en/full-report" target="_blank" rel="noopener">OCDE (2025)</a> ·
+      <a href="https://publications.iadb.org/publications/english/document/From-Fishing-to-Catching-Developing-Actionable-Red-Flags-in-Public-Procurement-to-Prevent-and-Control-Corruption.pdf" target="_blank" rel="noopener">BID (2022)</a> ·
+      <a href="https://icclr.org/publications/guidebook-on-anti-corruption-in-public-procurement-and-the-management-of-public-finances-good-practices-in-ensuring-compliance-with-article-9-of-the-united-nations-convention-against-corruption" target="_blank" rel="noopener">Convención de la ONU contra la Corrupción, art. 9</a> ·
+      <a href="https://research.ceu.edu/en/publications/an-objective-corruption-risk-index-using-public-procurement-data/" target="_blank" rel="noopener">Fazekas y Kocsis (2020)</a>
+    </p>
+    <p class="sub">Metodología v1.0 · noviembre de 2026 · <a href="#metodo">Ficha técnica y cómo citar</a></p>
+  </section>
+
+  <section aria-labelledby="h-term">
     <div class="sechead">
-      <span class="eyebrow">Para oferentes · procesos competitivos abiertos</span>
-      <h1 id="h-lic">Licitaciones que cierran pronto en el Caribe</h1>
-      <p class="lede muted">Licitaciones, selecciones abreviadas, concursos de méritos y mínimas cuantías publicadas en SECOP II con fecha de cierre de ofertas próxima. Más oferentes significa más competencia y menos contratos a dedo.</p>
+      <span class="eyebrow">Termómetro de competencia</span>
+      <h2 id="h-term">¿Cuántas empresas compiten en el Caribe?</h2>
+    </div>
+    <div class="term" id="term"></div>
+  </section>
+
+  <section aria-labelledby="h-proc">
+    <div class="sechead">
+      <span class="eyebrow">Procesos abiertos</span>
+      <h2 id="h-proc">Encuentra dónde presentarte</h2>
+    </div>
+    <div class="chips" id="l-tipo" role="group" aria-label="Tipo de objeto">
+      <button class="chip" data-t="" aria-pressed="true">Todo</button>
+      <button class="chip" data-t="bien" aria-pressed="false">Bienes</button>
+      <button class="chip" data-t="servicio" aria-pressed="false">Servicios</button>
+      <button class="chip" data-t="obra" aria-pressed="false">Obra y mantenimiento</button>
+    </div>
+    <div class="chips" role="group" aria-label="Filtros especiales">
+      <button class="chip tog" id="t-pyme" aria-pressed="false">Ideal para PYMEs</button>
+      <button class="chip tog" id="t-alert" aria-pressed="false">Con alertas</button>
+      <button class="chip tog" id="t-poca" aria-pressed="false">Poca competencia esperada</button>
     </div>
     <div class="row" style="display:flex;gap:8px;flex-wrap:wrap">
+      <div class="fld" style="flex-basis:300px"><label for="l-seg">Categoría UNSPSC</label><select id="l-seg"></select></div>
       <div class="fld"><label for="l-dep">Departamento</label><select id="l-dep"></select></div>
       <div class="fld"><label for="l-mod">Modalidad</label><select id="l-mod"></select></div>
-      <div class="fld" style="flex-basis:240px"><label for="l-q">Buscar</label><input id="l-q" type="search" placeholder="Obra, suministro, interventoría…"></div>
+      <div class="fld" style="flex-basis:240px"><label for="l-q">Buscar por texto o código</label><input id="l-q" type="search" placeholder="Interventoría, PAE, 72101500…"></div>
     </div>
+    <p class="sub">"Ideal para PYMEs": mínima cuantía o selección abreviada con presupuesto hasta $500 millones. Clasificamos por el Clasificador de Bienes y Servicios de Naciones Unidas (UNSPSC): si SECOP publica el código del proceso mostramos el oficial; si no, estimamos el segmento por el objeto y lo marcamos como "estimado".</p>
     <div class="days" id="days" role="group" aria-label="Fecha de cierre"></div>
     <p class="sub" id="l-count"></p>
     <div class="lics" id="lics"></div>
-    <p class="sub">El cronograma completo, los pliegos y las adendas están en SECOP II; esa es la fuente que prevalece. Las fechas pueden cambiar por adenda.</p>
+    <button class="more" id="lic-more" type="button" hidden>Ver más procesos</button>
+    <p class="sub">El cronograma, los pliegos y las adendas en SECOP II son la fuente que prevalece. Las fechas pueden cambiar por adenda. Una alerta no es prueba de irregularidad: es una razón para mirar con atención.</p>
+  </section>
+
+  <section aria-labelledby="h-obs">
+    <div class="pet" id="obs" hidden>
+      <div class="obs-head">
+        <span class="eyebrow">Generador de observaciones al pliego</span>
+        <h3 id="h-obs">Observaciones al proceso <span id="obs-ref"></span></h3>
+        <p class="sub">Marca los puntos que quieres observar. El texto se arma solo; revísalo y radícalo en SECOP II dentro del plazo de observaciones del cronograma.</p>
+      </div>
+      <div class="bar2">
+        <div class="fld"><label for="o-emp">Empresa</label><input id="o-emp" type="text" placeholder="Razón social"></div>
+        <div class="fld"><label for="o-nit">NIT</label><input id="o-nit" type="text" placeholder="NIT"></div>
+        <div class="fld"><label for="o-rep">Representante legal</label><input id="o-rep" type="text" placeholder="Nombre"></div>
+        <div class="fld"><label for="o-mail">Correo</label><input id="o-mail" type="text" placeholder="correo@empresa.com"></div>
+      </div>
+      <div class="checks" id="o-checks">
+        <label><input type="checkbox" value="exp"> La experiencia exigida es desproporcionada frente al objeto y el valor</label>
+        <label><input type="checkbox" value="fin"> Los indicadores financieros u organizacionales son desproporcionados</label>
+        <label><input type="checkbox" value="plazo"> El plazo para presentar ofertas es insuficiente</label>
+        <label><input type="checkbox" value="esp"> Las especificaciones técnicas apuntan a una marca o a un proveedor</label>
+        <label><input type="checkbox" value="mipyme"> Solicito que la convocatoria se limite a Mipymes (si aplica)</label>
+      </div>
+      <div class="fld" style="padding:0 18px 14px"><label for="o-libre">Observación adicional (opcional)</label><textarea id="o-libre" rows="3" placeholder="Explica el requisito y por qué limita la participación"></textarea></div>
+      <div class="bar2" style="border-top:1px solid var(--rule)"><button class="btn solid" id="o-copy" type="button">Copiar texto</button><span class="okmsg" id="o-ok" hidden>Copiado</span><span class="sub">La limitación a Mipymes se solicita antes del acto de apertura y depende del valor del proceso.</span></div>
+      <pre id="o-text"></pre>
+    </div>
+  </section>
+
+  <section aria-labelledby="h-guia">
+    <div class="sechead">
+      <span class="eyebrow">Para empezar</span>
+      <h2 id="h-guia">Tu primera licitación en seis pasos</h2>
+    </div>
+    <ol class="guide">
+      <li><b>Regístrate en SECOP II como proveedor.</b> Crea la cuenta de tu empresa en la plataforma de Colombia Compra Eficiente. Es gratis y desde ahí presentas las ofertas.</li>
+      <li><b>Inscríbete en el RUP.</b> El Registro Único de Proponentes se tramita en la Cámara de Comercio y se exige en licitaciones, selecciones abreviadas y concursos de méritos. No se exige en mínima cuantía, por eso es la mejor puerta de entrada.</li>
+      <li><b>Busca procesos de tu categoría.</b> Filtra aquí por tipo, categoría UNSPSC y municipio. Empieza por los marcados "Ideal para PYMEs".</li>
+      <li><b>Lee el pliego y observa a tiempo.</b> Si un requisito te deja por fuera sin justificación, preséntale observaciones a la entidad con el generador de esta página.</li>
+      <li><b>Prepara los documentos habilitantes.</b> Capacidad jurídica, experiencia, indicadores financieros y, si el pliego la exige, la garantía de seriedad de la oferta.</li>
+      <li><b>Conoce tus ventajas como Mipyme.</b> La Ley 2069 de 2020 y el Decreto 1860 de 2021 prevén convocatorias limitadas a Mipymes y criterios de desempate a su favor.</li>
+    </ol>
   </section>
 </main>
 </div>
@@ -312,10 +425,42 @@ footer .wrap{display:flex;flex-direction:column;gap:8px}
 <!-- ===== MÉTODO ===== -->
 <div id="v-metodo" hidden>
 <main class="wrap">
+  <section aria-labelledby="h-sat">
+    <div class="sechead">
+      <span class="eyebrow">Ficha técnica · Metodología v1.0 · noviembre de 2026</span>
+      <h1 id="h-sat">Sistema de Alerta Temprana para la contratación pública del Caribe</h1>
+      <p class="lede muted">Una bandera roja (red flag) es un patrón en los datos de un proceso que la literatura asocia con mayor riesgo de corrupción, colusión o baja competencia. No es prueba de nada: es una razón para mirar con atención. Siguiendo al BID (2022), las banderas se calculan sobre procesos todavía abiertos y cada una lleva una acción concreta para el ciudadano o la empresa.</p>
+    </div>
+    <div class="tw"><table id="flagtab"></table></div>
+    <div class="defs">
+      <div><b>Datos</b>Procesos de SECOP II (datos.gov.co, p6dx-8zbt) con cierre de ofertas en los próximos 30 días. Historial: procesos competitivos adjudicados en el Caribe desde enero de 2024 y contratos firmados (jbjy-vk9h). Actualización diaria.</div>
+      <div><b>Semáforo</b>Verde: sin alertas. Amarillo: una alerta. Naranja: dos o más. El semáforo no califica a la entidad ni a los oferentes; describe el proceso frente a sus referencias.</div>
+      <div><b>Límites</b>SECOP casi nunca publica el código UNSPSC de los procesos abiertos, por eso la categoría puede ser estimada. Las vistas de un proceso se actualizan con rezago. Los topes de mínima cuantía se aproximan con el historial de la entidad, no con su presupuesto oficial.</div>
+      <div><b>Cómo citar</b>Marea Pública (2026). <i>Sistema de Alerta Temprana para la contratación pública del Caribe colombiano.</i> Metodología v1.0. Datos de SECOP II, Colombia Compra Eficiente.</div>
+    </div>
+    <div class="sechead"><h2 id="h-bib">Referencias</h2></div>
+    <ol class="refs">
+      <li>Open Contracting Partnership (2024). <i>Red Flags in Public Procurement: A guide to using data to detect and mitigate risks.</i> <a href="https://www.open-contracting.org/es/resources/red-flags-in-public-procurement-a-guide-to-using-data-to-detect-and-mitigate-risks/" target="_blank" rel="noopener">Enlace</a></li>
+      <li>De Michele, R. y Cruz Vieyra, J. (2022). <i>From Fishing to Catching: Developing Actionable Red Flags in Public Procurement to Prevent and Control Corruption.</i> Banco Interamericano de Desarrollo, Nota Técnica IDB-TN-2598. <a href="https://publications.iadb.org/publications/english/document/From-Fishing-to-Catching-Developing-Actionable-Red-Flags-in-Public-Procurement-to-Prevent-and-Control-Corruption.pdf" target="_blank" rel="noopener">Enlace</a></li>
+      <li>Banco Mundial (2023). <i>ProACT: Procurement Anticorruption and Transparency platform.</i> <a href="https://blogs.worldbank.org/en/governance/proact-using-data-strengthen-efficiency-and-integrity-public-procurement" target="_blank" rel="noopener">Enlace</a></li>
+      <li>OCDE (2025). <i>Guidelines for Fighting Bid Rigging in Public Procurement, 2025 update.</i> <a href="https://www.oecd.org/en/publications/oecd-guidelines-for-fighting-bid-rigging-in-public-procurement-2025-update_cbe05a56-en/full-report" target="_blank" rel="noopener">Enlace</a></li>
+      <li>Fazekas, M. y Kocsis, G. (2020). Uncovering High-Level Corruption: Cross-National Objective Corruption Risk Indicators Using Public Procurement Data. <i>British Journal of Political Science.</i> <a href="https://cambridge.org/core/journals/british-journal-of-political-science/article/uncovering-highlevel-corruption-crossnational-objective-corruption-risk-indicators-using-public-procurement-data/8A1742693965AA92BE4D2BA53EADFDF0" target="_blank" rel="noopener">Enlace</a></li>
+      <li>UNODC (2013). <i>Guidebook on anti-corruption in public procurement and the management of public finances: good practices in ensuring compliance with article 9 of the United Nations Convention against Corruption.</i> <a href="https://icclr.org/publications/guidebook-on-anti-corruption-in-public-procurement-and-the-management-of-public-finances-good-practices-in-ensuring-compliance-with-article-9-of-the-united-nations-convention-against-corruption" target="_blank" rel="noopener">Enlace</a></li>
+    </ol>
+    <div class="sechead"><h2 id="h-glos">Glosario</h2></div>
+    <div class="defs">
+      <div><b>Oferente único</b>Proceso competitivo en el que solo una empresa presentó oferta. Es la señal de riesgo más estudiada en la literatura.</div>
+      <div><b>Fraccionamiento</b>Dividir una compra grande en varias pequeñas para usar una modalidad menos exigente.</div>
+      <div><b>Umbral de modalidad</b>Valor que define si un proceso va por mínima cuantía, selección abreviada o licitación. Cada entidad tiene los suyos según su presupuesto.</div>
+      <div><b>Convocatoria limitada a Mipymes</b>Proceso en el que, bajo ciertas condiciones de valor y solicitud previa, solo pueden competir micro, pequeñas y medianas empresas.</div>
+      <div><b>Observaciones al pliego</b>Comentarios que cualquier interesado presenta a la entidad sobre el proyecto de pliego o la invitación, dentro del plazo del cronograma.</div>
+      <div><b>UNSPSC</b>Clasificador de Bienes y Servicios de Naciones Unidas que SECOP usa para codificar lo que se compra: segmento, familia, clase y producto.</div>
+    </div>
+  </section>
   <section aria-labelledby="h-met">
     <div class="sechead">
       <span class="eyebrow">Metodología abierta</span>
-      <h1 id="h-met">Cómo leemos los datos</h1>
+      <h2 id="h-met">Cómo leemos los datos de la veeduría</h2>
       <p class="lede muted">Marea Pública no afirma que una entidad sea corrupta. Muestra dónde está frente a sus pares en señales que la literatura internacional asocia con riesgo en compras públicas, y enlaza cada cifra a su fuente para que cualquiera la verifique.</p>
     </div>
     <div class="defs" id="defs"></div>
@@ -367,20 +512,21 @@ fetch('data.json').then(r=>{if(!r.ok)throw new Error(r.status);return r.json();}
 
 /* ---------- model ---------- */
 let ENT=[], MUN=[], DEPS=[], REG=null, scope={dep:-1,mun:-1,ent:null}, metric='dir', rankMode='ent', rankShown=25, sortKey='idx';
-function blank(){return {n:0,v:0,nf:0,vf:0,dirN:0,dirV:0,pn:0,pro:0,sup:0,dic:0,pre26:0,giN:0,giV:0,jan:0,j26:0,veda:0,ents:0};}
-function add(a,e){a.n+=e.n;a.v+=e.v;a.ents++;if(e.full){a.nf+=e.n;a.vf+=e.v;for(const k of ['dirN','dirV','pn','pro','sup','dic','pre26','giN','giV','jan','j26','veda'])a[k]+=e[k];}}
+function blank(){return {n:0,v:0,nf:0,vf:0,dirN:0,dirV:0,pn:0,pro:0,sup:0,dic:0,pre26:0,giN:0,giV:0,jan:0,j26:0,veda:0,cN:0,cU:0,ents:0};}
+function add(a,e){a.n+=e.n;a.v+=e.v;a.ents++;if(e.full){a.nf+=e.n;a.vf+=e.v;for(const k of ['dirN','dirV','pn','pro','sup','dic','pre26','giN','giV','jan','j26','veda'])a[k]+=e[k];}a.cN+=e.cN||0;a.cU+=e.cU||0;}
 const SIG=[
  {k:'dir',nm:'Contratación directa',why:'Contratos sin competencia sobre el total.',f:a=>a.dirN/a.nf},
  {k:'dirv',nm:'Valor por contratación directa',why:'Parte de la plata asignada sin competencia.',f:a=>a.dirV/a.vf},
  {k:'top1',nm:'Cuota del mayor proveedor',why:'Valor del proveedor número uno sobre el total.',f:a=>a.top1,ent:true},
  {k:'hhi',nm:'Concentración (HHI)',why:'Sube cuando pocos proveedores se llevan casi todo.',f:a=>a.hhi,ent:true,fmt:v=>nf.format(Math.round(v*10000))},
+ {k:'uni',nm:'Oferente único',why:'Procesos competitivos adjudicados con una sola oferta, desde 2024.',f:a=>a.cN>=10?a.cU/a.cN:NaN},
  {k:'gi',nm:'Triangulación',why:'Valor por gerencias integrales y convenios con intermediarias.',f:a=>a.giV/a.vf},
  {k:'pro',nm:'Prórrogas',why:'Contratos a los que se les adicionaron días.',f:a=>a.pro/a.nf},
  {k:'sup',nm:'Supervisor sin publicar',why:'Contratos sin supervisor registrado (Ley 1474, art. 83).',f:a=>a.sup/a.nf},
  {k:'dic',nm:'Firmados en diciembre',why:'Afán de cierre de vigencia, 2024 y 2025.',f:a=>a.pre26?a.dic/a.pre26:NaN},
  {k:'ene',nm:'Adelanto pre-veda',why:'Directos de enero 2026 frente al enero habitual.',f:a=>a.jan>0?a.j26/(a.jan/2):(a.j26>0?a.j26:NaN),fmt:v=>isFinite(v)?(v>=10?Math.round(v):v.toFixed(1))+'×':'—'},
 ];
-const METRICS=[{k:'dir',l:'Contratación directa'},{k:'ene',l:'Adelanto pre-veda'},{k:'gi',l:'Triangulación'},{k:'sup',l:'Supervisor sin publicar'},{k:'idx',l:'Índice Marea'}];
+const METRICS=[{k:'dir',l:'Contratación directa'},{k:'uni',l:'Oferente único'},{k:'ene',l:'Adelanto pre-veda'},{k:'gi',l:'Triangulación'},{k:'sup',l:'Supervisor sin publicar'},{k:'idx',l:'Índice Marea'}];
 
 function init(data){
   D=data;
@@ -388,6 +534,7 @@ function init(data){
   D.deps.forEach((d,i)=>DEPS.push({i,name:d,short:SHORT[i],ents:[]}));
   ENT=D.E.map(r=>{const e={k:r[0],nm:r[1].replace(/\s+/g,' ').trim(),dep:r[2],mun:r[3],o:r[4],n:r[5],v:r[6],full:r.length>7};
     if(MULTI[e.k])e.multi=MULTI[e.k];
+    const cp=D.comp&&D.comp.ent[e.k];if(cp){e.cN=cp[0];e.cU=cp[1];}
     if(e.full)Object.assign(e,{nf:r[5],vf:r[6],dirN:r[7],dirV:r[8],pn:r[9],pro:r[10],sup:r[11],dic:r[12],pre26:r[13],giN:r[14],giV:r[15],jan:r[16],j26:r[17],veda:r[18],top1:r[19]/1000,top1p:r[20],hhi:r[21]/1000});
     return e;});
   ENT.forEach(e=>{if(e.multi)return;DEPS[e.dep].ents.push(e);MUN[e.mun].ents.push(e);});
@@ -631,28 +778,137 @@ $('#p-copy').addEventListener('click',()=>{const t=$('#p-text').textContent,ok=$
   const selectIt=()=>{const r=document.createRange();r.selectNodeContents($('#p-text'));const s=getSelection();s.removeAllRanges();s.addRange(r);};
   try{navigator.clipboard.writeText(t).then(done,selectIt);}catch(_){selectIt();}});
 
-/* ---------- licitaciones ---------- */
+/* ---------- licitaciones · sistema de alerta temprana ---------- */
 const MODL={L:'Licitación pública',S:'Selección abreviada',C:'Concurso de méritos',M:'Mínima cuantía',R:'Régimen especial con ofertas',O:'Otra'};
-let lday='';
+let lday='',ltipo='',fPyme=false,fAlert=false,fPoca=false,licShown=24,osel=null;
+const SEGN=()=>Object.assign({B:'Otros bienes (sin categoría precisa)'},D.seg||{});
+const ltip=s=>!s?'':s==='72'?'obra':(s==='B'||+s<70)?'bien':'servicio';
+const lseg=l=>l[11]||'';
+const dayDiff=(a,b)=>Math.round((new Date(b+'T12:00:00')-new Date(a+'T12:00:00'))/864e5);
+const isPyme=l=>(l[4]==='M'||l[4]==='S')&&l[5]>0&&l[5]<=500;
+const C=()=>D.comp||{ent:{},seg:{},dep:{},plazo:{},tope:{},tot:0,uno:0};
+const REF={ocp:'OCP (2024)',bid:'BID (2022)',bm:'Banco Mundial, ProACT',ocde:'OCDE (2025)',faz:'Fazekas y Kocsis (2020)'};
+/* Las seis banderas. Cada una devuelve null o {t: texto, a: acción}. */
+const FLAGS=[
+ {k:'plazo',nm:'Plazo corto para ofertar',calc:'Días entre publicación y cierre de ofertas frente a la mediana regional de su modalidad.',umbral:'Menos de la mitad de la mediana',ref:[REF.ocp,REF.bid],acc:'Empresa: pide ampliar el plazo en observaciones. Ciudadano: pregunta por qué tan corto.',
+  f:l=>{if(!l[6])return null;const d=dayDiff(l[6],l[7]),m=C().plazo[l[4]];if(!m||d>=m/2)return null;return {t:d+' días para ofertar; en '+MODL[l[4]].toLowerCase()+' lo usual en el Caribe son '+m+'.',a:'obs'};}},
+ {k:'uno',nm:'Historial de oferente único',calc:'Parte de los procesos competitivos adjudicados de la entidad desde 2024 con un solo oferente.',umbral:'50 % o más, con al menos 10 procesos',ref:[REF.faz,REF.ocp,REF.bm],acc:'Empresa: aquí hay espacio para competir. Ciudadano: revisa los pliegos de esta entidad.',
+  f:l=>{const e=C().ent[l[14]];if(!e||e[0]<10||e[1]/e[0]<.5)return null;return {t:'En el '+pct(e[1]/e[0])+' de sus '+nf.format(e[0])+' procesos competitivos desde 2024 se presentó una sola empresa.',a:'part'};}},
+ {k:'vista',nm:'Poca difusión',calc:'Número de empresas que han visto el proceso en SECOP II, con al menos tres días de publicado.',umbral:'Una vista o ninguna',ref:[REF.bm,REF.ocde],acc:'Empresa: pocas lo han visto, tu oferta cuenta. Ciudadano: compártelo.',
+  f:l=>{const v=l[15];if(v==null||v>1||!l[6]||dayDiff(l[6],D.meta.fecha)<3)return null;return {t:v===0?'Ninguna empresa ha visto este proceso en SECOP II.':'Solo '+v+(v===1?' empresa lo ha visto':' empresas lo han visto')+' en SECOP II.',a:'part'};}},
+ {k:'tope',nm:'Presupuesto justo bajo el tope',calc:'Mínima cuantía con presupuesto en el 10 % inmediatamente inferior al máximo que la entidad suele usar en esa modalidad (percentil 97 de su historial).',umbral:'Entre 90 % y 100 % del tope estimado',ref:[REF.faz,REF.bid],acc:'Ciudadano: verifica si hay otras compras parecidas. Empresa: confirma que el valor no excluye la modalidad que corresponde.',
+  f:l=>{const t=C().tope[l[14]];if(l[4]!=='M'||!t||l[5]<.9*t||l[5]>t*1.001)return null;return {t:'Presupuesto de '+copM(l[5])+', justo debajo de lo máximo que esta entidad suele contratar por mínima cuantía ('+copM(t)+').',a:'pet'};}},
+ {k:'frac',nm:'Posible fraccionamiento',calc:'Tres o más procesos de mínima cuantía abiertos al mismo tiempo, de la misma entidad y en la misma categoría UNSPSC.',umbral:'3 procesos o más',ref:[REF.bid,REF.ocp],acc:'Ciudadano: pide los estudios previos de todos. Empresa: presenta ofertas en varios.',
+  f:l=>{const s=lseg(l);if(l[4]!=='M'||!s||s==='B')return null;const n=D.lic.filter(x=>x[14]===l[14]&&x[4]==='M'&&lseg(x)===s).length;if(n<3)return null;return {t:'La entidad tiene '+n+' procesos de mínima cuantía abiertos en la misma categoría.',a:'pet'};}},
+ {k:'prov',nm:'Proveedor habitual',calc:'Parte del valor contratado por la entidad desde 2024 que se llevó su mayor proveedor (persona jurídica).',umbral:'35 % o más',ref:[REF.ocp,REF.faz],acc:'Empresa: hay un competidor dominante, revisa si el pliego está hecho a su medida. Ciudadano: mira sus contratos.',
+  f:l=>{const e=ENTK[l[14]];if(!e||!e.full||!e.top1p||e.top1<.35)return null;return {t:esc(e.top1p)+' concentra el '+pct(e.top1)+' del valor que contrata esta entidad.',a:'obs'};}},
+];
+let ENTK={};
+function flagsOf(l){if(!l._f)l._f=FLAGS.map(F=>{const r=F.f(l);return r?Object.assign({k:F.k,nm:F.nm,ref:F.ref},r):null;}).filter(Boolean);return l._f;}
+function sem(n){return n===0?['ok','Sin alertas']:n===1?['amb','1 alerta']:['nar',n+' alertas'];}
+const pocaComp=l=>{const e=C().ent[l[14]];return !!(e&&e[0]>=10&&e[1]/e[0]>=.5);};
+
 function licInit(){
+  ENTK=Object.fromEntries(ENT.map(e=>[e.k,e]));
   $('#l-dep').innerHTML='<option value="-1">Toda la región</option>'+DEPS.map(d=>'<option value="'+d.i+'">'+esc(d.name)+'</option>').join('');
   const mods=[...new Set(D.lic.map(l=>l[4]))];
   $('#l-mod').innerHTML='<option value="">Todas</option>'+mods.map(m=>'<option value="'+m+'">'+MODL[m]+'</option>').join('');
-  ['l-dep','l-mod','l-q'].forEach(id=>document.getElementById(id).addEventListener('input',licRender));
-  $('#days').addEventListener('click',e=>{const b=e.target.closest('.day');if(!b)return;lday=lday===b.dataset.d?'':b.dataset.d;licRender();});
-  licRender();
+  ['l-dep','l-mod','l-q','l-seg'].forEach(id=>document.getElementById(id).addEventListener('input',()=>{licShown=24;licRender();}));
+  $('#l-tipo').addEventListener('click',e=>{const b=e.target.closest('.chip');if(!b)return;ltipo=b.dataset.t;document.querySelectorAll('#l-tipo .chip').forEach(x=>x.setAttribute('aria-pressed',x===b));$('#l-seg').value='';licShown=24;licRender();});
+  [['t-pyme',v=>fPyme=v],['t-alert',v=>fAlert=v],['t-poca',v=>fPoca=v]].forEach(([id,set])=>{const b=document.getElementById(id);b.addEventListener('click',()=>{const on=b.getAttribute('aria-pressed')!=='true';b.setAttribute('aria-pressed',on);set(on);licShown=24;licRender();});});
+  $('#days').addEventListener('click',e=>{const b=e.target.closest('.day');if(!b)return;lday=lday===b.dataset.d?'':b.dataset.d;licShown=24;licRender();});
+  $('#lic-more').addEventListener('click',()=>{licShown+=24;licRender();});
+  $('#lics').addEventListener('click',e=>{const b=e.target.closest('button[data-obs]');if(!b)return;osel=D.lic.find(l=>l[8]===b.dataset.obs);obsRender();const p=$('#obs');p.hidden=false;p.scrollIntoView({behavior:matchMedia('(prefers-reduced-motion: reduce)').matches?'auto':'smooth',block:'start'});});
+  ['o-emp','o-nit','o-rep','o-mail','o-libre'].forEach(id=>document.getElementById(id).addEventListener('input',obsRender));
+  $('#o-checks').addEventListener('change',obsRender);
+  $('#o-copy').addEventListener('click',()=>copyFrom('#o-text','#o-ok'));
+  termometro();flagTable();licRender();
+}
+function segOptions(rows){
+  const N=SEGN(),cnt={};rows.forEach(l=>{const s=lseg(l);cnt[s]=(cnt[s]||0)+1;});
+  const cur=$('#l-seg').value;
+  const keys=Object.keys(cnt).filter(k=>k).sort((a,b)=>a==='B'?1:b==='B'?-1:a.localeCompare(b));
+  $('#l-seg').innerHTML='<option value="">Todas las categorías ('+rows.length+')</option>'+keys.map(k=>'<option value="'+k+'">'+(k==='B'?'':k+' · ')+esc(N[k]||'Segmento '+k)+' ('+cnt[k]+')</option>').join('')+(cnt['']?'<option value="-">Sin clasificar ('+cnt['']+')</option>':'');
+  if([...$('#l-seg').options].some(o=>o.value===cur))$('#l-seg').value=cur;
 }
 function licRender(){
   const dep=+$('#l-dep').value,mod=$('#l-mod').value,q=$('#l-q').value.trim().toLowerCase();
-  const base=D.lic.filter(l=>(dep<0||l[1]===dep)&&(!mod||l[4]===mod)&&(!q||(l[3]+' '+l[0]+' '+l[2]).toLowerCase().includes(q)));
+  const isCode=/^\d{2,8}$/.test(q);
+  const pre=D.lic.filter(l=>(dep<0||l[1]===dep)&&(!mod||l[4]===mod)&&(!ltipo||ltip(lseg(l))===ltipo)&&(!fPyme||isPyme(l))&&(!fAlert||flagsOf(l).length>0)&&(!fPoca||pocaComp(l))&&(!q||(isCode?((l[10]||'').startsWith(q)||(q.length===2&&lseg(l)===q)):(l[3]+' '+l[0]+' '+l[2]+' '+(SEGN()[lseg(l)]||'')).toLowerCase().includes(q))));
+  segOptions(pre);
+  const seg=$('#l-seg').value;
+  const base=pre.filter(l=>!seg||(seg==='-'?!lseg(l):lseg(l)===seg));
   const byDay={};base.forEach(l=>{byDay[l[7]]=(byDay[l[7]]||0)+1;});
   const days=Object.keys(byDay).sort();
+  if(lday&&!byDay[lday])lday='';
   $('#days').innerHTML=days.map(d=>{const dt=new Date(d+'T12:00:00');return '<button class="day" data-d="'+d+'" aria-pressed="'+(lday===d)+'"><div class="c">'+['dom','lun','mar','mié','jue','vie','sáb'][dt.getDay()]+'</div><div class="d">'+fCorta(d)+'</div><div class="c">'+byDay[d]+' procesos</div></button>';}).join('');
   const list=base.filter(l=>!lday||l[7]===lday);
-  const today=new Date(D.meta.fecha+'T12:00:00');
-  $('#l-count').textContent=list.length+' procesos'+(lday?' que cierran el '+fecha(lday):'')+' · presupuesto total '+copM(list.reduce((a,l)=>a+l[5],0));
-  $('#lics').innerHTML=list.length?list.map(l=>{const dd=Math.round((new Date(l[7]+'T12:00:00')-today)/864e5);
-    return '<article class="lic"><div class="tag"><span class="pill">'+MODL[l[4]]+'</span><span class="pill'+(dd<=2?' urg':'')+'">cierra '+(dd<=1?'mañana':'en '+dd+' días')+'</span></div><div class="amt">'+(l[5]>0?copM(l[5]):'Presupuesto en el pliego')+'</div><p class="ob">'+esc(l[3]==='No Definido'?'Objeto no publicado en datos abiertos':l[3]+'…')+'</p><div class="sub"><b>'+esc(l[0])+'</b> · '+esc(l[2]==='No Definido'?SHORT[l[1]]:l[2]+', '+SHORT[l[1]])+'</div><div class="foot"><span class="mono">'+esc(l[9])+'</span><a href="'+NOTICE+encodeURIComponent(l[8])+'" target="_blank" rel="noopener">Ver pliego en SECOP II</a></div></article>';}).join(''):'<p class="empty">No hay procesos con esos filtros.</p>';
+  const nAl=list.filter(l=>flagsOf(l).length).length,nPy=list.filter(isPyme).length;
+  $('#l-count').textContent=nf.format(list.length)+' procesos'+(lday?' que cierran el '+fecha(lday):'')+' · '+copM(list.reduce((a,l)=>a+l[5],0))+' · '+nPy+' ideales para PYMEs · '+nAl+' con alertas';
+  $('#lics').innerHTML=list.length?list.slice(0,licShown).map(card).join(''):'<p class="empty">No hay procesos con esos filtros.</p>';
+  $('#lic-more').hidden=list.length<=licShown;
+}
+function card(l){
+  const today=D.meta.fecha;const dd=dayDiff(today,l[7]);const s=lseg(l),N=SEGN();const fl=flagsOf(l);const [sc,st]=sem(fl.length);
+  const cat=s?'<div class="unspsc"><span class="mono">'+(l[10]?l[10]:s==='B'?'Bien':'Segmento '+s)+'</span> '+esc(l[13]||N[s]||'')+' <span class="est'+(l[10]?' of':'')+'">'+(l[10]?'oficial':'estimado')+'</span></div>':'<div class="unspsc muted">Sin categoría UNSPSC</div>';
+  const e=C().ent[l[14]];const hist=e&&e[0]>=10?'<div class="sub">Historial de la entidad: '+pct(e[1]/e[0])+' de sus procesos con un solo oferente.</div>':'';
+  const vis=l[15]!=null?'<span class="sub">'+(l[15]===1?'1 empresa lo ha visto':nf.format(l[15])+' empresas lo han visto')+'</span>':'';
+  const fx=fl.length?'<details class="flags"><summary>Ver alertas y qué hacer</summary><ul>'+fl.map(f=>'<li><b>'+f.nm+'.</b> '+f.t+' <span class="ref">Referencia: '+f.ref.join('; ')+'</span></li>').join('')+'</ul></details>':'';
+  return '<article class="lic"><div class="tag"><span class="semaf s-'+sc+'"><i aria-hidden="true"></i>'+st+'</span><span class="pill">'+MODL[l[4]]+'</span>'+(isPyme(l)?'<span class="pill pyme">PYME</span>':'')+'<span class="pill'+(dd<=2?' urg':'')+'">cierra '+(dd<=0?'hoy':dd===1?'mañana':'en '+dd+' días')+'</span></div>'+cat+
+    '<div class="amt">'+(l[5]>0?copM(l[5]):'Presupuesto en el pliego')+'</div><p class="ob">'+esc(l[3]==='No Definido'?'Objeto no publicado en datos abiertos':l[3]+'…')+'</p><div class="sub"><b>'+esc(l[0])+'</b> · '+esc(l[2]==='No Definido'?SHORT[l[1]]:l[2]+', '+SHORT[l[1]])+'</div>'+hist+fx+
+    '<div class="foot">'+vis+'<span class="mono">'+esc(l[9])+'</span></div><div class="acts2"><a class="btn solid" href="'+NOTICE+encodeURIComponent(l[8])+'" target="_blank" rel="noopener">Ver y participar en SECOP II</a><button class="btn" type="button" data-obs="'+esc(l[8])+'">Presentar observaciones</button></div></article>';
+}
+/* termómetro */
+function termometro(){
+  const c=C();if(!c.tot){$('#term').innerHTML='<p class="empty">El historial de competencia se calcula en la próxima actualización.</p>';return;}
+  const share=c.uno/c.tot;
+  const deps=DEPS.map(d=>({n:d.short,v:c.dep[d.i]?c.dep[d.i][1]/c.dep[d.i][0]:NaN,t:c.dep[d.i]?c.dep[d.i][0]:0})).filter(x=>isFinite(x.v)).sort((a,b)=>b.v-a.v);
+  const N=SEGN();const segs=Object.entries(c.seg).filter(([k,v])=>k!=='-'&&k!=='B'&&v[0]>=150).map(([k,v])=>({k,n:N[k]||'Segmento '+k,v:v[1]/v[0],t:v[0]})).sort((a,b)=>b.v-a.v).slice(0,8);
+  const bar=(x,i)=>'<div class="tb"><span class="tl">'+esc(x.n)+'</span><span class="tbar"><i style="width:'+(x.v*100).toFixed(1)+'%"></i></span><span class="tv mono">'+pct(x.v)+'</span><span class="tn mono">'+nf.format(x.t)+'</span></div>';
+  $('#term').innerHTML='<div class="termbig"><div class="mult mono">'+pct(share)+'</div><p>de los <b>'+nf.format(c.tot)+'</b> procesos competitivos adjudicados en el Caribe desde enero de 2024 tuvo <b>un solo oferente</b>. En esos procesos la entidad no pudo comparar precios ni calidad. Cada uno es una oportunidad que ninguna otra empresa aprovechó.</p></div>'+
+   '<div class="termcols"><div><h3>Por departamento</h3><p class="sub">Procesos con un solo oferente · total de procesos</p>'+deps.map(bar).join('')+'</div><div><h3>Categorías con menos competencia</h3><p class="sub">Donde más falta que tu empresa se presente · categoría estimada</p>'+segs.map(bar).join('')+'</div></div>';
+}
+/* observaciones al pliego */
+function obsRender(){
+  if(!osel)return;const l=osel;
+  $('#obs-ref').textContent=l[9];
+  const v=id=>document.getElementById(id).value.trim();
+  const emp=v('o-emp')||'[RAZÓN SOCIAL]',nit=v('o-nit')||'[NIT]',rep=v('o-rep')||'[REPRESENTANTE LEGAL]',mail=v('o-mail')||'[CORREO ELECTRÓNICO]',libre=v('o-libre');
+  const ch=[...document.querySelectorAll('#o-checks input:checked')].map(i=>i.value);
+  const T={
+   exp:'Requisitos de experiencia. Solicito revisar la experiencia exigida, pues resulta desproporcionada frente al objeto y al valor del proceso. El artículo 2.2.1.1.1.6.2 del Decreto 1082 de 2015 ordena que los requisitos habilitantes sean adecuados y proporcionales a la naturaleza del contrato y a su valor, y el artículo 5 de la Ley 1150 de 2007 exige que la selección sea objetiva. Pido que se ajuste el monto, el número de contratos o el tiempo de experiencia exigidos, de manera que permitan la participación plural de oferentes.',
+   fin:'Indicadores financieros y organizacionales. Los indicadores de capacidad financiera y organizacional exigidos superan lo razonable para el valor y el plazo del contrato. En aplicación del mismo artículo 2.2.1.1.1.6.2 del Decreto 1082 de 2015, solicito ajustarlos con base en el análisis del sector, de modo que no restrinjan injustificadamente la competencia.',
+   plazo:'Plazo para presentar ofertas. El término previsto en el cronograma es insuficiente para preparar una oferta seria, obtener las garantías y reunir los documentos habilitantes. Solicito ampliarlo mediante adenda, en garantía de los principios de transparencia y selección objetiva (artículo 24 de la Ley 80 de 1993 y artículo 5 de la Ley 1150 de 2007).',
+   esp:'Especificaciones técnicas. Algunas especificaciones parecen dirigidas a una marca o a un proveedor determinado. El numeral 5 del artículo 24 de la Ley 80 de 1993 exige reglas objetivas, justas y claras que no conduzcan a direccionar el proceso. Solicito admitir bienes o servicios equivalentes o expresar las especificaciones en términos funcionales.',
+   mipyme:'Convocatoria limitada a Mipymes. En calidad de Mipyme, y siempre que el proceso cumpla las condiciones de valor y oportunidad previstas en el artículo 34 de la Ley 2069 de 2020 y en la sección 2.2.1.2.4.2 del Decreto 1082 de 2015, modificada por el Decreto 1860 de 2021, solicito que la convocatoria se limite a Mipymes, para lo cual allego los documentos que acreditan esa condición.'};
+  const pts=ch.map(k=>T[k]);if(libre)pts.push(libre);
+  $('#o-text').textContent=`${l[2]&&l[2]!=='No Definido'?l[2]:'[Ciudad]'}, [fecha]
+
+Señores
+${l[0].toUpperCase()}
+Proceso: ${l[9]}
+Asunto: Observaciones al proceso de contratación
+
+${rep}, en calidad de representante legal de ${emp}, identificada con NIT ${nit}, presento dentro del plazo previsto en el cronograma las siguientes observaciones al proceso cuyo objeto es "${l[3]==='No Definido'?'[objeto del proceso]':l[3]+'…'}", con el propósito de promover la participación plural de oferentes y la selección objetiva.
+
+${pts.length?pts.map((p,i)=>(i+1)+'. '+p).join('\n\n'):'1. [Marca arriba los puntos que quieres observar o escribe tu observación.]'}
+
+Solicito a la entidad dar respuesta motivada a cada observación y publicarla en SECOP II, como lo ordena el artículo 8 de la Ley 1150 de 2007, y, si las acoge, expedir la adenda correspondiente.
+
+Recibiré notificaciones en ${mail}.
+
+Atentamente,
+
+
+${rep}
+Representante legal
+${emp} · NIT ${nit}`;
+}
+function copyFrom(sel,ok){const t=$(sel).textContent,o=$(ok);const done=()=>{o.hidden=false;setTimeout(()=>o.hidden=true,2000);};
+  const selectIt=()=>{const r=document.createRange();r.selectNodeContents($(sel));const s=getSelection();s.removeAllRanges();s.addRange(r);};
+  try{navigator.clipboard.writeText(t).then(done,selectIt);}catch(_){selectIt();}}
+function flagTable(){
+  $('#flagtab').innerHTML='<thead><tr><th>Bandera</th><th>Cómo se calcula</th><th>Se activa con</th><th>Qué hacer</th><th>Referencias</th></tr></thead><tbody>'+FLAGS.map(F=>'<tr><td class="ttl">'+F.nm+'</td><td>'+F.calc+'</td><td>'+F.umbral+'</td><td>'+F.acc+'</td><td class="sub">'+F.ref.join('; ')+'</td></tr>').join('')+'</tbody>';
 }
 
 /* ---------- método ---------- */
