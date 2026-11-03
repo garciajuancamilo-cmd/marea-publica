@@ -1,3 +1,4 @@
+<meta charset="utf-8">
 <title>Marea Pública</title>
 <meta name="claude:viewport-fit-sides" content="cover">
 <meta name="description" content="Observatorio ciudadano de la contratación pública en el Caribe colombiano. Señales de riesgo, radar electoral y licitaciones abiertas con datos de SECOP II.">
@@ -109,6 +110,18 @@ select,input[type=search],input[type=text]{font:500 .92rem var(--f-body);padding
 .legendline{display:flex;gap:16px;flex-wrap:wrap;font-size:.76rem;color:var(--muted);padding:0 20px 14px}
 .legendline i{display:inline-block;width:14px;height:8px;margin-right:6px;vertical-align:0}
 .note{padding:12px 20px;background:var(--soft);font-size:.86rem;border-top:1px solid var(--rule)}
+.fsub{display:flex;flex-direction:column;gap:2px;padding:14px 20px 4px}
+.fsub .eyebrow{color:var(--buoy)}
+.open{border-top:1px solid var(--rule)}
+.open .ofig{padding:4px 20px 8px;font-size:.88rem}
+.olist{list-style:none;margin:0;padding:0 20px 10px;display:flex;flex-direction:column}
+.olist li{padding:10px 0;border-bottom:1px solid var(--rule);display:flex;flex-direction:column;gap:4px;min-width:0}
+.olist li:last-child{border-bottom:0}
+.olist .ob{font-size:.88rem;margin:0}
+.olist .fl{font-size:.78rem;color:var(--buoy)}
+.olist a{font-size:.8rem;font-weight:600;color:var(--sea)}
+.open .acts3{padding:4px 20px 16px;display:flex;gap:8px;flex-wrap:wrap}
+.flagnote{padding:0 20px 14px;font-size:.78rem;color:var(--muted)}
 
 /* Radar */
 .smalls{display:grid;grid-template-columns:repeat(auto-fill,minmax(240px,1fr));gap:14px}
@@ -257,7 +270,7 @@ textarea{font:400 .92rem var(--f-body);padding:9px 10px;border:1px solid var(--r
     <div class="mapgrid">
       <div>
         <div class="sechead"><span class="eyebrow">Mapa de la región</span><h2 id="h-mapa">Elige qué mirar</h2></div>
-        <div class="chips" id="metrics" role="group" aria-label="Señal del mapa" style="margin-top:12px"></div>
+        <div class="chips" id="metrics" role="group" aria-label="Bandera roja del mapa" style="margin-top:12px"></div>
         <div class="tiles" id="tiles"></div>
         <div class="ramp" id="ramp"></div>
         <p class="maphint">Toca un departamento para bajar a sus municipios y entidades.</p>
@@ -281,7 +294,7 @@ textarea{font:400 .92rem var(--f-body);padding:9px 10px;border:1px solid var(--r
     <div class="sechead">
       <span class="eyebrow">Ranking</span>
       <h2 id="h-rank">Quién contrata más opaco en <span id="rank-scope">la región</span></h2>
-      <p>El índice Marea promedia nueve señales y compara a cada entidad con las de su mismo orden (territorial, nacional o autoridad ambiental). Va de 0 a 100: más alto, más señales. Solo entran entidades con 50 contratos o más.</p>
+      <p>El índice Marea promedia las banderas rojas de los contratos firmados (Sistema de Alerta Temprana, módulo ex post) y compara a cada entidad con las de su mismo orden (territorial, nacional o autoridad ambiental). Va de 0 a 100: más alto, más banderas. Solo entran entidades con 50 contratos o más.</p>
     </div>
     <div class="chips" id="rankmode" role="group" aria-label="Qué comparar">
       <button class="chip" aria-pressed="true" data-m="ent">Entidades</button>
@@ -294,7 +307,7 @@ textarea{font:400 .92rem var(--f-body);padding:9px 10px;border:1px solid var(--r
 
   <section aria-labelledby="h-tri">
     <div class="sechead">
-      <span class="eyebrow">Señal nueva · triangulación</span>
+      <span class="eyebrow">Bandera nueva · triangulación</span>
       <h2 id="h-tri">Las intermediarias que más reciben</h2>
       <p>Una entidad contrata a dedo a una empresa pública, una asociación de municipios o un fondo mixto como "gerente integral". La intermediaria contrata después con sus propias reglas, a veces de régimen especial, y el contrato final sale del radar de quien puso la plata.</p>
     </div>
@@ -327,7 +340,7 @@ textarea{font:400 .92rem var(--f-body);padding:9px 10px;border:1px solid var(--r
 <div id="v-licitaciones" hidden>
 <main class="wrap">
   <section class="sat-head" aria-labelledby="h-lic">
-    <span class="eyebrow">Sistema de Alerta Temprana · Banderas rojas (red flags) en contratación pública</span>
+    <span class="eyebrow">Sistema de Alerta Temprana · Módulo ex ante · Banderas rojas (red flags) en contratación pública</span>
     <h1 id="h-lic">Licitaciones abiertas del Caribe: participa, compite y vigila</h1>
     <p class="lede muted">Evaluamos cada proceso abierto con indicadores de riesgo reconocidos por la literatura internacional, antes de que se adjudique. Cuando una sola empresa se presenta, pierden el Estado y todas las que no se enteraron. Más oferentes, menos contratos a dedo.</p>
     <p class="basis"><b>Base metodológica</b>
@@ -338,7 +351,7 @@ textarea{font:400 .92rem var(--f-body);padding:9px 10px;border:1px solid var(--r
       <a href="https://icclr.org/publications/guidebook-on-anti-corruption-in-public-procurement-and-the-management-of-public-finances-good-practices-in-ensuring-compliance-with-article-9-of-the-united-nations-convention-against-corruption" target="_blank" rel="noopener">Convención de la ONU contra la Corrupción, art. 9</a> ·
       <a href="https://research.ceu.edu/en/publications/an-objective-corruption-risk-index-using-public-procurement-data/" target="_blank" rel="noopener">Fazekas y Kocsis (2020)</a>
     </p>
-    <p class="sub">Metodología v1.0 · noviembre de 2026 · <a href="#metodo">Ficha técnica y cómo citar</a></p>
+    <p class="sub">Metodología v1.1 · noviembre de 2026 · <a href="#metodo">Ficha técnica y cómo citar</a> · Las banderas de contratos ya firmados están en <a href="#veeduria">Veeduría</a>.</p>
   </section>
 
   <section aria-labelledby="h-term">
@@ -427,16 +440,19 @@ textarea{font:400 .92rem var(--f-body);padding:9px 10px;border:1px solid var(--r
 <main class="wrap">
   <section aria-labelledby="h-sat">
     <div class="sechead">
-      <span class="eyebrow">Ficha técnica · Metodología v1.0 · noviembre de 2026</span>
+      <span class="eyebrow">Ficha técnica · Metodología v1.1 · noviembre de 2026</span>
       <h1 id="h-sat">Sistema de Alerta Temprana para la contratación pública del Caribe</h1>
-      <p class="lede muted">Una bandera roja (red flag) es un patrón en los datos de un proceso que la literatura asocia con mayor riesgo de corrupción, colusión o baja competencia. No es prueba de nada: es una razón para mirar con atención. Siguiendo al BID (2022), las banderas se calculan sobre procesos todavía abiertos y cada una lleva una acción concreta para el ciudadano o la empresa.</p>
+      <p class="lede muted">Una bandera roja (red flag) es un patrón en los datos de un proceso que la literatura asocia con mayor riesgo de corrupción, colusión o baja competencia. No es prueba de nada: es una razón para mirar con atención. El sistema mira la contratación en dos momentos. Antes de adjudicar, con banderas sobre las que todavía se puede actuar (BID, 2022): la empresa compite u observa el pliego, el ciudadano pregunta. Después de firmar, con banderas sobre el historial de cada entidad frente a sus pares, para la veeduría y el derecho de petición.</p>
     </div>
+    <div class="sechead"><span class="eyebrow">Módulo 1 · ex ante</span><h2 id="h-exante">Banderas sobre procesos abiertos</h2><p class="sub">Se ven en Licitaciones y en la ficha de cada entidad, municipio o departamento en Veeduría.</p></div>
     <div class="tw"><table id="flagtab"></table></div>
+    <div class="sechead"><span class="eyebrow">Módulo 2 · ex post</span><h2 id="h-expost">Banderas sobre contratos firmados</h2><p class="sub">Se ven en la ficha y el mapa de Veeduría. Una bandera se marca cuando la entidad está en el 20 % más alto de las entidades de su mismo orden de gobierno con 50 contratos o más. Sobre ellas se calcula el índice Marea.</p></div>
+    <div class="tw"><table id="flagtab2"></table></div>
     <div class="defs">
-      <div><b>Datos</b>Procesos de SECOP II (datos.gov.co, p6dx-8zbt) con cierre de ofertas en los próximos 30 días. Historial: procesos competitivos adjudicados en el Caribe desde enero de 2024 y contratos firmados (jbjy-vk9h). Actualización diaria.</div>
-      <div><b>Semáforo</b>Verde: sin alertas. Amarillo: una alerta. Naranja: dos o más. El semáforo no califica a la entidad ni a los oferentes; describe el proceso frente a sus referencias.</div>
+      <div><b>Datos</b>Ex ante: procesos de SECOP II (datos.gov.co, p6dx-8zbt) con cierre de ofertas en los próximos 30 días. Ex post: contratos firmados desde enero de 2024 (jbjy-vk9h). Historial: procesos competitivos adjudicados en el Caribe desde enero de 2024 y contratos firmados (jbjy-vk9h). Actualización diaria.</div>
+      <div><b>Semáforo</b>Para procesos abiertos. Verde: sin alertas. Amarillo: una alerta. Naranja: dos o más. El semáforo no califica a la entidad ni a los oferentes; describe el proceso frente a sus referencias.</div>
       <div><b>Límites</b>SECOP casi nunca publica el código UNSPSC de los procesos abiertos, por eso la categoría puede ser estimada. Las vistas de un proceso se actualizan con rezago. Los topes de mínima cuantía se aproximan con el historial de la entidad, no con su presupuesto oficial.</div>
-      <div><b>Cómo citar</b>Marea Pública (2026). <i>Sistema de Alerta Temprana para la contratación pública del Caribe colombiano.</i> Metodología v1.0. Datos de SECOP II, Colombia Compra Eficiente.</div>
+      <div><b>Cómo citar</b>Marea Pública (2026). <i>Sistema de Alerta Temprana para la contratación pública del Caribe colombiano.</i> Metodología v1.1. Datos de SECOP II, Colombia Compra Eficiente.</div>
     </div>
     <div class="sechead"><h2 id="h-bib">Referencias</h2></div>
     <ol class="refs">
@@ -460,7 +476,7 @@ textarea{font:400 .92rem var(--f-body);padding:9px 10px;border:1px solid var(--r
   <section aria-labelledby="h-met">
     <div class="sechead">
       <span class="eyebrow">Metodología abierta</span>
-      <h2 id="h-met">Cómo leemos los datos de la veeduría</h2>
+      <h2 id="h-met">Índice Marea y lectura de la veeduría</h2>
       <p class="lede muted">Marea Pública no afirma que una entidad sea corrupta. Muestra dónde está frente a sus pares en señales que la literatura internacional asocia con riesgo en compras públicas, y enlaza cada cifra a su fuente para que cualquiera la verifique.</p>
     </div>
     <div class="defs" id="defs"></div>
@@ -515,16 +531,16 @@ let ENT=[], MUN=[], DEPS=[], REG=null, scope={dep:-1,mun:-1,ent:null}, metric='d
 function blank(){return {n:0,v:0,nf:0,vf:0,dirN:0,dirV:0,pn:0,pro:0,sup:0,dic:0,pre26:0,giN:0,giV:0,jan:0,j26:0,veda:0,cN:0,cU:0,ents:0};}
 function add(a,e){a.n+=e.n;a.v+=e.v;a.ents++;if(e.full){a.nf+=e.n;a.vf+=e.v;for(const k of ['dirN','dirV','pn','pro','sup','dic','pre26','giN','giV','jan','j26','veda'])a[k]+=e[k];}a.cN+=e.cN||0;a.cU+=e.cU||0;}
 const SIG=[
- {k:'dir',nm:'Contratación directa',why:'Contratos sin competencia sobre el total.',f:a=>a.dirN/a.nf},
- {k:'dirv',nm:'Valor por contratación directa',why:'Parte de la plata asignada sin competencia.',f:a=>a.dirV/a.vf},
- {k:'top1',nm:'Cuota del mayor proveedor',why:'Valor del proveedor número uno sobre el total.',f:a=>a.top1,ent:true},
- {k:'hhi',nm:'Concentración (HHI)',why:'Sube cuando pocos proveedores se llevan casi todo.',f:a=>a.hhi,ent:true,fmt:v=>nf.format(Math.round(v*10000))},
- {k:'uni',nm:'Oferente único',why:'Procesos competitivos adjudicados con una sola oferta, desde 2024.',f:a=>a.cN>=10?a.cU/a.cN:NaN},
- {k:'gi',nm:'Triangulación',why:'Valor por gerencias integrales y convenios con intermediarias.',f:a=>a.giV/a.vf},
- {k:'pro',nm:'Prórrogas',why:'Contratos a los que se les adicionaron días.',f:a=>a.pro/a.nf},
- {k:'sup',nm:'Supervisor sin publicar',why:'Contratos sin supervisor registrado (Ley 1474, art. 83).',f:a=>a.sup/a.nf},
- {k:'dic',nm:'Firmados en diciembre',why:'Afán de cierre de vigencia, 2024 y 2025.',f:a=>a.pre26?a.dic/a.pre26:NaN},
- {k:'ene',nm:'Adelanto pre-veda',why:'Directos de enero 2026 frente al enero habitual.',f:a=>a.jan>0?a.j26/(a.jan/2):(a.j26>0?a.j26:NaN),fmt:v=>isFinite(v)?(v>=10?Math.round(v):v.toFixed(1))+'×':'—'},
+ {k:'dir',ref:['OCP (2024)','Fazekas y Kocsis (2020)','BID (2022)'],nm:'Contratación directa',why:'Contratos sin competencia sobre el total.',f:a=>a.dirN/a.nf},
+ {k:'dirv',ref:['OCP (2024)','Banco Mundial, ProACT'],nm:'Valor por contratación directa',why:'Parte de la plata asignada sin competencia.',f:a=>a.dirV/a.vf},
+ {k:'top1',ref:['OCP (2024)','Fazekas y Kocsis (2020)'],nm:'Cuota del mayor proveedor',why:'Valor del proveedor número uno sobre el total.',f:a=>a.top1,ent:true},
+ {k:'hhi',ref:['OCDE (2025)','Banco Mundial, ProACT'],nm:'Concentración (HHI)',why:'Sube cuando pocos proveedores se llevan casi todo.',f:a=>a.hhi,ent:true,fmt:v=>nf.format(Math.round(v*10000))},
+ {k:'uni',ref:['Fazekas y Kocsis (2020)','OCP (2024)','Banco Mundial, ProACT'],nm:'Oferente único',why:'Procesos competitivos adjudicados con una sola oferta, desde 2024.',f:a=>a.cN>=10?a.cU/a.cN:NaN},
+ {k:'gi',ref:['OCP (2024)','UNODC (2013)'],nm:'Triangulación',why:'Valor por gerencias integrales y convenios con intermediarias.',f:a=>a.giV/a.vf},
+ {k:'pro',ref:['OCP (2024)','BID (2022)'],nm:'Prórrogas',why:'Contratos a los que se les adicionaron días.',f:a=>a.pro/a.nf},
+ {k:'sup',ref:['UNODC (2013)','Ley 1474 de 2011, art. 83'],nm:'Supervisor sin publicar',why:'Contratos sin supervisor registrado (Ley 1474, art. 83).',f:a=>a.sup/a.nf},
+ {k:'dic',ref:['OCP (2024)'],nm:'Firmados en diciembre',why:'Afán de cierre de vigencia, 2024 y 2025.',f:a=>a.pre26?a.dic/a.pre26:NaN},
+ {k:'ene',ref:['Ley 996 de 2005','OCP (2024)'],nm:'Adelanto pre-veda',why:'Directos de enero 2026 frente al enero habitual.',f:a=>a.jan>0?a.j26/(a.jan/2):(a.j26>0?a.j26:NaN),fmt:v=>isFinite(v)?(v>=10?Math.round(v):v.toFixed(1))+'×':'—'},
 ];
 const METRICS=[{k:'dir',l:'Contratación directa'},{k:'uni',l:'Oferente único'},{k:'ene',l:'Adelanto pre-veda'},{k:'gi',l:'Triangulación'},{k:'sup',l:'Supervisor sin publicar'},{k:'idx',l:'Índice Marea'}];
 
@@ -640,7 +656,7 @@ function ficha(){
   let h='<div class="fhead"><span class="eyebrow">'+(isEnt?'Ficha de entidad':'Ficha agregada')+'</span><h3 style="font-size:1.45rem">'+esc(title)+'</h3><span class="sub">'+esc(sub)+'</span>';
   h+='<div class="idx"><span class="mono" style="font-size:1.6rem;font-weight:500">'+(isFinite(idx)?Math.round(idx):'—')+'</span><span class="sub">índice Marea'+(isEnt?'':' (ponderado por valor)')+'</span><span class="badge '+rg[0]+'">'+rg[1]+'</span></div></div>';
   h+='<div class="kpis">'+[[nf.format(a.n),'contratos'],[copM(a.v),'valor'],[a.dirOff?pct(a.dirOff[0]/a.n):a.nf?pct(a.dirN/a.nf):'—','por contratación directa'],[a.nf?pct(a.pn/a.nf):'—','a personas naturales']].map(([v,k])=>'<div class="kpi"><span class="v">'+v+'</span><span class="k">'+k+'</span></div>').join('')+'</div>';
-  if(isEnt&&!ent.full){h+='<div class="note">Esta entidad tiene menos de 15 contratos desde 2024; no se calculan señales.</div>';$('#ficha').innerHTML=h;return;}
+  if(isEnt&&!ent.full){h+='<div class="note">Esta entidad tiene menos de 15 contratos desde 2024; no se calculan banderas ex post.</div>'+abiertos(ent,true);$('#ficha').innerHTML=h;return;}
   // reference: region entity average (simple) for comparison
   const refList=ENT.filter(e=>e.full&&e.n>=50);
   const rows=SIG.filter(s=>isEnt||!s.ent).map(s=>{
@@ -649,14 +665,55 @@ function ficha(){
     const w=isFinite(v)?Math.min(100,v/max*100):0, ap=Math.min(100,avg/max*100);
     const hot=isEnt&&ent.p&&ent.p[s.k]>=80;
     return '<div class="sig"><div><div class="nm">'+s.nm+'</div><div class="why">'+s.why+'</div></div><div class="bar" aria-hidden="true"><i class="'+(hot?'hot':'')+'" style="width:'+w.toFixed(1)+'%"></i><b style="left:'+ap.toFixed(1)+'%"></b></div><div class="val">'+(s.fmt?s.fmt(v):pct(v,1))+'</div></div>';}).join('');
-  h+='<div class="signals">'+rows+'</div><div class="legendline"><span><i style="background:var(--sea)"></i>'+(isEnt?'Esta entidad':'Este alcance')+'</span>'+(isEnt?'<span><i style="background:var(--buoy)"></i>En el 20 % más alto de sus pares</span>':'')+'<span><i style="background:var(--ink);width:2px;height:12px"></i>Promedio de las entidades del Caribe</span></div>';
+  h+='<div class="fsub"><span class="eyebrow">Banderas rojas · ex post</span><span class="sub">Contratos firmados desde enero de 2024, frente a entidades pares</span></div><div class="signals">'+rows+'</div><div class="legendline"><span><i style="background:var(--sea)"></i>'+(isEnt?'Esta entidad':'Este alcance')+'</span>'+(isEnt?'<span><i style="background:var(--buoy)"></i>Bandera roja: en el 20 % más alto de sus pares</span>':'')+'<span><i style="background:var(--ink);width:2px;height:12px"></i>Promedio de las entidades del Caribe</span></div>';
   if(isEnt){
     const ja=ent.jan/2;h+='<div class="note"><b>Ley de Garantías:</b> en enero de 2026 firmó <b>'+nf.format(ent.j26)+'</b> contratos directos (un enero normal: '+nf.format(Math.round(ja))+') y <b>'+nf.format(ent.veda)+'</b> entre febrero y junio. '+(ent.top1p?'Su mayor proveedor es <b>'+esc(ent.top1p)+'</b>, con el '+pct(ent.top1)+' del valor.':'Su mayor proveedor es una persona natural, que no se nombra.')+(ent.top1>=.9?' Un solo contrato concentra casi todo el valor: revisa en SECOP que no sea un error de digitación.':'')+'</div>';
   }
   if(isEnt&&ent.multi)h+='<div class="note">Entidad nacional que contrata en varios departamentos del Caribe: '+ent.multi+' contratos. No se suma a ningún departamento ni municipio.</div>';
-  if(!isEnt&&scope.dep>=0&&scope.mun<0)h+='<div class="note">Contratos, valor y contratación directa son los totales oficiales del departamento. Las demás señales se calculan sobre sus entidades y excluyen a SENA, ICBF y otras entidades nacionales que contratan en varios departamentos.</div>';
+  if(!isEnt&&scope.dep>=0&&scope.mun<0)h+='<div class="note">Contratos, valor y contratación directa son los totales oficiales del departamento. Las demás banderas se calculan sobre sus entidades y excluyen a SENA, ICBF y otras entidades nacionales que contratan en varios departamentos.</div>';
+  h+=abiertos(ent,isEnt);
   $('#ficha').innerHTML=h;
 }
+
+
+/* ---------- banderas ex ante dentro de la ficha ---------- */
+const normTxt=t=>String(t||'').normalize('NFD').replace(/[\u0300-\u036f]/g,'').toLowerCase().replace(/\s+/g,' ').trim();
+function licScope(ent){
+  if(ent)return D.lic.filter(l=>l[14]===ent.k);
+  if(scope.mun>=0){const m=MUN[scope.mun],mn=normTxt(m.name);
+    return D.lic.filter(l=>{const e=ENTK[l[14]];if(e&&!e.multi)return e.mun===scope.mun;return l[1]===m.dep&&normTxt(l[2])===mn;});}
+  if(scope.dep>=0)return D.lic.filter(l=>l[1]===scope.dep);
+  return D.lic;
+}
+function abiertos(ent,isEnt){
+  if(!D.lic)return '';
+  const L=licScope(isEnt?ent:null);
+  let h='<div class="open"><div class="fsub"><span class="eyebrow">Banderas rojas · ex ante</span><span class="sub">Procesos abiertos hoy en SECOP II, antes de adjudicarse</span></div>';
+  if(!L.length)return h+'<p class="ofig">'+(isEnt?'Esta entidad':'Este alcance')+' no tiene procesos con cierre de ofertas en los próximos 30 días.</p></div>';
+  const al=L.filter(l=>flagsOf(l).length);
+  h+='<p class="ofig"><b>'+nf.format(L.length)+'</b> '+(L.length===1?'proceso abierto':'procesos abiertos')+' · '+copM(L.reduce((a,l)=>a+(l[5]||0),0))+' · <b>'+nf.format(al.length)+'</b> con alertas</p>';
+  const top=al.slice().sort((a,b)=>flagsOf(b).length-flagsOf(a).length||(b[5]||0)-(a[5]||0)).slice(0,3);
+  if(top.length)h+='<ul class="olist">'+top.map(l=>{const fl=flagsOf(l);const [sc,st]=sem(fl.length);const dd=dayDiff(D.meta.fecha,l[7]);
+    return '<li><div class="tag"><span class="semaf s-'+sc+'"><i aria-hidden="true"></i>'+st+'</span><span class="pill">'+MODL[l[4]]+'</span><span class="pill">cierra '+(dd<=0?'hoy':dd===1?'mañana':'en '+dd+' días')+'</span></div>'+
+      '<p class="ob">'+esc(l[3]==='No Definido'?'Objeto no publicado en datos abiertos':l[3]+'…')+(l[5]>0?' · <span class="mono">'+copM(l[5])+'</span>':'')+'</p>'+
+      (isEnt?'':'<span class="sub">'+esc(l[0])+'</span>')+
+      '<span class="fl">'+fl.map(f=>f.nm).join(' · ')+'</span>'+
+      '<a href="'+NOTICE+encodeURIComponent(l[8])+'" target="_blank" rel="noopener">Ver el proceso en SECOP II</a></li>';}).join('')+'</ul>';
+  h+='<div class="acts3"><button class="btn solid" type="button" data-golic="1">Ver '+(L.length===1?'el proceso':'los '+nf.format(L.length))+' en Licitaciones</button></div>';
+  h+='<p class="flagnote">Una alerta no acusa a la entidad ni a nadie: es una razón para mirar el proceso con atención antes de que se firme el contrato. El pliego en SECOP II es la fuente que prevalece.</p></div>';
+  return h;
+}
+function irALicitaciones(){
+  const ent=scope.ent?ENT.find(e=>e.k===scope.ent):null;
+  const L=licScope(ent);
+  $('#l-dep').value=ent?(L[0]?L[0][1]:-1):scope.dep;
+  $('#l-mod').value='';$('#l-seg').value='';
+  $('#l-q').value=ent?(L[0]?L[0][0]:ent.nm):scope.mun>=0?MUN[scope.mun].name:'';
+  ltipo='';document.querySelectorAll('#l-tipo .chip').forEach(x=>x.setAttribute('aria-pressed',x.dataset.t===''));
+  lday='';licShown=24;licRender();
+  location.hash='#licitaciones';
+}
+document.getElementById('ficha').addEventListener('click',e=>{if(e.target.closest('[data-golic]'))irALicitaciones();});
 
 /* ---------- radar ---------- */
 function radar(){
@@ -908,12 +965,13 @@ function copyFrom(sel,ok){const t=$(sel).textContent,o=$(ok);const done=()=>{o.h
   const selectIt=()=>{const r=document.createRange();r.selectNodeContents($(sel));const s=getSelection();s.removeAllRanges();s.addRange(r);};
   try{navigator.clipboard.writeText(t).then(done,selectIt);}catch(_){selectIt();}}
 function flagTable(){
+  $('#flagtab2').innerHTML='<thead><tr><th>Bandera</th><th>Qué mide</th><th>Alcance</th><th>Referencias</th></tr></thead><tbody>'+SIG.map(s=>'<tr><td class="ttl">'+s.nm+'</td><td>'+s.why+'</td><td>'+(s.ent?'Solo por entidad':'Entidad, municipio, departamento y región')+'</td><td class="sub">'+s.ref.join('; ')+'</td></tr>').join('')+'</tbody>';
   $('#flagtab').innerHTML='<thead><tr><th>Bandera</th><th>Cómo se calcula</th><th>Se activa con</th><th>Qué hacer</th><th>Referencias</th></tr></thead><tbody>'+FLAGS.map(F=>'<tr><td class="ttl">'+F.nm+'</td><td>'+F.calc+'</td><td>'+F.umbral+'</td><td>'+F.acc+'</td><td class="sub">'+F.ref.join('; ')+'</td></tr>').join('')+'</tbody>';
 }
 
 /* ---------- método ---------- */
 function metodo(){
-  $('#defs').innerHTML=SIG.map(s=>'<div><b>'+s.nm+'</b>'+s.why+(s.ent?' Solo se calcula por entidad.':'')+'</div>').join('')+'<div><b>Índice Marea</b>Promedio de los percentiles de la entidad en las señales disponibles (mínimo cinco), frente a las entidades de su mismo orden de gobierno con 50 contratos o más. Para municipios y departamentos se pondera por valor contratado.</div>';
+  $('#defs').innerHTML='<div><b>Banderas ex post</b>Las diez banderas del módulo 2 se describen en la tabla de arriba. En la ficha de Veeduría la barra se pinta en naranja cuando la entidad está en el 20 % más alto de sus pares.</div><div><b>Índice Marea</b>Promedio de los percentiles de la entidad en las señales disponibles (mínimo cinco), frente a las entidades de su mismo orden de gobierno con 50 contratos o más. Para municipios y departamentos se pondera por valor contratado.</div>';
 }
 
 /* ---------- routing ---------- */
