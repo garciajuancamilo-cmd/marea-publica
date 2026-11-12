@@ -191,7 +191,8 @@ tr:last-child td{border-bottom:0}
 .pill{font-family:var(--f-data);font-size:.68rem;letter-spacing:.04em;text-transform:uppercase;padding:2px 7px;border-radius:999px;background:var(--soft);color:var(--ink)}
 .pill.urg{background:var(--buoy-soft);color:var(--buoy)}
 .lic .amt{font-family:var(--f-display);font-weight:800;font-size:1.15rem}
-.lic .ob{font-size:.88rem}
+.lic .ob{font-size:.88rem;display:-webkit-box;-webkit-line-clamp:4;-webkit-box-orient:vertical;overflow:hidden;cursor:pointer}
+.lic .ob.open{display:block;-webkit-line-clamp:unset}
 .unspsc{font-size:.74rem;line-height:1.35;color:var(--muted);border-left:2px solid var(--rule);padding-left:8px}
 .unspsc .est{font-family:var(--f-data);font-size:.64rem;letter-spacing:.05em;text-transform:uppercase;color:var(--muted);border:1px solid var(--rule);border-radius:4px;padding:0 4px;margin-left:4px;white-space:nowrap}
 .unspsc .est.of{color:var(--ok);border-color:currentColor}
@@ -799,7 +800,7 @@ function abiertos(ent,isEnt){
   const top=al.slice().sort((a,b)=>flagsOf(b).length-flagsOf(a).length||(b[5]||0)-(a[5]||0)).slice(0,3);
   if(top.length)h+='<ul class="olist">'+top.map(l=>{const fl=flagsOf(l);const [sc,st]=sem(fl.length);const dd=dayDiff(D.meta.fecha,l[7]);
     return '<li><div class="tag"><span class="semaf s-'+sc+'"><i aria-hidden="true"></i>'+st+'</span><span class="pill">'+MODL[l[4]]+'</span><span class="pill">cierra '+(dd<=0?'hoy':dd===1?'mañana':'en '+dd+' días')+'</span></div>'+
-      '<p class="ob">'+esc(l[3]==='No Definido'?'Objeto no publicado en datos abiertos':l[3]+'…')+(l[5]>0?' · <span class="mono">'+copM(l[5])+'</span>':'')+'</p>'+
+      '<p class="ob">'+esc(l[3]==='No Definido'?'Objeto no publicado en datos abiertos':l[3])+(l[5]>0?' · <span class="mono">'+copM(l[5])+'</span>':'')+'</p>'+
       (isEnt?'':'<span class="sub">'+esc(l[0])+'</span>')+
       '<span class="fl">'+fl.map(f=>f.nm).join(' · ')+'</span>'+
       '<a href="'+NOTICE+encodeURIComponent(l[8])+'" target="_blank" rel="noopener">Ver el proceso en SECOP II</a></li>';}).join('')+'</ul>';
@@ -986,6 +987,7 @@ function licInit(){
   [['t-pyme',v=>fPyme=v],['t-alert',v=>fAlert=v],['t-poca',v=>fPoca=v]].forEach(([id,set])=>{const b=document.getElementById(id);b.addEventListener('click',()=>{const on=b.getAttribute('aria-pressed')!=='true';b.setAttribute('aria-pressed',on);set(on);licShown=24;licRender();});});
   $('#days').addEventListener('click',e=>{const b=e.target.closest('.day');if(!b)return;lday=lday===b.dataset.d?'':b.dataset.d;licShown=24;licRender();});
   $('#lic-more').addEventListener('click',()=>{licShown+=24;licRender();});
+  $('#lics').addEventListener('click',e=>{const o=e.target.closest('.ob');if(o)o.classList.toggle('open');});
   $('#lics').addEventListener('click',e=>{const b=e.target.closest('button[data-obs]');if(!b)return;osel=D.lic.find(l=>l[8]===b.dataset.obs);obsRender();const p=$('#obs');p.hidden=false;p.scrollIntoView({behavior:matchMedia('(prefers-reduced-motion: reduce)').matches?'auto':'smooth',block:'start'});});
   ['o-emp','o-nit','o-rep','o-mail','o-libre'].forEach(id=>document.getElementById(id).addEventListener('input',obsRender));
   $('#o-checks').addEventListener('change',obsRender);
@@ -1023,7 +1025,7 @@ function card(l){
   const vis=l[15]!=null?'<span class="sub">'+(l[15]===1?'1 empresa lo ha visto':nf.format(l[15])+' empresas lo han visto')+'</span>':'';
   const fx=fl.length?'<details class="flags"><summary>Ver alertas y qué hacer</summary><ul>'+fl.map(f=>'<li><b>'+f.nm+'.</b> '+f.t+' <span class="ref">Referencia: '+f.ref.join('; ')+'</span></li>').join('')+'</ul></details>':'';
   return '<article class="lic"><div class="tag"><span class="semaf s-'+sc+'"><i aria-hidden="true"></i>'+st+'</span><span class="pill">'+MODL[l[4]]+'</span>'+(isPyme(l)?'<span class="pill pyme">PYME</span>':'')+'<span class="pill'+(dd<=2?' urg':'')+'">cierra '+(dd<=0?'hoy':dd===1?'mañana':'en '+dd+' días')+'</span></div>'+
-    '<div class="amt">'+(l[5]>0?copM(l[5]):'Presupuesto en el pliego')+'</div><p class="ob">'+esc(l[3]==='No Definido'?'Objeto no publicado en datos abiertos':l[3]+'…')+'</p><div class="sub"><b>'+esc(l[0])+'</b> · '+esc(l[2]==='No Definido'?SHORT[l[1]]:l[2]+', '+SHORT[l[1]])+'</div>'+catB+hist+fx+
+    '<div class="amt">'+(l[5]>0?copM(l[5]):'Presupuesto en el pliego')+'</div><p class="ob">'+esc(l[3]==='No Definido'?'Objeto no publicado en datos abiertos':l[3])+'</p><div class="sub"><b>'+esc(l[0])+'</b> · '+esc(l[2]==='No Definido'?SHORT[l[1]]:l[2]+', '+SHORT[l[1]])+'</div>'+catB+hist+fx+
     '<div class="foot">'+vis+'<span class="mono">'+esc(l[9])+'</span></div><div class="acts2"><a class="btn solid" href="'+NOTICE+encodeURIComponent(l[8])+'" target="_blank" rel="noopener">Ver y participar en SECOP II</a><button class="btn" type="button" data-obs="'+esc(l[8])+'">Presentar observaciones</button></div></article>';
 }
 /* termómetro */
@@ -1057,7 +1059,7 @@ ${l[0].toUpperCase()}
 Proceso: ${l[9]}
 Asunto: Observaciones al proceso de contratación
 
-${rep}, en calidad de representante legal de ${emp}, identificada con NIT ${nit}, presento dentro del plazo previsto en el cronograma las siguientes observaciones al proceso cuyo objeto es "${l[3]==='No Definido'?'[objeto del proceso]':l[3]+'…'}", con el propósito de promover la participación plural de oferentes y la selección objetiva.
+${rep}, en calidad de representante legal de ${emp}, identificada con NIT ${nit}, presento dentro del plazo previsto en el cronograma las siguientes observaciones al proceso cuyo objeto es "${l[3]==='No Definido'?'[objeto del proceso]':l[3]}", con el propósito de promover la participación plural de oferentes y la selección objetiva.
 
 ${pts.length?pts.map((p,i)=>(i+1)+'. '+p).join('\n\n'):'1. [Marca arriba los puntos que quieres observar o escribe tu observación.]'}
 
