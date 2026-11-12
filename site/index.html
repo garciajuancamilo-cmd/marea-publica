@@ -193,6 +193,8 @@ tr:last-child td{border-bottom:0}
 .lic .amt{font-family:var(--f-display);font-weight:800;font-size:1.15rem}
 .lic .ob{font-size:.88rem;display:-webkit-box;-webkit-line-clamp:4;-webkit-box-orient:vertical;overflow:hidden;cursor:pointer}
 .lic .ob.open{display:block;-webkit-line-clamp:unset}
+.obmore{align-self:flex-start;background:none;border:0;padding:0;margin-top:-4px;font:inherit;font-size:.8rem;font-weight:700;color:var(--sea);cursor:pointer}
+.obmore:hover{text-decoration:underline}
 .unspsc{font-size:.74rem;line-height:1.35;color:var(--muted);border-left:2px solid var(--rule);padding-left:8px}
 .unspsc .est{font-family:var(--f-data);font-size:.64rem;letter-spacing:.05em;text-transform:uppercase;color:var(--muted);border:1px solid var(--rule);border-radius:4px;padding:0 4px;margin-left:4px;white-space:nowrap}
 .unspsc .est.of{color:var(--ok);border-color:currentColor}
@@ -987,7 +989,7 @@ function licInit(){
   [['t-pyme',v=>fPyme=v],['t-alert',v=>fAlert=v],['t-poca',v=>fPoca=v]].forEach(([id,set])=>{const b=document.getElementById(id);b.addEventListener('click',()=>{const on=b.getAttribute('aria-pressed')!=='true';b.setAttribute('aria-pressed',on);set(on);licShown=24;licRender();});});
   $('#days').addEventListener('click',e=>{const b=e.target.closest('.day');if(!b)return;lday=lday===b.dataset.d?'':b.dataset.d;licShown=24;licRender();});
   $('#lic-more').addEventListener('click',()=>{licShown+=24;licRender();});
-  $('#lics').addEventListener('click',e=>{const o=e.target.closest('.ob');if(o)o.classList.toggle('open');});
+  $('#lics').addEventListener('click',e=>{const t=e.target.closest('.ob, .obmore');if(!t)return;const card=t.closest('.lic');const o=card.querySelector('.ob'),b=card.querySelector('.obmore');const on=o.classList.toggle('open');if(b){b.textContent=on?'Ver menos ▴':'Ver más ▾';b.setAttribute('aria-expanded',on);}});
   $('#lics').addEventListener('click',e=>{const b=e.target.closest('button[data-obs]');if(!b)return;osel=D.lic.find(l=>l[8]===b.dataset.obs);obsRender();const p=$('#obs');p.hidden=false;p.scrollIntoView({behavior:matchMedia('(prefers-reduced-motion: reduce)').matches?'auto':'smooth',block:'start'});});
   ['o-emp','o-nit','o-rep','o-mail','o-libre'].forEach(id=>document.getElementById(id).addEventListener('input',obsRender));
   $('#o-checks').addEventListener('change',obsRender);
@@ -1017,6 +1019,7 @@ function licRender(){
   $('#l-count').textContent=nf.format(list.length)+' procesos'+(lday?' que cierran el '+fecha(lday):'')+' · '+copM(list.reduce((a,l)=>a+l[5],0))+' · '+nPy+' ideales para PYMEs · '+nAl+' con alertas';
   $('#lics').innerHTML=list.length?list.slice(0,licShown).map(card).join(''):'<p class="empty">No hay procesos con esos filtros.</p>';
   $('#lic-more').hidden=list.length<=licShown;
+  requestAnimationFrame(()=>document.querySelectorAll('#lics .ob').forEach(o=>{if(o.scrollHeight>o.clientHeight+2&&!(o.nextElementSibling&&o.nextElementSibling.classList.contains('obmore')))o.insertAdjacentHTML('afterend','<button class="obmore" type="button" aria-expanded="false">Ver más ▾</button>');}));
 }
 function card(l){
   const today=D.meta.fecha;const dd=dayDiff(today,l[7]);const s=lseg(l),N=SEGN();const fl=flagsOf(l);const [sc,st]=sem(fl.length);
