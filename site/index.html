@@ -1,7 +1,21 @@
 <meta charset="utf-8">
-<title>Marea Pública</title>
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Marea Pública · Contratación pública del Caribe colombiano</title>
+<meta name="theme-color" content="#0b2a33">
+<link rel="icon" href="favicon.svg" type="image/svg+xml">
+<link rel="apple-touch-icon" href="apple-touch-icon.png">
+<meta property="og:type" content="website">
+<meta property="og:site_name" content="Marea Pública">
+<meta property="og:url" content="https://www.mareapublica.com/">
+<meta property="og:title" content="Marea Pública · La plata pública del Caribe, a la vista">
+<meta property="og:description" content="Observatorio ciudadano de la contratación pública en el Caribe colombiano: banderas rojas, ranking de entidades y licitaciones abiertas para MiPymes, con datos de SECOP II.">
+<meta property="og:image" content="https://www.mareapublica.com/og.png">
+<meta property="og:image:width" content="1200">
+<meta property="og:image:height" content="630">
+<meta property="og:locale" content="es_CO">
+<meta name="twitter:card" content="summary_large_image">
 <meta name="claude:viewport-fit-sides" content="cover">
-<meta name="description" content="Observatorio ciudadano de la contratación pública en el Caribe colombiano. Señales de riesgo, radar electoral y licitaciones abiertas con datos de SECOP II.">
+<meta name="description" content="Observatorio ciudadano de la contratación pública en el Caribe colombiano: banderas rojas, ranking de entidades y licitaciones abiertas para MiPymes, con datos de SECOP II.">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Schibsted+Grotesk:wght@500;700;800&family=Public+Sans:ital,wght@0,400;0,600;1,400&family=IBM+Plex+Mono:wght@400;500&display=swap">
 <style>
@@ -10,11 +24,13 @@
   --salt:#eef3f2; --sheet:#ffffff; --ink:#0b2a33; --muted:#557078; --rule:#d3dfdd; --soft:#e2eceb;
   --sea:#14646a; --sea-2:#3a8c8c; --buoy:#cf4a1c; --buoy-soft:#fbe6dc; --ok:#2e7a51; --warn:#a8740c;
   --r0:#d9edea; --r1:#acd5d0; --r2:#73b6b1; --r3:#3a8c8c; --r4:#1b6266; --r5:#0d3f45;
+  --night:#0b2a33; --night-rule:#0b2a33;
   --f-display:"Schibsted Grotesk","Arial Narrow",Arial,sans-serif;
   --f-body:"Public Sans",system-ui,-apple-system,"Segoe UI",sans-serif;
   --f-data:"IBM Plex Mono",ui-monospace,Menlo,Consolas,monospace;
 }
 @media (prefers-color-scheme:dark){:root:not([data-theme="light"]){
+  --night:#0f2b33; --night-rule:#2a4a52;
   --salt:#09181c; --sheet:#0f2227; --ink:#e3eeec; --muted:#8fa8ad; --rule:#21393f; --soft:#14303a;
   --sea:#5cbcc0; --sea-2:#3f9ea3; --buoy:#ff8a5c; --buoy-soft:#3a1d12; --ok:#6cc08f; --warn:#e0b347; color-scheme:dark}}
 :root[data-theme="dark"]{
@@ -23,7 +39,7 @@
 *{box-sizing:border-box}
 html{scroll-padding-top:120px}
 body{background:var(--salt);color:var(--ink);font:16px/1.55 var(--f-body)}
-body::before{content:"";position:fixed;inset:0 0 auto;height:env(safe-area-inset-top,0px);z-index:10;background:var(--ink)}
+body::before{content:"";position:fixed;inset:0 0 auto;height:env(safe-area-inset-top,0px);z-index:10;background:var(--night)}
 a{color:var(--sea)}
 h1,h2,h3{font-family:var(--f-display);margin:0;line-height:1.08;text-wrap:balance}
 h1{font-size:clamp(2rem,6.4vw,3.6rem);font-weight:800;letter-spacing:-.02em}
@@ -38,14 +54,15 @@ button{font:inherit;color:inherit}
 :focus-visible{outline:2px solid var(--buoy);outline-offset:2px}
 
 /* Top bar */
-.top{position:sticky;top:env(safe-area-inset-top,0px);z-index:9;background:var(--ink);color:#e9f3f1}
+.top{position:sticky;top:env(safe-area-inset-top,0px);z-index:9;background:var(--night);color:#fff;border-bottom:1px solid var(--night-rule)}
 .top .wrap{display:flex;align-items:center;gap:16px;padding-block:10px;flex-wrap:wrap}
 .brand{display:flex;align-items:center;gap:10px;text-decoration:none;color:inherit;margin-right:auto}
 .brand b{font-family:var(--f-display);font-weight:800;font-size:1.15rem;letter-spacing:-.01em}
 .brand svg{width:30px;height:30px;flex:none}
 .nav{display:flex;gap:4px;flex-wrap:wrap}
-.nav a{color:#bcd3d0;text-decoration:none;font-weight:600;font-size:.88rem;padding:6px 10px;border-radius:999px}
-.nav a[aria-current="page"]{background:#e9f3f1;color:#0b2a33}
+.nav a{color:#d9ebe8;text-decoration:none;font-weight:600;font-size:.9rem;padding:7px 12px;border-radius:999px}
+.nav a:hover{background:rgba(255,255,255,.1);color:#fff}
+.nav a[aria-current="page"]{background:#fff;color:#0b2a33}
 .beta{font-family:var(--f-data);font-size:.66rem;letter-spacing:.08em;border:1px solid #6fb3b0;color:#9fd2cd;padding:2px 6px;border-radius:4px;text-transform:uppercase}
 
 main{padding-block:28px 72px;display:flex;flex-direction:column;gap:52px}
@@ -78,7 +95,7 @@ select,input[type=search],input[type=text]{font:500 .92rem var(--f-body);padding
 .chip[aria-pressed="true"]{background:var(--ink);color:var(--salt);border-color:var(--ink)}
 .tiles{position:relative;display:grid;grid-template-columns:repeat(5,minmax(0,1fr));grid-template-rows:repeat(4,auto);gap:6px;margin-top:12px}
 .tile{aspect-ratio:1/1;max-width:100%;border:0;border-radius:10px;cursor:pointer;display:flex;flex-direction:column;justify-content:space-between;padding:8px;text-align:left;min-width:0;transition:transform .15s}
-.tile .tn{font-family:var(--f-display);font-weight:700;font-size:clamp(.66rem,1.9vw,.86rem);line-height:1.05}
+.tile .tn{font-family:var(--f-display);font-weight:700;font-size:clamp(.7rem,1.9vw,.88rem);line-height:1.05;color:inherit;text-align:left}
 .tile .tv{font-family:var(--f-data);font-size:clamp(.72rem,2.2vw,1rem);font-weight:500}
 .tile[aria-pressed="true"]{outline:3px solid var(--buoy);outline-offset:2px}
 .tile:hover{transform:translateY(-2px)}
@@ -130,7 +147,7 @@ select,input[type=search],input[type=text]{font:500 .92rem var(--f-body);padding
 .sm svg{width:100%;height:auto;display:block}
 .sm rect.b{transition:opacity .15s}
 .sm rect.b:hover{opacity:.7}
-.radarbig{background:var(--ink);color:#e6f1ef;border-radius:12px;padding:22px;display:grid;grid-template-columns:auto minmax(0,1fr);gap:8px 22px;align-items:center}
+.radarbig{background:var(--night);color:#e6f1ef;border-radius:12px;padding:22px;display:grid;grid-template-columns:auto minmax(0,1fr);gap:8px 22px;align-items:center}
 .radarbig .mult{font-family:var(--f-display);font-weight:800;font-size:clamp(3rem,10vw,5.2rem);line-height:.9;color:#ff9b70;letter-spacing:-.03em}
 .radarbig p{color:#c4d8d5}
 .radarbig b{color:#fff}
@@ -175,10 +192,11 @@ tr:last-child td{border-bottom:0}
 .pill.urg{background:var(--buoy-soft);color:var(--buoy)}
 .lic .amt{font-family:var(--f-display);font-weight:800;font-size:1.15rem}
 .lic .ob{font-size:.88rem}
-.unspsc{font-size:.78rem;line-height:1.35;color:var(--ink);border-left:3px solid var(--sea-2);padding-left:8px}
+.unspsc{font-size:.74rem;line-height:1.35;color:var(--muted);border-left:2px solid var(--rule);padding-left:8px}
 .unspsc .est{font-family:var(--f-data);font-size:.64rem;letter-spacing:.05em;text-transform:uppercase;color:var(--muted);border:1px solid var(--rule);border-radius:4px;padding:0 4px;margin-left:4px;white-space:nowrap}
 .unspsc .est.of{color:var(--ok);border-color:currentColor}
-.lic .foot{display:flex;justify-content:space-between;gap:8px;font-size:.8rem;color:var(--muted);margin-top:auto;flex-wrap:wrap}
+.lic .foot{display:flex;justify-content:space-between;gap:8px;font-size:.76rem;color:var(--muted);margin-top:auto;flex-wrap:wrap}
+.lic .foot .mono{font-size:.7rem;opacity:.85}
 
 /* Método */
 .defs{display:grid;grid-template-columns:repeat(auto-fit,minmax(260px,1fr));gap:1px;background:var(--rule);border:1px solid var(--rule);border-radius:12px;overflow:hidden}
@@ -186,6 +204,44 @@ tr:last-child td{border-bottom:0}
 .defs b{font-family:var(--f-display)}
 footer{border-top:2px solid var(--ink);padding-block:18px 40px;font-size:.84rem;color:var(--muted)}
 footer .wrap{display:flex;flex-direction:column;gap:8px}
+.flinks{display:flex;gap:6px 16px;flex-wrap:wrap}
+.flinks a{color:var(--sea);font-weight:600}
+/* v1.2 */
+.doors{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:10px;margin-top:6px}
+.door{display:flex;flex-direction:column;gap:2px;padding:12px 14px;border-radius:12px;border:1px solid var(--rule);background:var(--sheet);text-decoration:none;color:var(--ink);text-align:left;cursor:pointer;font:inherit}
+.door b{font-family:var(--f-display);font-size:1rem}
+.door span{font-size:.82rem;color:var(--muted)}
+.door.biz{background:var(--night);border-color:var(--night);color:#fff}
+.door.biz span{color:#c4d8d5}
+.door:hover{border-color:var(--sea)}
+.jump{display:flex;gap:6px;flex-wrap:nowrap;overflow-x:auto;padding:10px 0 2px;scrollbar-width:none}
+.jump::-webkit-scrollbar{display:none}
+.jump .chip{white-space:nowrap;font-size:.8rem}
+details.fold>summary{cursor:pointer;font-weight:600;color:var(--sea);list-style:none;padding:8px 0}
+details.fold>summary::-webkit-details-marker{display:none}
+details.fold>summary::before{content:"▸ "}
+details.fold[open]>summary::before{content:"▾ "}
+details.basisd>summary{cursor:pointer;font-family:var(--f-data);font-size:.72rem;letter-spacing:.08em;text-transform:uppercase;color:var(--muted)}
+.legal{max-width:78ch;display:flex;flex-direction:column;gap:12px}
+.legal h2{margin-top:18px}
+.legal p,.legal li{font-size:.95rem}
+.legal ul{margin:0;padding-left:20px;display:flex;flex-direction:column;gap:6px}
+@media (max-width:760px){
+  .doors{grid-template-columns:1fr}
+  .nav{width:100%;background:rgba(255,255,255,.08);border-radius:999px;padding:3px;gap:2px}
+  .nav a{flex:1;text-align:center;padding:8px 6px}
+  .scope{position:static!important}
+  html{scroll-padding-top:110px!important}
+  table.cards{min-width:0}
+  table.cards thead{display:none}
+  table.cards tbody tr{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:8px 14px;padding:14px 12px;border-bottom:1px solid var(--rule)}
+  table.cards td{border:0;padding:0;text-align:left!important;white-space:normal}
+  table.cards td[data-l]::before{content:attr(data-l);display:block;font-family:var(--f-data);font-size:.62rem;letter-spacing:.06em;text-transform:uppercase;color:var(--muted);margin-bottom:1px}
+  table.cards td.full{grid-column:1/-1}
+  table.cards td.full::before{display:none}
+  table.cards td.hide{display:none}
+  table.cards td.empty{grid-column:1/-1}
+}
 .empty{padding:20px;color:var(--muted);font-size:.9rem}
 
 /* Alerta temprana */
@@ -193,7 +249,7 @@ footer .wrap{display:flex;flex-direction:column;gap:8px}
 .basis{font-size:.86rem;line-height:1.7;max-width:none}
 .basis b{font-family:var(--f-data);font-size:.7rem;letter-spacing:.08em;text-transform:uppercase;margin-right:6px}
 .chip.tog[aria-pressed="true"]{background:var(--buoy);border-color:var(--buoy);color:#fff}
-.termbig{background:var(--ink);color:#e6f1ef;border-radius:12px;padding:22px;display:grid;grid-template-columns:auto minmax(0,1fr);gap:8px 22px;align-items:center}
+.termbig{background:var(--night);color:#e6f1ef;border-radius:12px;padding:22px;display:grid;grid-template-columns:auto minmax(0,1fr);gap:8px 22px;align-items:center}
 .termbig .mult{font-family:var(--f-display);font-weight:800;font-size:clamp(2.6rem,9vw,4.6rem);line-height:.9;color:#ff9b70;letter-spacing:-.03em}
 .termbig p{color:#c4d8d5}.termbig b{color:#fff}
 .termcols{display:grid;grid-template-columns:repeat(auto-fit,minmax(300px,1fr));gap:22px;margin-top:16px}
@@ -240,7 +296,7 @@ textarea{font:400 .92rem var(--f-body);padding:9px 10px;border:1px solid var(--r
     <nav class="nav" aria-label="Secciones">
       <a href="#veeduria" data-v="veeduria">Veeduría</a>
       <a href="#licitaciones" data-v="licitaciones">Licitaciones</a>
-      <a href="#metodo" data-v="metodo">Cómo leemos</a>
+      <a href="#metodo" data-v="metodo">Metodología</a>
     </nav>
   </div>
 </header>
@@ -250,9 +306,13 @@ textarea{font:400 .92rem var(--f-body);padding:9px 10px;border:1px solid var(--r
 <main class="wrap">
   <section class="hero" aria-labelledby="h1">
     <div class="sechead">
-      <span class="eyebrow">Caribe colombiano · 8 departamentos · desde enero de 2024</span>
+      <span class="eyebrow" id="hero-eye">Caribe colombiano · 8 departamentos · desde enero de 2024</span>
       <h1 id="h1">La plata pública del Caribe, a la vista</h1>
       <p class="lede" id="lede">Cargando los contratos…</p>
+      <div class="doors">
+        <button class="door" type="button" data-jump="h-mapa"><b>Quiero vigilar</b><span>Cómo contrata mi departamento, mi municipio o una entidad</span></button>
+        <a class="door biz" href="#licitaciones"><b>Tengo una empresa</b><span>Licitaciones abiertas hoy para presentarme, con alertas</span></a>
+      </div>
     </div>
     <div class="figs" id="figs"></div>
   </section>
@@ -264,6 +324,13 @@ textarea{font:400 .92rem var(--f-body);padding:9px 10px;border:1px solid var(--r
       <div class="fld" style="flex-basis:240px"><label for="s-ent">Entidad</label><input id="s-ent" type="search" list="dl-ent" placeholder="Escribe el nombre o NIT" autocomplete="off"><datalist id="dl-ent"></datalist></div>
     </div>
     <div class="crumbs" id="crumbs" aria-label="Ruta"></div>
+    <nav class="jump" aria-label="Ir a una sección">
+      <button class="chip" type="button" data-jump="h-mapa">Mapa y ficha</button>
+      <button class="chip" type="button" data-jump="h-radar">Ley de Garantías</button>
+      <button class="chip" type="button" data-jump="h-rank">Ranking</button>
+      <button class="chip" type="button" data-jump="h-tri">Intermediarias</button>
+      <button class="chip" type="button" data-jump="h-ct">Pedir documentos</button>
+    </nav>
   </div>
 
   <section aria-labelledby="h-mapa">
@@ -287,7 +354,7 @@ textarea{font:400 .92rem var(--f-body);padding:9px 10px;border:1px solid var(--r
     </div>
     <div class="radarbig" id="radarbig"></div>
     <div class="legendline" style="padding:0"><span><i style="background:var(--sea)"></i>Contratos directos firmados por mes</span><span><i style="background:var(--buoy)"></i>Enero de 2026</span><span><i style="background:var(--buoy-soft);outline:1px solid var(--buoy)"></i>Veda (feb–jun 2026)</span></div>
-    <div class="smalls" id="smalls"></div>
+    <details class="fold" id="smalls-d"><summary>Ver mes a mes por departamento</summary><div class="smalls" id="smalls"></div></details>
   </section>
 
   <section aria-labelledby="h-rank">
@@ -301,7 +368,7 @@ textarea{font:400 .92rem var(--f-body);padding:9px 10px;border:1px solid var(--r
       <button class="chip" aria-pressed="false" data-m="mun">Municipios</button>
       <button class="chip" aria-pressed="false" data-m="dep">Departamentos</button>
     </div>
-    <div class="tw"><table id="rank"></table></div>
+    <div class="tw"><table id="rank" class="cards"></table></div>
     <button class="more" id="rank-more" type="button">Ver más</button>
   </section>
 
@@ -309,9 +376,10 @@ textarea{font:400 .92rem var(--f-body);padding:9px 10px;border:1px solid var(--r
     <div class="sechead">
       <span class="eyebrow">Bandera nueva · triangulación</span>
       <h2 id="h-tri">Las intermediarias que más reciben</h2>
-      <p>Una entidad contrata a dedo a una empresa pública, una asociación de municipios o un fondo mixto como "gerente integral". La intermediaria contrata después con sus propias reglas, a veces de régimen especial, y el contrato final sale del radar de quien puso la plata.</p>
+      <p>Una entidad contrata de forma directa a una empresa pública, una asociación de municipios o un fondo mixto como "gerente integral". La intermediaria contrata después con sus propias reglas, a veces de régimen especial, y el contrato final sale del radar de quien puso la plata.</p>
     </div>
-    <div class="tw"><table id="tri"></table></div>
+    <div class="tw"><table id="tri" class="cards"></table></div>
+    <button class="more" id="tri-more" type="button" hidden>Ver más intermediarias</button>
   </section>
 
   <section aria-labelledby="h-ct">
@@ -340,17 +408,17 @@ textarea{font:400 .92rem var(--f-body);padding:9px 10px;border:1px solid var(--r
 <div id="v-licitaciones" hidden>
 <main class="wrap">
   <section class="sat-head" aria-labelledby="h-lic">
-    <span class="eyebrow">Sistema de Alerta Temprana · Módulo ex ante · Banderas rojas (red flags) en contratación pública</span>
+    <span class="eyebrow">Sistema de Alerta Temprana · Banderas rojas · Módulo ex ante</span>
     <h1 id="h-lic">Licitaciones abiertas del Caribe: participa, compite y vigila</h1>
-    <p class="lede muted">Evaluamos cada proceso abierto con indicadores de riesgo reconocidos por la literatura internacional, antes de que se adjudique. Cuando una sola empresa se presenta, pierden el Estado y todas las que no se enteraron. Más oferentes, menos contratos a dedo.</p>
-    <p class="basis"><b>Base metodológica</b>
+    <p class="lede muted">Evaluamos cada proceso abierto con indicadores de riesgo reconocidos internacionalmente, antes de que se adjudique. Cuando una sola empresa se presenta, pierden el Estado y las empresas que no se enteraron.</p>
+    <details class="basisd"><summary>Base metodológica · 6 fuentes internacionales</summary><p class="basis">
       <a href="https://www.open-contracting.org/es/resources/red-flags-in-public-procurement-a-guide-to-using-data-to-detect-and-mitigate-risks/" target="_blank" rel="noopener">Open Contracting Partnership (2024)</a> ·
       <a href="https://blogs.worldbank.org/en/governance/proact-using-data-strengthen-efficiency-and-integrity-public-procurement" target="_blank" rel="noopener">Banco Mundial, ProACT</a> ·
       <a href="https://www.oecd.org/en/publications/oecd-guidelines-for-fighting-bid-rigging-in-public-procurement-2025-update_cbe05a56-en/full-report" target="_blank" rel="noopener">OCDE (2025)</a> ·
       <a href="https://publications.iadb.org/publications/english/document/From-Fishing-to-Catching-Developing-Actionable-Red-Flags-in-Public-Procurement-to-Prevent-and-Control-Corruption.pdf" target="_blank" rel="noopener">BID (2022)</a> ·
       <a href="https://icclr.org/publications/guidebook-on-anti-corruption-in-public-procurement-and-the-management-of-public-finances-good-practices-in-ensuring-compliance-with-article-9-of-the-united-nations-convention-against-corruption" target="_blank" rel="noopener">Convención de la ONU contra la Corrupción, art. 9</a> ·
       <a href="https://research.ceu.edu/en/publications/an-objective-corruption-risk-index-using-public-procurement-data/" target="_blank" rel="noopener">Fazekas y Kocsis (2020)</a>
-    </p>
+    </p></details>
     <p class="sub">Metodología v1.1 · noviembre de 2026 · <a href="#metodo">Ficha técnica y cómo citar</a> · Las banderas de contratos ya firmados están en <a href="#veeduria">Veeduría</a>.</p>
   </section>
 
@@ -495,10 +563,45 @@ textarea{font:400 .92rem var(--f-body);padding:9px 10px;border:1px solid var(--r
 </main>
 </div>
 
+<!-- ===== LEGAL ===== -->
+<div id="v-legal" hidden>
+<main class="wrap">
+  <section class="legal" aria-labelledby="h-legal">
+    <div class="sechead"><span class="eyebrow">Información legal · versión del 12 de noviembre de 2026</span><h1 id="h-legal">Términos, datos personales y réplica</h1></div>
+    <h2>Quiénes somos</h2>
+    <p>Marea Pública es una iniciativa ciudadana, independiente y sin afiliación partidista ni institucional, con domicilio en Barranquilla (Atlántico). Su propósito es facilitar el control social de la contratación pública en el Caribe colombiano y promover la participación de más empresas en los procesos de selección. Contacto: <a href="mailto:contacto@mareapublica.com">contacto@mareapublica.com</a>.</p>
+    <h2>Términos de uso</h2>
+    <ul>
+      <li>La información proviene de los datos abiertos de SECOP II que publica la Agencia Nacional de Contratación Pública, Colombia Compra Eficiente, en datos.gov.co. Ante cualquier diferencia, prevalece lo que conste en SECOP II y en los documentos del proceso.</li>
+      <li>Las banderas rojas, el índice Marea y las alertas son indicadores estadísticos construidos con metodologías públicas. No constituyen acusación, juicio de responsabilidad ni prueba de irregularidad alguna; señalan patrones que ameritan revisión y que pueden tener una explicación legal.</li>
+      <li>El contenido es informativo y no constituye asesoría jurídica. Los modelos de derecho de petición y de observaciones al pliego son borradores que el usuario revisa, completa y radica bajo su propia responsabilidad; Marea Pública no envía documentos a ninguna entidad.</li>
+      <li>Puedes reutilizar los datos y gráficos citando la fuente: "Marea Pública, con datos de SECOP II".</li>
+      <li>Estos términos se rigen por la ley colombiana.</li>
+    </ul>
+    <h2>Tratamiento de datos personales</h2>
+    <p>En cumplimiento de la Ley 1581 de 2012 y sus decretos reglamentarios:</p>
+    <ul>
+      <li>La página no pide registro ni recoge datos personales de quienes la visitan. Lo que escribes en los generadores de documentos se procesa en tu propio navegador y no se envía ni se guarda en nuestros servidores.</li>
+      <li>Tu navegador guarda localmente el último filtro que usaste, solo para mostrártelo de nuevo. Puedes borrarlo limpiando los datos del sitio.</li>
+      <li>No publicamos nombres de personas naturales. Los contratistas con cédula no se identifican; las entidades públicas y las personas jurídicas aparecen con el nombre que publica SECOP II.</li>
+      <li>El alojamiento de la página (GitHub) y el servicio de tipografías (Google Fonts) pueden registrar datos técnicos de la conexión, como la dirección IP, conforme a sus propias políticas.</li>
+      <li>Como titular puedes conocer, actualizar, rectificar o pedir la supresión de tus datos, y revocar una autorización, escribiendo a <a href="mailto:contacto@mareapublica.com">contacto@mareapublica.com</a>. Respondemos dentro de los términos de la Ley 1581 de 2012.</li>
+    </ul>
+    <h2>Corrección y derecho de réplica</h2>
+    <ul>
+      <li>Si una entidad o empresa encuentra un dato que no corresponde a la fuente, puede pedir su corrección indicando la ficha, el dato y el documento que lo contradice.</li>
+      <li>Si no hay error de dato sino desacuerdo con la lectura, publicamos su réplica junto a la ficha correspondiente.</li>
+      <li>Respondemos en un plazo máximo de quince días hábiles al correo <a href="mailto:contacto@mareapublica.com">contacto@mareapublica.com</a>.</li>
+    </ul>
+  </section>
+</main>
+</div>
+
 <footer>
   <div class="wrap">
     <p><b>Marea Pública</b> · Observatorio ciudadano e independiente de la contratación pública en el Caribe colombiano. Sin afiliación partidista ni institucional.</p>
     <p id="foot-date">Datos de SECOP II consultados el 2 de noviembre de 2026.</p>
+    <p class="flinks"><a href="#legal">Términos de uso</a><a href="#legal">Tratamiento de datos personales</a><a href="#legal">Corrección y réplica</a><a href="mailto:contacto@mareapublica.com">contacto@mareapublica.com</a></p>
   </div>
 </footer>
 
@@ -579,11 +682,12 @@ function hero(){
   const dirN=Object.values(D.mod).reduce((a,m)=>a+(m.D?m.D[0]:0),0), dirV=Object.values(D.mod).reduce((a,m)=>a+(m.D?m.D[1]:0),0);
   const dm=Object.values(D.dm); const s=i=>dm.reduce((a,x)=>a+x[i],0);
   const j26=s(24), jav=(s(0)+s(12))/2, veda=[25,26,27,28,29].reduce((a,i)=>a+s(i),0);
-  $('#lede').innerHTML='Desde enero de 2024, las entidades de los ocho departamentos firmaron <b>'+nf.format(REG.n)+'</b> contratos por <b>'+copM(REG.v)+'</b>. El '+pct(dirN/REG.n)+' se adjudicó por contratación directa. Explora por departamento, municipio o entidad, compara y pide los documentos.';
+  $('#hero-eye').textContent='Caribe colombiano · 8 departamentos · datos al '+fecha(D.meta.fecha);
+  $('#lede').innerHTML='Desde enero de 2024, las entidades de los ocho departamentos firmaron <b>'+nf.format(REG.n)+'</b> contratos por <b>'+copM(REG.v)+'</b>. Siete de cada diez ('+pct(dirN/REG.n)+') fueron por contratación directa, sin competencia; por valor son el '+pct(dirV/REG.v)+'.';
   $('#figs').innerHTML=[
     ['v',copM(REG.v),'contratado desde 2024'],
     ['v',nf.format(REG.n),'contratos en SECOP II'],
-    ['v',pct(dirV/REG.v),'del valor fue a dedo'],
+    ['v',pct(dirV/REG.v),'del valor, por contratación directa'],
     ['alert',nf.format(j26),'directos en enero de 2026, '+Math.round(j26/jav)+'× lo habitual'],
   ].map(([c,v,k])=>'<div class="fig '+(c==='alert'?'alert':'')+'"><span class="v">'+v+'</span><span class="k">'+k+'</span></div>').join('');
 }
@@ -753,6 +857,7 @@ function rank(){
   }
   $('#rank').innerHTML='<thead>'+head+'</thead><tbody>'+(html||'<tr><td colspan="8" class="empty">No hay entidades con 50 contratos o más en este alcance.</td></tr>')+'</tbody>';
   $('#rank-more').hidden=!(rows.length>rankShown)||rankMode==='dep';
+  cardLabels('#rank');
 }
 $('#rank').addEventListener('click',e=>{const tr=e.target.closest('tr');if(!tr||!tr.dataset)return;
   if(tr.dataset.k){const m=ENT.find(x=>x.k===tr.dataset.k);setScope(m.multi?-1:m.dep,m.multi?-1:m.mun,m.k);$('#scope').scrollIntoView({block:'start'});}
@@ -760,9 +865,15 @@ $('#rank').addEventListener('click',e=>{const tr=e.target.closest('tr');if(!tr||
   else if(tr.dataset.d){setScope(+tr.dataset.d,-1,null);$('#scope').scrollIntoView({block:'start'});}});
 
 /* ---------- triangulación ---------- */
+let triShown=8;
+$('#tri-more').addEventListener('click',()=>{triShown=999;triangulacion();});
+function cardLabels(sel){const t=$(sel);if(!t)return;const hs=[...t.querySelectorAll('thead th')].map(th=>th.textContent.trim());
+  t.querySelectorAll('tbody tr').forEach(tr=>[...tr.children].forEach((td,i)=>{if(td.colSpan>1)return;if(hs[i]==='#'){td.classList.add('hide');return;}if(td.querySelector('.ttl')||td.classList.contains('ttl'))td.classList.add('full');else if(hs[i])td.dataset.l=hs[i];}));}
 function triangulacion(){
   $('#tri').innerHTML='<thead><tr><th>Intermediaria</th><th>NIT</th><th class="n">Contratos</th><th class="n">Valor recibido</th><th class="n">Entidades que le giran</th></tr></thead><tbody>'+
-    D.gi.map(g=>'<tr><td class="ttl">'+esc(g[0])+'</td><td class="mono">'+g[1]+'</td><td class="n">'+g[2]+'</td><td class="n">'+copM(g[3])+'</td><td class="n">'+g[4]+'</td></tr>').join('')+'</tbody>';
+    D.gi.slice(0,triShown).map(g=>'<tr><td class="ttl full">'+esc(g[0])+'</td><td class="mono">'+g[1]+'</td><td class="n">'+g[2]+'</td><td class="n">'+copM(g[3])+'</td><td class="n">'+g[4]+'</td></tr>').join('')+'</tbody>';
+  $('#tri-more').hidden=D.gi.length<=triShown;
+  cardLabels('#tri');
 }
 
 /* ---------- contratos + petición ---------- */
@@ -907,12 +1018,12 @@ function licRender(){
 }
 function card(l){
   const today=D.meta.fecha;const dd=dayDiff(today,l[7]);const s=lseg(l),N=SEGN();const fl=flagsOf(l);const [sc,st]=sem(fl.length);
-  const cat=s?'<div class="unspsc"><span class="mono">'+(l[10]?l[10]:s==='B'?'Bien':'Segmento '+s)+'</span> '+esc(l[13]||N[s]||'')+' <span class="est'+(l[10]?' of':'')+'">'+(l[10]?'oficial':'estimado')+'</span></div>':'<div class="unspsc muted">Sin categoría UNSPSC</div>';
+  const catB=s?'<div class="unspsc"><span class="mono">'+(l[10]?l[10]:s==='B'?'Bien':'Segmento '+s)+'</span> '+esc(l[13]||N[s]||'')+' <span class="est'+(l[10]?' of':'')+'">'+(l[10]?'oficial':'estimado')+'</span></div>':'<div class="unspsc muted">Sin categoría UNSPSC</div>';
   const e=C().ent[l[14]];const hist=e&&e[0]>=10?'<div class="sub">Historial de la entidad: '+pct(e[1]/e[0])+' de sus procesos con un solo oferente.</div>':'';
   const vis=l[15]!=null?'<span class="sub">'+(l[15]===1?'1 empresa lo ha visto':nf.format(l[15])+' empresas lo han visto')+'</span>':'';
   const fx=fl.length?'<details class="flags"><summary>Ver alertas y qué hacer</summary><ul>'+fl.map(f=>'<li><b>'+f.nm+'.</b> '+f.t+' <span class="ref">Referencia: '+f.ref.join('; ')+'</span></li>').join('')+'</ul></details>':'';
-  return '<article class="lic"><div class="tag"><span class="semaf s-'+sc+'"><i aria-hidden="true"></i>'+st+'</span><span class="pill">'+MODL[l[4]]+'</span>'+(isPyme(l)?'<span class="pill pyme">PYME</span>':'')+'<span class="pill'+(dd<=2?' urg':'')+'">cierra '+(dd<=0?'hoy':dd===1?'mañana':'en '+dd+' días')+'</span></div>'+cat+
-    '<div class="amt">'+(l[5]>0?copM(l[5]):'Presupuesto en el pliego')+'</div><p class="ob">'+esc(l[3]==='No Definido'?'Objeto no publicado en datos abiertos':l[3]+'…')+'</p><div class="sub"><b>'+esc(l[0])+'</b> · '+esc(l[2]==='No Definido'?SHORT[l[1]]:l[2]+', '+SHORT[l[1]])+'</div>'+hist+fx+
+  return '<article class="lic"><div class="tag"><span class="semaf s-'+sc+'"><i aria-hidden="true"></i>'+st+'</span><span class="pill">'+MODL[l[4]]+'</span>'+(isPyme(l)?'<span class="pill pyme">PYME</span>':'')+'<span class="pill'+(dd<=2?' urg':'')+'">cierra '+(dd<=0?'hoy':dd===1?'mañana':'en '+dd+' días')+'</span></div>'+
+    '<div class="amt">'+(l[5]>0?copM(l[5]):'Presupuesto en el pliego')+'</div><p class="ob">'+esc(l[3]==='No Definido'?'Objeto no publicado en datos abiertos':l[3]+'…')+'</p><div class="sub"><b>'+esc(l[0])+'</b> · '+esc(l[2]==='No Definido'?SHORT[l[1]]:l[2]+', '+SHORT[l[1]])+'</div>'+catB+hist+fx+
     '<div class="foot">'+vis+'<span class="mono">'+esc(l[9])+'</span></div><div class="acts2"><a class="btn solid" href="'+NOTICE+encodeURIComponent(l[8])+'" target="_blank" rel="noopener">Ver y participar en SECOP II</a><button class="btn" type="button" data-obs="'+esc(l[8])+'">Presentar observaciones</button></div></article>';
 }
 /* termómetro */
@@ -976,11 +1087,13 @@ function metodo(){
 
 /* ---------- routing ---------- */
 function route(){
-  const v=(location.hash||'#veeduria').slice(1);const view=['veeduria','licitaciones','metodo'].includes(v)?v:'veeduria';
-  ['veeduria','licitaciones','metodo'].forEach(x=>document.getElementById('v-'+x).hidden=x!==view);
+  const v=(location.hash||'#veeduria').slice(1);const view=['veeduria','licitaciones','metodo','legal'].includes(v)?v:'veeduria';
+  ['veeduria','licitaciones','metodo','legal'].forEach(x=>document.getElementById('v-'+x).hidden=x!==view);
   document.querySelectorAll('.nav a').forEach(a=>{if(a.dataset.v===view)a.setAttribute('aria-current','page');else a.removeAttribute('aria-current');});
 }
 window.addEventListener('hashchange',()=>{route();window.scrollTo(0,0);});
+document.addEventListener('click',e=>{const b=e.target.closest('[data-jump]');if(!b)return;const t=document.getElementById(b.dataset.jump);if(t)t.scrollIntoView({behavior:'smooth',block:'start'});});
+try{if(window.matchMedia('(min-width:761px)').matches)document.getElementById('smalls-d').open=true;}catch(_){}
 try{const s=JSON.parse(localStorage.getItem('mp-scope')||'null');if(s&&typeof s.dep==='number')scope=s;}catch(_){}
 route();
 })();
