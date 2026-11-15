@@ -6,6 +6,9 @@ on:
   workflow_dispatch: {}
   push:
     branches: [main]
+    paths-ignore:
+      - "video/**"
+      - ".github/workflows/video-*.yml"
 
 permissions:
   contents: write
