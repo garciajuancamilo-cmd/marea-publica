@@ -9,6 +9,8 @@ on:
     paths-ignore:
       - "video/**"
       - ".github/workflows/video-*.yml"
+      - "bot/**"
+      - ".github/workflows/verificar-*.yml"
 
 permissions:
   contents: write

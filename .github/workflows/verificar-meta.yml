@@ -1,0 +1,30 @@
+name: Verificar conexión con Meta
+
+on:
+  workflow_dispatch: {}
+  push:
+    branches: [main]
+    paths:
+      - "bot/verificar_meta.py"
+      - ".github/workflows/verificar-meta.yml"
+
+permissions:
+  contents: write
+
+jobs:
+  verificar:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Consultar Meta (sin publicar)
+        env:
+          META_TOKEN: ${{ secrets.META_TOKEN }}
+        run: python bot/verificar_meta.py
+      - name: Guardar resultado en la rama "estado"
+        run: |
+          cd estado
+          git init -q -b estado
+          git config user.name "marea-bot"
+          git config user.email "marea-bot@users.noreply.github.com"
+          git add -A && git commit -q -m "Estado Meta $(date -u +%FT%H:%MZ)"
+          git push -f -q "https://x-access-token:${{ secrets.GITHUB_TOKEN }}@github.com/${{ github.repository }}" estado
