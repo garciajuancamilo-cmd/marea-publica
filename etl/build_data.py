@@ -222,6 +222,49 @@ def tipo(seg):
 
 
 # ---------------------------------------------------------------- consultas
+def semana(hoy):
+    """Contratos firmados en los últimos 7 días y en los 7 anteriores, por departamento,
+    más los contratos directos más grandes de la semana (proveedor persona jurídica).
+    Si algo falla devuelve None: nunca debe tumbar la actualización de la página."""
+    try:
+        fin = hoy.isoformat()
+        ini = (hoy - dt.timedelta(days=7)).isoformat()
+        ini2 = (hoy - dt.timedelta(days=14)).isoformat()
+
+        def por_dep(desde, hasta, extra=""):
+            rows = q(CONTRATOS, {"$select": "departamento as d, count(*) as n, sum(valor_del_contrato) as v",
+                                 "$where": BASE + extra + f" AND fecha_de_firma >= '{desde}' AND fecha_de_firma < '{hasta}'",
+                                 "$group": "departamento", "$limit": 50})
+            m = {r["d"]: (int(num(r["n"])), round(num(r["v"]) / 1e5) / 10) for r in rows}
+            return [list(m.get(d, (0, 0))) for d in DEPS]
+
+        actual, actual_dir = por_dep(ini, fin), por_dep(ini, fin, DIRECTA)
+        previa, previa_dir = por_dep(ini2, ini), por_dep(ini2, ini, DIRECTA)
+        top_raw = q(CONTRATOS, {
+            "$select": "nombre_entidad as e, nit_entidad as ne, departamento as d, ciudad as c, "
+                       "proveedor_adjudicado as p, documento_proveedor as dp, valor_del_contrato as v, "
+                       "fecha_de_firma as f, objeto_del_contrato as o, id_contrato as id, urlproceso as u, "
+                       "modalidad_de_contratacion as m",
+            "$where": BASE + DIRECTA + f" AND fecha_de_firma >= '{ini}' AND fecha_de_firma < '{fin}' "
+                                       "AND tipodocproveedor='NIT'",
+            "$order": "valor_del_contrato desc", "$limit": 15})
+        top = []
+        for b in top_raw:
+            url = (b.get("u") or {}).get("url", "") if isinstance(b.get("u"), dict) else ""
+            top.append({"entidad": tc(b.get("e"))[:90], "nit_entidad": b.get("ne", ""), "dep": b.get("d", ""),
+                        "ciudad": tc(b.get("c"))[:40], "proveedor": tc(b.get("p"))[:90], "nit_proveedor": b.get("dp", ""),
+                        "valor_millones": round(num(b.get("v")) / 1e5) / 10, "fecha": str(b.get("f", ""))[:10],
+                        "objeto": sc(b.get("o"))[:300], "modalidad": b.get("m", ""), "id": b.get("id", ""), "url": url})
+        return {"desde": ini, "hasta": fin, "previa_desde": ini2,
+                "nota": "Conteos [contratos, valor en millones] por departamento, en el orden de deps. "
+                        "SECOP publica con rezago: la última semana suele estar incompleta.",
+                "total": actual, "directa": actual_dir, "total_previa": previa, "directa_previa": previa_dir,
+                "top_directos": top}
+    except Exception as e:  # noqa: BLE001
+        print(f"Novedades de la semana no disponibles: {e}", flush=True)
+        return None
+
+
 def main() -> None:
     hoy = dt.date.today()
     log = lambda m: print(f"[{dt.datetime.now():%H:%M:%S}] {m}", flush=True)
@@ -329,6 +372,9 @@ def main() -> None:
             big[r[0]] = [tc(b["p"])[:80], b["d"], round(num(b["v"]) / 1e5) / 10, str(b.get("f", ""))[:10],
                          tc(b.get("o")).replace(";", ",")[:90].strip(), b["id"], uid(b.get("u"))]
 
+    log("Novedades de la semana (para el contenido diario)")
+    sem = semana(hoy)
+
     log("Licitaciones abiertas")
     manana = (hoy + dt.timedelta(days=1)).isoformat()
     hasta = (hoy + dt.timedelta(days=30)).isoformat()
@@ -416,7 +462,7 @@ def main() -> None:
         "depTot": [list(dep_tot.get(d, (0, 0))) for d in DEPS],
         "E": E, "lic": lic,
         "seg": {k: v for k, v in SEGMENTOS.items() if any(r[11] == k for r in lic) or k in comp["seg"]},
-        "comp": comp, "munis": munis, "dm": dm, "mod": mod, "gi": gi, "big": big,
+        "comp": comp, "munis": munis, "dm": dm, "mod": mod, "gi": gi, "big": big, "sem": sem,
     }
 
     # control de calidad: la suma por entidad debe coincidir con los totales oficiales
