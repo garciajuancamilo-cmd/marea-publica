@@ -70,5 +70,13 @@
   "formato": "16:9 1280x720",
   "fuente": "Higgsfield Seedance 2.0 (plan Plus)",
   "higgsfield_id_prefijo": "589091c8"
+ },
+ {
+  "archivo": "tomas/temas/via-construccion-1.mp4",
+  "descripcion": "Vía en construcción entre vegetación",
+  "categoria": "temas",
+  "formato": "16:9 1280x720",
+  "fuente": "Higgsfield Seedance 2.0 (plan Plus)",
+  "higgsfield_id_prefijo": "f872880a"
  }
 ]
