@@ -54,7 +54,7 @@ Indicadores que se miran cada semana: seguidores nuevos, alcance a no seguidores
 3. Producir la pieza (video con render_semana.py o sus variantes, o carrusel de 1080×1350).
 4. Revisar con esta lista: ¿el gancho funciona sin sonido?, ¿se entiende en 3 segundos?, ¿hay una sola idea?, ¿la cifra está bien y tiene fuente?, ¿respeta las reglas del punto 5?, ¿termina con una razón para guardar, compartir o comentar?
 5. Dejarla en bot/cola/ con aprobado=false y avisar a Juan Camilo para que apruebe.
-6. Después de publicar: archivar en Google Drive (Mi unidad / Marea Pública / Redes sociales / Facebook e Instagram / AAAA-MM-DD / pieza) con el material, Caption.docx y Análisis.docx.
+6. Después de publicar: archivar en Google Drive (Mi unidad / Marea Pública / Redes sociales / Facebook e Instagram / AAAA-MM-DD / pieza) con el material, Caption.docx y Análisis.docx. Los videos se archivan como copia liviana (menos de 3 MB, porque la conexión con Drive no deja subir más); el original queda en el repositorio.
 
 ## 7. Análisis
 
