@@ -69,6 +69,7 @@ rs.cabecera = cabecera
 
 rs.DIBUJA.update({"hook": escena_hook, "leemos": escena_leemos, "puertas": escena_puertas})
 rs.guion = guion
+rs.PERFIL = "institucional"
 _orig_conteo = rs.escena_conteo
 def conteo(d, p, prm):
     n = int(prm["n"] * ease(p * 1.6))

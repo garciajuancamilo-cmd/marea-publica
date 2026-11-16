@@ -334,6 +334,18 @@ DIBUJA = {"intro": escena_intro, "conteo": escena_conteo, "grilla": escena_grill
           "barras": escena_barras, "idea": escena_idea, "cierre": escena_cierre}
 
 
+# ---------- música ----------
+PERFIL = "veeduria"   # veeduria | mipymes | institucional
+
+def elegir_musica(perfil):
+    """Rota las pistas del perfil según el día del año (misma pista todo el día)."""
+    import datetime as _dt, glob as _glob
+    pistas = sorted(_glob.glob(os.path.join(RAIZ, "video", "musica", perfil, "*.mp3")))
+    if not pistas:
+        return None
+    return pistas[_dt.date.today().timetuple().tm_yday % len(pistas)]
+
+
 # ---------- principal ----------
 def main():
     salida = sys.argv[1] if len(sys.argv) > 1 else os.path.join(RAIZ, "video", "salida", "semana.mp4")
@@ -378,10 +390,15 @@ def main():
     nframes = int(total * FPS)
     cmd = ["ffmpeg", "-y", "-loglevel", "error", "-f", "rawvideo", "-pix_fmt", "rgb24",
            "-s", f"{W}x{H}", "-r", str(FPS), "-i", "-", "-i", mp3]
-    musica = os.path.join(RAIZ, "video", "musica.mp3")
-    if os.path.exists(musica):
+    musica = elegir_musica(PERFIL)
+    if musica:
+        print("Música:", os.path.basename(musica))
+        fin_m = max(0.5, total - 1.5)
         cmd += ["-stream_loop", "-1", "-i", musica, "-filter_complex",
-                "[2:a]volume=0.10[m];[1:a][m]amix=inputs=2:duration=first[a]", "-map", "0:v", "-map", "[a]"]
+                f"[2:a]atrim=0:{total:.2f},volume=0.30,afade=t=in:d=0.6,afade=t=out:st={fin_m:.2f}:d=1.5[m];"
+                "[m][1:a]sidechaincompress=threshold=0.02:ratio=10:attack=15:release=400[md];"
+                "[1:a]apad[v];[v][md]amix=inputs=2:duration=shortest:normalize=0[a]",
+                "-map", "0:v", "-map", "[a]"]
     cmd += ["-c:v", "libx264", "-preset", "veryfast", "-crf", "20", "-pix_fmt", "yuv420p",
             "-c:a", "aac", "-b:a", "160k", "-movflags", "+faststart", salida]
     proc = subprocess.Popen(cmd, stdin=subprocess.PIPE)
