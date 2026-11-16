@@ -1,0 +1,138 @@
+{
+ "total": [
+  {
+   "count": "1000"
+  }
+ ],
+ "max_pub": [
+  {
+   "m": "2024-12-10T10:57:50.000",
+   "r": "2024-12-16T10:00:00.000"
+  }
+ ],
+ "dep_values": [
+  {
+   "departamento_entidad": "Distrito Capital de Bogotá",
+   "n": "276"
+  },
+  {
+   "departamento_entidad": "Antioquia",
+   "n": "96"
+  },
+  {
+   "departamento_entidad": "No Definido",
+   "n": "64"
+  },
+  {
+   "departamento_entidad": "Valle del Cauca",
+   "n": "60"
+  },
+  {
+   "departamento_entidad": "Santander",
+   "n": "48"
+  },
+  {
+   "departamento_entidad": "Cundinamarca",
+   "n": "46"
+  },
+  {
+   "departamento_entidad": "Tolima",
+   "n": "38"
+  },
+  {
+   "departamento_entidad": "Bolívar",
+   "n": "36"
+  },
+  {
+   "departamento_entidad": "Magdalena",
+   "n": "28"
+  },
+  {
+   "departamento_entidad": "Norte de Santander",
+   "n": "27"
+  },
+  {
+   "departamento_entidad": "Nariño",
+   "n": "27"
+  },
+  {
+   "departamento_entidad": "Huila",
+   "n": "25"
+  },
+  {
+   "departamento_entidad": "Boyacá",
+   "n": "25"
+  },
+  {
+   "departamento_entidad": "Quindío",
+   "n": "22"
+  },
+  {
+   "departamento_entidad": "Risaralda",
+   "n": "22"
+  },
+  {
+   "departamento_entidad": "Atlántico",
+   "n": "20"
+  },
+  {
+   "departamento_entidad": "Caldas",
+   "n": "18"
+  },
+  {
+   "departamento_entidad": "Cesar",
+   "n": "17"
+  },
+  {
+   "departamento_entidad": "Casanare",
+   "n": "16"
+  },
+  {
+   "departamento_entidad": "Cauca",
+   "n": "15"
+  },
+  {
+   "departamento_entidad": "Meta",
+   "n": "14"
+  },
+  {
+   "departamento_entidad": "Sucre",
+   "n": "13"
+  },
+  {
+   "departamento_entidad": "Córdoba",
+   "n": "12"
+  },
+  {
+   "departamento_entidad": "Caquetá",
+   "n": "7"
+  },
+  {
+   "departamento_entidad": "Arauca",
+   "n": "6"
+  },
+  {
+   "departamento_entidad": "San Andrés, Providencia y Santa Catalina",
+   "n": "6"
+  },
+  {
+   "departamento_entidad": "La Guajira",
+   "n": "6"
+  },
+  {
+   "departamento_entidad": "Putumayo",
+   "n": "5"
+  },
+  {
+   "departamento_entidad": "Amazonas",
+   "n": "5"
+  }
+ ],
+ "estados_recientes": [],
+ "muestra": [],
+ "recepcion_futura": [
+  {
+   "count": "0"
+  }
+ ]
+}
