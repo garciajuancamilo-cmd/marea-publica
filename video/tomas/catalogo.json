@@ -1,0 +1,74 @@
+[
+ {
+  "archivo": "tomas/ciudades/barranquilla-rio-1.mp4",
+  "descripcion": "Río ancho (Barranquilla)",
+  "categoria": "ciudades",
+  "formato": "16:9 1280x720",
+  "fuente": "Higgsfield Seedance 2.0 (plan Plus)",
+  "higgsfield_id_prefijo": "6b1a85a3"
+ },
+ {
+  "archivo": "tomas/ciudades/cartagena-murallas-1.mp4",
+  "descripcion": "Murallas al atardecer (Cartagena)",
+  "categoria": "ciudades",
+  "formato": "16:9 1280x720",
+  "fuente": "Higgsfield Seedance 2.0 (plan Plus)",
+  "higgsfield_id_prefijo": "72ed0916"
+ },
+ {
+  "archivo": "tomas/ciudades/monteria-rio-1.mp4",
+  "descripcion": "Río con planchón (Montería)",
+  "categoria": "ciudades",
+  "formato": "16:9 1280x720",
+  "fuente": "Higgsfield Seedance 2.0 (plan Plus)",
+  "higgsfield_id_prefijo": "46c0de2c"
+ },
+ {
+  "archivo": "tomas/ciudades/san-andres-mar-1.mp4",
+  "descripcion": "Mar de colores (San Andrés)",
+  "categoria": "ciudades",
+  "formato": "16:9 1280x720",
+  "fuente": "Higgsfield Seedance 2.0 (plan Plus)",
+  "higgsfield_id_prefijo": "8d5b4b60"
+ },
+ {
+  "archivo": "tomas/ciudades/santa-marta-bahia-1.mp4",
+  "descripcion": "Bahía con montañas (Santa Marta)",
+  "categoria": "ciudades",
+  "formato": "16:9 1280x720",
+  "fuente": "Higgsfield Seedance 2.0 (plan Plus)",
+  "higgsfield_id_prefijo": "1ec1a115"
+ },
+ {
+  "archivo": "tomas/marca/olas-1.mp4",
+  "descripcion": "Olas en la orilla",
+  "categoria": "marca",
+  "formato": "16:9 1280x720",
+  "fuente": "Higgsfield Seedance 2.0 (plan Plus)",
+  "higgsfield_id_prefijo": "489643aa"
+ },
+ {
+  "archivo": "tomas/temas/documentos-1.mp4",
+  "descripcion": "Documentos sobre escritorio",
+  "categoria": "temas",
+  "formato": "16:9 1280x720",
+  "fuente": "Higgsfield Seedance 2.0 (plan Plus)",
+  "higgsfield_id_prefijo": "cb6da564"
+ },
+ {
+  "archivo": "tomas/temas/portatil-datos-1.mp4",
+  "descripcion": "Manos en portátil con gráficas",
+  "categoria": "temas",
+  "formato": "16:9 1280x720",
+  "fuente": "Higgsfield Seedance 2.0 (plan Plus)",
+  "higgsfield_id_prefijo": "90c41e13"
+ },
+ {
+  "archivo": "tomas/temas/taller-mipyme-1.mp4",
+  "descripcion": "Taller de una pequeña empresa",
+  "categoria": "temas",
+  "formato": "16:9 1280x720",
+  "fuente": "Higgsfield Seedance 2.0 (plan Plus)",
+  "higgsfield_id_prefijo": "589091c8"
+ }
+]
