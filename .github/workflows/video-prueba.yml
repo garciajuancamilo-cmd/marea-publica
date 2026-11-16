@@ -1,7 +1,11 @@
 name: Video de prueba (resumen semanal)
 
 on:
-  workflow_dispatch: {}
+  workflow_dispatch:
+    inputs:
+      script:
+        description: "Script de video"
+        default: "render_semana"
   push:
     branches: [main]
     paths:
@@ -30,7 +34,7 @@ jobs:
       - name: Generar video
         env:
           ELEVENLABS_API_KEY: ${{ secrets.ELEVENLABS_API_KEY }}
-        run: python video/render_semana.py salida/semana.mp4
+        run: python video/${{ github.event.inputs.script || 'render_semana' }}.py salida/${{ github.event.inputs.script || 'render_semana' }}.mp4
       - name: Guardar en la rama "videos"
         run: |
           cp site/data.json salida/ 2>/dev/null || true
