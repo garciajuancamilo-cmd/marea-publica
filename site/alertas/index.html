@@ -1,0 +1,21 @@
+<!doctype html>
+<html lang="es"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Recibe alertas de licitaciones · Marea Pública</title>
+<meta name="robots" content="noindex">
+<style>body{font:16px/1.5 system-ui,sans-serif;background:#0f2a3a;color:#f3f1ea;display:grid;place-items:center;min-height:100vh;margin:0;padding:16px;text-align:center}a{color:#7fd1c7}</style>
+</head><body>
+<p>Te llevamos al formulario de alertas de Marea Pública…<br><a id="ir" href="https://airtable.com/appThwHnSm6ICO7dG/pagTOGO01C2DgHVnf/form">Si no avanza, toca aquí</a></p>
+<script>
+(function(){
+  var r=(new URLSearchParams(location.search).get('r')||'').toLowerCase();
+  var o={ig:'Instagram',fb:'Facebook',tt:'TikTok',web:'Página web'}[r]||'Otro';
+  var url='https://airtable.com/appThwHnSm6ICO7dG/pagTOGO01C2DgHVnf/form?prefill_Origen='+encodeURIComponent(o)+'&hide_Origen=true';
+  document.getElementById('ir').href=url;
+  window.goatcounter={no_onload:true};
+  var s=document.createElement('script');s.async=true;s.src='https://gc.zgo.at/count.js';s.setAttribute('data-goatcounter','https://mareapublica.goatcounter.com/count');
+  var go=function(){location.replace(url)};
+  s.onload=function(){try{window.goatcounter.count({path:'/alertas?r='+(r||'directo'),title:'Alertas · '+o});}catch(e){} setTimeout(go,400)};
+  s.onerror=go; document.head.appendChild(s); setTimeout(go,1500);
+})();
+</script>
+</body></html>
