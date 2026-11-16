@@ -69,3 +69,11 @@ Indicadores que se miran cada semana: seguidores nuevos, alcance a no seguidores
 - Siempre activar "Contenido generado por IA" (en Mostrar más) y no poner música de TikTok encima.
 - Esperar a que termine la "Comprobación de contenido rápida" antes de tocar Programar: si no, TikTok ofrece "Publicar ahora".
 - En el caption no usar emojis con selector de variación (como 🏝️): desordenan el editor. 3 a 5 hashtags.
+
+## 9. Ritmo semanal (desde el 22 de noviembre de 2026)
+
+- **Domingo, 10:00 a. m.:** la tarea dominical hace el análisis de la semana y prepara las 6 piezas de la semana siguiente (lunes a sábado) con los datos del día. Juan Camilo las aprueba en una sola sesión; luego se renderizan, se dejan en bot/cola/ con su hora y se programan en TikTok Studio (máximo 10 días antes).
+- **De lunes a sábado:** el robot publica solo. Antes de cada pieza revisa que siga vigente: en las piezas de licitaciones, la cola lleva `verificar_lic` con los noticeUID; si alguno ya no está abierto en data.json, la pieza no sale y queda en bot/retenido/. Cualquier pieza puede llevar `vigente_hasta` (fecha UTC).
+- **Revisión diaria (tarea de las 7 a. m.):** mira lo retenido, los errores de publicación y si los datos están al día. Solo escribe a Juan Camilo si hay algo que atender.
+- Las piezas de licitaciones mencionan procesos que cierren después de su fecha de publicación, con margen de al menos 3 días.
+- Si aparece algo urgente durante la semana, se propone como pieza extra y solo sale con su aprobación.

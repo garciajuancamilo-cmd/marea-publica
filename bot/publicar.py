@@ -73,16 +73,45 @@ def facebook(pid, ptoken, e):
     r = api("POST", f"{pid}/feed", token=ptoken, message=e["caption"], **params)
     return {"post_id": r.get("id")}
 
+def vigente(e, ahora):
+    """Control previo: None si la pieza puede salir; si no, el motivo para retenerla."""
+    hasta = e.get("vigente_hasta")
+    if hasta and ahora > dt.datetime.fromisoformat(hasta.replace("Z", "+00:00")):
+        return "venció su vigencia (" + hasta + ")"
+    uids = e.get("verificar_lic") or []
+    if uids:
+        try:
+            D = json.load(open(os.path.join(RAIZ, "site", "data.json"), encoding="utf-8"))
+        except Exception as ex:
+            return "no se pudo leer data.json para verificar licitaciones: " + str(ex)
+        hoy = (ahora - dt.timedelta(hours=5)).date().isoformat()
+        abiertas = {r[8]: r[7] for r in D.get("lic", [])}
+        malas = [u for u in uids if u not in abiertas or str(abiertas[u])[:10] < hoy]
+        if malas:
+            return "procesos ya no abiertos en SECOP II: " + ", ".join(malas)
+    return None
+
 def main():
     os.makedirs(HECHO, exist_ok=True)
+    RET = os.path.join(RAIZ, "bot", "retenido")
     ahora = dt.datetime.now(dt.timezone.utc)
     pendientes = []
     for f in sorted(glob.glob(os.path.join(COLA, "*.json"))):
         e = json.load(open(f, encoding="utf-8"))
         if os.path.exists(os.path.join(HECHO, e["id"] + ".json")) or not e.get("aprobado"):
             continue
+        if os.path.exists(os.path.join(RET, e["id"] + ".json")):
+            continue
         cuando = dt.datetime.fromisoformat(e["publicar_en"].replace("Z", "+00:00"))
         if PRUEBA or cuando <= ahora:
+            motivo = vigente(e, ahora)
+            if motivo:
+                print(e["id"], "RETENIDO:", motivo)
+                if not PRUEBA:
+                    os.makedirs(RET, exist_ok=True)
+                    json.dump({"id": e["id"], "fecha": ahora.isoformat(), "motivo": motivo},
+                              open(os.path.join(RET, e["id"] + ".json"), "w"), ensure_ascii=False, indent=1)
+                continue
             pendientes.append((cuando, e))
     pendientes.sort(key=lambda x: x[0])
     if not pendientes:
