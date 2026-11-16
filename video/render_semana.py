@@ -7,7 +7,7 @@ Sin clave usa audio en silencio y tiempos estimados (sirve para probar el diseñ
 
 Uso: python video/render_semana.py [salida.mp4]
 """
-import base64, json, math, os, re, subprocess, sys, urllib.request
+import base64, json, math, os, re, subprocess, sys, unicodedata, urllib.request
 from PIL import Image, ImageDraw, ImageFont
 
 RAIZ = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
@@ -16,6 +16,7 @@ W, H, FPS = 1080, 1920, 30
 
 VOZ_MUJER = "Ut5x3LuSfExdBqv3rEz7"   # Marea Pública · Voz mujer (veeduría)
 VOZ_HOMBRE = "vY4YbSJxUDECdZsKPrF6"  # Marea Pública · Voz hombre (MiPymes)
+VOZ = VOZ_MUJER
 
 # Paleta de la página (modo oscuro)
 NIGHT = (11, 42, 51)
@@ -99,19 +100,19 @@ def guion(data):
     bajo = grandes[-1]
 
     escenas = [
-        ("intro", f"Semana del {rango} al {d2} de {m2}. Así contrataron las entidades públicas del Caribe colombiano.",
+        ("intro", f"[warmly] Semana del {rango} al {d2} de {m2}. Así contrataron las entidades públicas del Caribe colombiano.",
          {"rango": f"{d1} {m1[:3].upper()} – {d2} {m2[:3].upper()}"}),
-        ("conteo", f"Firmaron {letras(T)} contratos en SECOP.", {"n": T}),
-        ("grilla", f"{letras(D).capitalize()} fueron por contratación directa. "
-                   f"{letras(de10).capitalize()} de cada diez, sin competencia entre empresas.",
+        ("conteo", f"Firmaron… [short pause] {miles(T)} contratos en SECOP.", {"n": T}),
+        ("grilla", f"{miles(D)} fueron por contratación directa. "
+                   f"[seriously] {('Casi ' + letras(de10)) if de10 * 10 > pct + 1 else letras(de10).capitalize()} de cada diez, SIN competencia entre empresas.",
          {"pct": pct, "de10": de10, "D": D}),
-        ("barras", f"En {con_art(alto1[0])} llegó al {letras(alto1[1])} por ciento. "
-                   f"En {con_art(alto2[0])}, al {letras(alto2[1])}. "
-                   f"La excepción fue {con_art(bajo[0])}: {letras(bajo[1])} por ciento.",
+        ("barras", f"[pause] En {con_art(alto1[0])} llegó al {alto1[1]} %. "
+                   f"En {con_art(alto2[0])}, al {alto2[1]} %. "
+                   f"La excepción fue {con_art(bajo[0])}: {bajo[1]} %.",
          {"filas": filas, "hi": {alto1[0], alto2[0]}, "lo": {bajo[0]}}),
-        ("idea", "La contratación directa es legal, y a veces se justifica. "
-                 "Pero cuando se vuelve la regla, menos empresas pueden competir.", {}),
-        ("cierre", "Busca tu municipio en marea pública punto com. Esto es Marea Pública.", {}),
+        ("idea", "[calmly] La contratación directa es legal, y a veces se justifica… "
+                 "pero cuando se vuelve la regla, menos empresas pueden competir.", {}),
+        ("cierre", "[warmly] Busca tu municipio en mareapublica.com. [short pause] Esto es Marea Pública.", {}),
     ]
     caption = (
         f"📊 Semana del {d1} de {m1} al {d2} de {m2} en el Caribe colombiano\n\n"
@@ -130,16 +131,46 @@ def guion(data):
     return escenas, caption
 
 
+# ---------- pronunciación ----------
+# La voz recibe la forma "hablada"; los subtítulos muestran la forma escrita.
+PRONUNCIACION = {
+    "MiPymes": "/mi ˈpimes/", "MiPyme": "/mi ˈpime/", "mipymes": "/mi ˈpimes/",
+    "SECOP": "/ˈsekop/", "NIT": "/nit/", "UNSPSC": "U N S P S C",
+    "Magangué": "/maɣaŋˈɡe/", "Ciénaga": "/ˈsjenaɣa/", "Riohacha": "/rioˈat͡ʃa/",
+    "Mompós": "/momˈpos/", "Uribia": "/uˈɾiβja/",
+}
+ETIQUETA = re.compile(r"\[[^\]]+\]\s*")
+
+def escrito(t):
+    """Texto para subtítulos: sin marcas de interpretación."""
+    return re.sub(r"\s+", " ", ETIQUETA.sub("", t)).strip()
+
+def hablado(t, con_marcas=True):
+    """Texto para la voz: con pronunciación fonética y sin separador de miles."""
+    if not con_marcas:
+        t = ETIQUETA.sub("", t)
+    for k, v in PRONUNCIACION.items():
+        t = re.sub(rf"(?<!\w){re.escape(k)}(?!\w)", v, t)
+    t = re.sub(r"(\d)\.(\d{3})(?!\d)", r"\1\2", t)
+    t = re.sub(r"(\d)\.(\d{3})(?!\d)", r"\1\2", t)
+    return t
+
+def _norm(w):
+    w = unicodedata.normalize("NFD", w.lower())
+    return re.sub(r"[^a-z0-9%]", "", "".join(c for c in w if unicodedata.category(c) != "Mn"))
+
+
 # ---------- voz ----------
-def tts(texto, voz, salida_mp3):
+def tts(texto_marcado, voz, salida_mp3):
     key = os.environ.get("ELEVENLABS_API_KEY", "").strip()
     if not key:
         return None
     ultimo = None
-    for modelo in ("eleven_v3", "eleven_multilingual_v2"):
-        body = {"text": texto, "model_id": modelo}
-        if modelo == "eleven_multilingual_v2":
-            body["voice_settings"] = {"stability": 0.5, "similarity_boost": 0.8, "style": 0.15}
+    for modelo in ("eleven_v4", "eleven_v3", "eleven_multilingual_v2"):
+        con_marcas = modelo != "eleven_multilingual_v2"
+        body = {"text": hablado(texto_marcado, con_marcas), "model_id": modelo}
+        if not con_marcas:
+            body["voice_settings"] = {"stability": 0.45, "similarity_boost": 0.8, "style": 0.2}
         req = urllib.request.Request(
             f"https://api.elevenlabs.io/v1/text-to-speech/{voz}/with-timestamps?output_format=mp3_44100_128",
             data=json.dumps(body).encode(), method="POST",
@@ -147,9 +178,11 @@ def tts(texto, voz, salida_mp3):
         try:
             with urllib.request.urlopen(req, timeout=180) as r:
                 j = json.load(r)
+            al = j.get("alignment") or j.get("normalized_alignment")
+            if not al or not al.get("characters"):
+                raise RuntimeError("sin marcas de tiempo")
             with open(salida_mp3, "wb") as f:
                 f.write(base64.b64decode(j["audio_base64"]))
-            al = j.get("alignment") or j.get("normalized_alignment")
             print(f"Voz generada con {modelo}")
             return al
         except Exception as e:
@@ -162,17 +195,51 @@ def duracion(mp3):
                           "-of", "csv=p=0", mp3], capture_output=True, text=True).stdout
     return float(out.strip())
 
-def tiempos(texto, al, total):
-    """Tiempo de inicio de cada carácter del texto."""
-    if al and len(al.get("characters", [])) == len(texto):
-        return al["character_start_times_seconds"], al["character_end_times_seconds"]
-    # Estimación: reparte el tiempo por caracteres, con pausa extra en puntos.
-    pesos = [3.5 if c in ".:" else 2.0 if c == "," else 1.0 for c in texto]
-    k = total / sum(pesos)
-    ini, fin, t = [], [], 0.15
-    for p in pesos:
-        ini.append(t); t += p * k * 0.95; fin.append(t)
-    return ini, fin
+def tiempos_palabras(palabras, al, total):
+    """(inicio, fin) de cada palabra escrita, buscándola en el audio en orden.
+    Las palabras con pronunciación fonética o no encontradas se interpolan."""
+    n = len(palabras)
+    res = [None] * n
+    if al:
+        chars = al["characters"]; ini = al["character_start_times_seconds"]; fin = al["character_end_times_seconds"]
+        # palabras del audio con sus tiempos (sin marcas)
+        aw, cur, t0, t1, dentro = [], "", None, None, 0
+        for c, a, b in zip(chars, ini, fin):
+            if c == "[":
+                dentro += 1
+            if dentro:
+                if c == "]":
+                    dentro -= 1
+                continue
+            if c.isspace():
+                if cur: aw.append((_norm(cur), t0, t1)); cur = ""
+            else:
+                if not cur: t0 = a
+                cur += c; t1 = b
+        if cur: aw.append((_norm(cur), t0, t1))
+        j = 0
+        for i, w in enumerate(palabras):
+            nw = _norm(w)
+            if not nw:
+                continue
+            for k in range(j, min(j + 6, len(aw))):
+                if aw[k][0] == nw or (nw and aw[k][0].startswith(nw)) or (aw[k][0] and nw.startswith(aw[k][0])):
+                    res[i] = (aw[k][1], aw[k][2]); j = k + 1
+                    break
+    if not any(res):
+        # estimación por longitud
+        pesos = [len(w) + (6 if w[-1:] in ".:" else 3 if w[-1:] == "," else 1) for w in palabras]
+        k = (total - 0.3) / sum(pesos); t = 0.15
+        for i, p in enumerate(pesos):
+            res[i] = (t, t + p * k * 0.9); t += p * k
+        return res
+    # interpolar huecos
+    for i in range(n):
+        if res[i] is None:
+            prev = next((res[k][1] for k in range(i - 1, -1, -1) if res[k]), 0.0)
+            nxt = next((res[k][0] for k in range(i + 1, n) if res[k]), total)
+            res[i] = (prev, max(prev + 0.15, (prev + nxt) / 2))
+    return res
 
 
 # ---------- dibujo ----------
@@ -371,35 +438,34 @@ def main():
     if not data.get("sem"):
         raise SystemExit("data.json no trae el bloque 'sem'")
     escenas, caption = guion(data)
-    texto = " ".join(e[1] for e in escenas)
+    texto = " ".join(e[1] for e in escenas)          # con marcas
     mp3 = os.path.join(os.path.dirname(salida), "voz.mp3")
-    al = tts(texto, VOZ_MUJER, mp3)
+    al = tts(texto, VOZ, mp3)
     if al is None:
-        est = len(texto) / 14.5
+        est = len(escrito(texto)) / 14.5
         subprocess.run(["ffmpeg", "-y", "-loglevel", "error", "-f", "lavfi", "-i",
                         "anullsrc=r=44100:cl=mono", "-t", f"{est:.2f}", mp3], check=True)
         print("Sin ELEVENLABS_API_KEY: audio en silencio y tiempos estimados")
     dur_audio = duracion(mp3)
-    ini, fin = tiempos(texto, al, dur_audio)
 
-    # Límites de cada escena según el carácter donde empieza su frase
-    pos, limites = 0, []
-    for _, frase, _ in escenas:
-        limites.append(pos)
-        pos += len(frase) + 1
-    t_esc = [ini[c] for c in limites] + [dur_audio + 1.0]
-    t_esc[0] = 0.0
-
-    # Palabras con tiempos, agrupadas en bloques para subtítulos
-    bloques = []
-    for k, (_, frase, _) in enumerate(escenas):
+    # Palabras escritas de cada escena, con sus tiempos en el audio
+    por_escena = [escrito(e[1]).split() for e in escenas]
+    planas = [w for ws in por_escena for w in ws]
+    tw = tiempos_palabras(planas, al, dur_audio)
+    t_esc, bloques, i = [], [], 0
+    for ws in por_escena:
+        t_esc.append(tw[i][0] if ws else (t_esc[-1] if t_esc else 0.0))
         actual = []
-        for m in re.finditer(r"\S+", frase):
-            c0, c1 = limites[k] + m.start(), limites[k] + m.end() - 1
-            actual.append((m.group(), ini[c0], fin[c1]))
-            if len(actual) == 4 or m.group()[-1] in ".,:":
+        for w in ws:
+            actual.append((w, tw[i][0], tw[i][1])); i += 1
+            if len(actual) == 4 or w[-1] in ".,:…":
                 bloques.append(actual); actual = []
         if actual: bloques.append(actual)
+    t_esc.append(dur_audio + 1.0)
+    t_esc[0] = 0.0
+    for k in range(1, len(t_esc)):              # nunca hacia atrás
+        t_esc[k] = max(t_esc[k], t_esc[k - 1] + 0.5)
+    texto_escrito = " ".join(escrito(e[1]) for e in escenas)
 
     global FONDO
     FONDO = fondo()
@@ -439,7 +505,7 @@ def main():
     with open(os.path.join(os.path.dirname(salida), "caption.txt"), "w", encoding="utf-8") as f:
         f.write(caption)
     with open(os.path.join(os.path.dirname(salida), "guion.txt"), "w", encoding="utf-8") as f:
-        f.write(texto)
+        f.write(texto_escrito + "\n\n--- enviado a la voz ---\n" + hablado(texto))
     print(f"Listo: {salida} ({total:.1f} s)")
 
 

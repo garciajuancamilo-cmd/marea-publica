@@ -16,14 +16,14 @@ def guion(_data):
     n, v, dirn = datos_pagina()
     pct = round(100 * dirn / n)
     escenas = [
-        ("hook", "¿Sabes cómo se contrata con la plata pública en el Caribe?", {"rango": "CARIBE · DESDE 2024"}),
-        ("conteo", f"Desde enero de 2024, las entidades públicas firmaron {rs.letras(n)} contratos.", {"n": n}),
-        ("grilla", "Siete de cada diez, por contratación directa. Sin competencia entre empresas.",
+        ("hook", "[curious] ¿Sabes cómo se contrata con la plata pública en el Caribe?", {"rango": "CARIBE · DESDE 2024"}),
+        ("conteo", f"[warmly] Desde enero de 2024, las entidades públicas firmaron… [short pause] {rs.miles(n)} contratos.", {"n": n}),
+        ("grilla", "[seriously] Siete de cada diez, por contratación directa. SIN competencia entre empresas.",
          {"pct": pct, "de10": round(pct / 10), "D": dirn}),
-        ("leemos", "En Marea Pública leemos SECOP todos los días, y te lo mostramos claro: "
+        ("leemos", "[warmly] En Marea Pública leemos SECOP todos los días, y te lo mostramos claro: "
                    "por departamento, municipio y entidad.", {}),
-        ("puertas", "Si quieres vigilar, o si tienes una empresa y quieres contratar con el Estado,", {}),
-        ("cierre", "entra a marea pública punto com. Esto es Marea Pública.", {}),
+        ("puertas", "Si quieres vigilar… o si tienes una empresa y quieres contratar con el Estado,", {}),
+        ("cierre", "[confidently] entra a mareapublica.com. [short pause] [warmly] Esto es Marea Pública.", {}),
     ]
     return escenas, ""
 
