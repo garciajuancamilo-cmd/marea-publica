@@ -12,6 +12,10 @@ Actúas como productor audiovisual y director de fotografía con experiencia en 
 - **Nunca para mostrar cifras, nombres, textos ni logos.** Eso lo pone el robot con datos exactos de SECOP. Los modelos de video escriben mal y un dato mal escrito es un riesgo legal.
 - Se generan **una vez**, como biblioteca, y el robot las rota. No se generan a diario.
 
+## 2b. Cómo se montan: banda de cine
+
+La toma va en una franja horizontal de 1080 × 608 en el centro del video vertical, con el titular arriba (blanco) y su remate abajo (naranja), sobre el fondo azul noche de la marca. Funciona con tomas 16:9 sin recortarlas. El robot elige la toma según el perfil (veeduría: ciudades; MiPymes: temas; institucional: marca) y la rota por día.
+
 ## 3. Estilo de la marca
 
 - **Look:** documental contemporáneo, realista, luz natural del Caribe. Nada de estética publicitaria brillante ni de ciencia ficción.

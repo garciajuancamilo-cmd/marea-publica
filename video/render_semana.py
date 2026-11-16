@@ -102,7 +102,8 @@ def guion(data):
 
     escenas = [
         ("intro", f"[warmly] Semana del {rango} al {d2} de {m2}. Así contrataron las entidades públicas del Caribe colombiano.",
-         {"rango": f"{d1} {m1[:3].upper()} – {d2} {m2[:3].upper()}"}),
+         {"rango": f"{d1} {m1[:3].upper()} – {d2} {m2[:3].upper()}",
+          "banda": {"arriba": ["¿Cómo contrató", "el Caribe"], "abajo": ["esta semana?"]}}),
         ("conteo", f"Firmaron… [short pause] {miles(T)} contratos en SECOP.", {"n": T}),
         ("grilla", f"{miles(D)} fueron por contratación directa. "
                    f"[seriously] {('Casi ' + letras(de10)) if de10 * 10 > pct + 1 else letras(de10).capitalize()} de cada diez, SIN competencia entre empresas.",
@@ -415,6 +416,47 @@ def elegir_musica(perfil):
         return None
     return pistas[_dt.date.today().timetuple().tm_yday % len(pistas)]
 
+# ---------- tomas de apertura (banda de cine) ----------
+TOMAS_POR_PERFIL = {"veeduria": ["ciudades"], "mipymes": ["temas"], "institucional": ["marca"]}
+BANDA_Y, BANDA_H = 520, 608
+
+def elegir_toma(perfil):
+    import datetime as _dt, glob as _glob
+    tomas = []
+    for c in TOMAS_POR_PERFIL.get(perfil, []):
+        tomas += sorted(_glob.glob(os.path.join(RAIZ, "video", "tomas", c, "*.mp4")))
+    if not tomas:
+        return None
+    return tomas[_dt.date.today().timetuple().tm_yday % len(tomas)]
+
+class LectorToma:
+    """Entrega fotogramas 1080x608 de la toma, uno por cuadro; al terminar repite el último."""
+    def __init__(self, ruta, segundos):
+        self.tam = W * BANDA_H * 3
+        self.proc = subprocess.Popen(
+            ["ffmpeg", "-loglevel", "error", "-i", ruta, "-t", f"{segundos:.2f}",
+             "-vf", f"scale={W}:{BANDA_H}:force_original_aspect_ratio=increase:flags=lanczos,crop={W}:{BANDA_H},fps={FPS}",
+             "-f", "rawvideo", "-pix_fmt", "rgb24", "-"], stdout=subprocess.PIPE)
+        self.ultimo = None
+    def siguiente(self):
+        b = self.proc.stdout.read(self.tam)
+        if len(b) == self.tam:
+            self.ultimo = Image.frombytes("RGB", (W, BANDA_H), b)
+        return self.ultimo
+
+def escena_banda(img, d, p, prm, cuadro):
+    a = ease(p * 2.2)
+    if cuadro is not None:
+        if a < 1:
+            cuadro = Image.blend(Image.new("RGB", cuadro.size, NIGHT), cuadro, max(0.0, min(1.0, p * 6)))
+        img.paste(cuadro, (0, BANDA_Y))
+    f = F_DISP(100)
+    for i, t in enumerate(prm["banda"]["arriba"]):
+        texto_c(d, 250 + i * 112 + 30 * (1 - a), t, f, mezcla(NIGHT, SALT, a))
+    for i, t in enumerate(prm["banda"]["abajo"]):
+        texto_c(d, BANDA_Y + BANDA_H + 40 + i * 112, t, f, mezcla(NIGHT, EMBER, a))
+
+
 def punto_de_inicio(musica, total, t_cierre):
     """Segundo de la pista donde arranca el video, para que su momento fuerte (climax)
     coincida con el cierre del video. Nunca antes de que la pista 'entre' y siempre
@@ -490,6 +532,10 @@ def main():
             "-c:a", "aac", "-b:a", "160k", "-movflags", "+faststart", salida]
     proc = subprocess.Popen(cmd, stdin=subprocess.PIPE)
     rango = escenas[0][2]["rango"]
+    toma = elegir_toma(PERFIL) if "banda" in escenas[0][2] else None
+    lector = LectorToma(toma, t_esc[1] + 0.5) if toma else None
+    if toma:
+        print("Toma de apertura:", os.path.relpath(toma, RAIZ))
     for fr in range(nframes):
         t = fr / FPS
         k = max(i for i in range(len(escenas)) if t_esc[i] <= t)
@@ -499,10 +545,15 @@ def main():
         olas(d, t)
         cabecera(d, rango)
         nombre, _, prm = escenas[k]
-        DIBUJA[nombre](d, p, prm)
+        if k == 0 and lector:
+            escena_banda(img, d, p, prm, lector.siguiente())
+        else:
+            DIBUJA[nombre](d, p, prm)
         if nombre != "cierre":
             subtitulos(d, bloques, t)
         proc.stdin.write(img.tobytes())
+    if lector:
+        lector.proc.kill()
     proc.stdin.close()
     proc.wait()
     with open(os.path.join(os.path.dirname(salida), "caption.txt"), "w", encoding="utf-8") as f:

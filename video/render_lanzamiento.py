@@ -16,7 +16,7 @@ def guion(_data):
     n, v, dirn = datos_pagina()
     pct = round(100 * dirn / n)
     escenas = [
-        ("hook", "[curious] ¿Sabes cómo se contrata con la plata pública en el Caribe?", {"rango": "CARIBE · DESDE 2024"}),
+        ("hook", "[curious] ¿Sabes cómo se contrata con la plata pública en el Caribe?", {"rango": "CARIBE · DESDE 2024", "banda": {"arriba": ["La plata pública", "del Caribe,"], "abajo": ["a la vista."]}}),
         ("conteo", f"[warmly] Desde enero de 2024, las entidades públicas firmaron… [short pause] {rs.miles(n)} contratos.", {"n": n}),
         ("grilla", "[seriously] Siete de cada diez, por contratación directa. SIN competencia entre empresas.",
          {"pct": pct, "de10": round(pct / 10), "D": dirn}),
