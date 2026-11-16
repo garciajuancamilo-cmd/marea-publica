@@ -1,0 +1,19 @@
+name: Descargar tomas de Higgsfield
+on:
+  workflow_dispatch: {}
+  push:
+    branches: [main]
+    paths: ["bot/tomas/pendientes.txt"]
+permissions:
+  contents: write
+jobs:
+  descargar:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Descargar a la rama tomas-crudas
+        run: |
+          mkdir -p crudas
+          while read id url; do [ -n "$id" ] && curl -sSL --fail "$url" -o "crudas/$id.mp4" && echo "ok $id"; done < bot/tomas/pendientes.txt
+          cd crudas && git init -q -b tomas-crudas && git config user.name marea-bot && git config user.email marea-bot@users.noreply.github.com
+          git add -A && git commit -qm "Tomas crudas" && git push -f -q "https://x-access-token:${{ secrets.GITHUB_TOKEN }}@github.com/${{ github.repository }}" tomas-crudas
