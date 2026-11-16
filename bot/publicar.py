@@ -60,8 +60,11 @@ def instagram(ig, e):
     return {"media_id": m["id"], "permalink": link}
 
 def facebook(pid, ptoken, e):
-    if PRUEBA:
-        return {"prueba": True}
+    if PRUEBA:  # sube una foto sin publicar para validar el permiso de la página
+        if e["tipo"] == "reel":
+            return {"prueba": True}
+        f = api("POST", f"{pid}/photos", token=ptoken, url=e["imagenes"][0], published="false")["id"]
+        return {"prueba": True, "foto_sin_publicar": f}
     if e["tipo"] == "reel":
         r = api("POST", f"{pid}/videos", token=ptoken, file_url=e["video"], description=e["caption"])
         return {"video_id": r.get("id")}
