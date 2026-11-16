@@ -1,0 +1,12 @@
+<!doctype html><meta charset="utf-8"><title>Puente</title><body style="font:16px sans-serif;padding:20px">Preparando video…
+<script>
+(async()=>{
+  const p=new URLSearchParams(location.search), src=p.get('v'), name=src.split('/').pop();
+  const ok=/^\/redes\/[\w\/.-]+\.mp4$/.test(src) && (window.opener||window.parent!==window);
+  if(!ok){document.body.textContent='Nada que hacer.';return;}
+  const b=await (await fetch(src)).blob();
+  const t=window.opener||window.parent;
+  t.postMessage({name,blob:b},'https://www.tiktok.com');
+  document.body.textContent='Listo: '+name+' ('+b.size+' bytes). Puedes cerrar esta pestaña.';
+})();
+</script>
