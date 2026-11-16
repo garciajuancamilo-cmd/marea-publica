@@ -1,0 +1,19 @@
+name: Verificar SECOP procesos
+on:
+  workflow_dispatch: {}
+  push:
+    branches: [main]
+    paths: ["bot/diag_secop.py", ".github/workflows/verificar-secop.yml"]
+permissions:
+  contents: write
+jobs:
+  diag:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - env:
+          SOCRATA_APP_TOKEN: ${{ secrets.SOCRATA_APP_TOKEN }}
+        run: python bot/diag_secop.py
+      - run: |
+          cd diag && git init -q -b diag && git config user.name marea-bot && git config user.email marea-bot@users.noreply.github.com
+          git add -A && git commit -qm diag && git push -f -q "https://x-access-token:${{ secrets.GITHUB_TOKEN }}@github.com/${{ github.repository }}" diag
