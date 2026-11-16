@@ -17,6 +17,7 @@ W, H, FPS = 1080, 1920, 30
 VOZ_MUJER = "Ut5x3LuSfExdBqv3rEz7"   # Marea Pública · Voz mujer (veeduría)
 VOZ_HOMBRE = "vY4YbSJxUDECdZsKPrF6"  # Marea Pública · Voz hombre (MiPymes)
 VOZ = VOZ_MUJER
+MODELO_USADO = "ninguno"
 
 # Paleta de la página (modo oscuro)
 NIGHT = (11, 42, 51)
@@ -184,6 +185,8 @@ def tts(texto_marcado, voz, salida_mp3):
             with open(salida_mp3, "wb") as f:
                 f.write(base64.b64decode(j["audio_base64"]))
             print(f"Voz generada con {modelo}")
+            global MODELO_USADO
+            MODELO_USADO = modelo
             return al
         except Exception as e:
             ultimo = e
@@ -505,7 +508,7 @@ def main():
     with open(os.path.join(os.path.dirname(salida), "caption.txt"), "w", encoding="utf-8") as f:
         f.write(caption)
     with open(os.path.join(os.path.dirname(salida), "guion.txt"), "w", encoding="utf-8") as f:
-        f.write(texto_escrito + "\n\n--- enviado a la voz ---\n" + hablado(texto))
+        f.write(texto_escrito + f"\n\n--- enviado a la voz ({MODELO_USADO}) ---\n" + hablado(texto))
     print(f"Listo: {salida} ({total:.1f} s)")
 
 
