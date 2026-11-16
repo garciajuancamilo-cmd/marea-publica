@@ -42,7 +42,9 @@ Actúas como productor audiovisual y director de fotografía con experiencia en 
 
 Plantilla:
 
-> Vertical 9:16 documentary shot. [QUÉ SE VE, concreto y del Caribe colombiano]. [MOVIMIENTO DE CÁMARA lento]. [LUZ Y HORA]. [PALETA: warm golden light with deep teal shadows]. Upper third of the frame kept clean (sky/water/wall) for on-screen text. Realistic, natural, calm, no people facing camera, no text, no logos, no signage. 5 seconds, no audio.
+> Vertical 9:16 documentary shot. [QUÉ SE VE, concreto y del Caribe colombiano]. [MOVIMIENTO DE CÁMARA lento]. [LUZ Y HORA]. [PALETA: warm golden light with deep teal shadows]. Upper third of the frame is clear sky, water or plain wall for on-screen text. Realistic, natural, calm, no people facing camera, clean frame with nothing written. 5 seconds, no audio.
+
+**Para no chocar con el filtro de derechos de autor:** no escribas nombres propios de ciudades, monumentos, ríos o islas (describe el lugar: "old colonial stone walls beside a tropical sea"), ni palabras como logo, brand, branded o trademark, ni siquiera en negativo. En su lugar usa "clean frame with nothing written".
 
 Checklist antes de generar: ¿se entiende sin sonido?, ¿frena el scroll?, ¿deja espacio para el titular?, ¿cumple las 7 reglas?, ¿sirve para varios videos?
 
