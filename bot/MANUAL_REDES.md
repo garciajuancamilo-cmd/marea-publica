@@ -59,5 +59,5 @@ Indicadores que se miran cada semana: seguidores nuevos, alcance a no seguidores
 ## 7. Análisis
 
 - A las 24 horas y a los 7 días de cada pieza: cifras de Instagram y Facebook, y una lectura corta de qué funcionó, qué no y qué cambiar.
-- Cada lunes: resumen de la semana con el crecimiento de seguidores, la mejor y la peor pieza, y una recomendación concreta para la semana siguiente.
+- Cada domingo (lo hace la tarea diaria): resumen de la semana con el crecimiento de seguidores, la mejor y la peor pieza, y una recomendación concreta para la semana siguiente.
 - Las conclusiones se aplican: si un tipo de gancho, hora o formato gana dos semanas seguidas, pasa a ser la regla.
