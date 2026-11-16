@@ -1,0 +1,39 @@
+name: Publicar en redes
+
+on:
+  schedule:
+    - cron: "5,35 * * * *"
+  workflow_dispatch:
+    inputs:
+      prueba:
+        description: "1 = solo prueba, no publica"
+        default: "0"
+
+permissions:
+  contents: write
+
+concurrency:
+  group: publicar
+  cancel-in-progress: false
+
+jobs:
+  publicar:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Publicar lo aprobado y vencido
+        env:
+          META_TOKEN: ${{ secrets.META_TOKEN }}
+          PRUEBA: ${{ github.event.inputs.prueba || '0' }}
+        run: python bot/publicar.py
+      - name: Registrar lo publicado
+        if: always()
+        run: |
+          if [ -d estado ]; then
+            cd estado && git init -q -b estado-publicar && git config user.name marea-bot && git config user.email marea-bot@users.noreply.github.com
+            git add -A && git commit -qm "prueba" && git push -f -q "https://x-access-token:${{ secrets.GITHUB_TOKEN }}@github.com/${{ github.repository }}" estado-publicar
+            exit 0
+          fi
+          git config user.name marea-bot && git config user.email marea-bot@users.noreply.github.com
+          git add bot/publicado || true
+          git diff --cached --quiet || (git commit -qm "Publicado en redes $(date -u +%FT%H:%MZ)" && git pull -q --rebase && git push -q)
