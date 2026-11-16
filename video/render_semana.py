@@ -345,6 +345,23 @@ def elegir_musica(perfil):
         return None
     return pistas[_dt.date.today().timetuple().tm_yday % len(pistas)]
 
+def punto_de_inicio(musica, total, t_cierre):
+    """Segundo de la pista donde arranca el video, para que su momento fuerte (climax)
+    coincida con el cierre del video. Nunca antes de que la pista 'entre' y siempre
+    al inicio de un compás, para que no suene cortada."""
+    try:
+        cat = json.load(open(os.path.join(RAIZ, "video", "musica", "catalogo.json"), encoding="utf-8"))
+        info = next(c for c in cat if os.path.basename(c["archivo"]) == os.path.basename(musica)
+                    and os.path.basename(os.path.dirname(c["archivo"])) == os.path.basename(os.path.dirname(musica)))
+    except Exception:
+        return 0.0
+    dur = duracion(musica)
+    ideal = info.get("climax", 0) - t_cierre
+    tope = max(0.0, dur - total - 0.5)
+    ofs = min(max(ideal, info.get("entrada", 0)), tope)
+    previos = [b for b in info.get("compases", []) if b <= ofs + 0.05]
+    return round(previos[-1] if previos else ofs, 2)
+
 
 # ---------- principal ----------
 def main():
@@ -392,10 +409,11 @@ def main():
            "-s", f"{W}x{H}", "-r", str(FPS), "-i", "-", "-i", mp3]
     musica = elegir_musica(PERFIL)
     if musica:
-        print("Música:", os.path.basename(musica))
+        ofs = punto_de_inicio(musica, total, t_esc[-2])
+        print(f"Música: {os.path.basename(musica)} desde el segundo {ofs}")
         fin_m = max(0.5, total - 1.5)
-        cmd += ["-stream_loop", "-1", "-i", musica, "-filter_complex",
-                f"[2:a]atrim=0:{total:.2f},volume=0.30,afade=t=in:d=0.6,afade=t=out:st={fin_m:.2f}:d=1.5[m];"
+        cmd += ["-ss", f"{ofs:.2f}", "-i", musica, "-filter_complex",
+                f"[2:a]atrim=0:{total:.2f},volume=0.30,afade=t=in:d=1.0,afade=t=out:st={fin_m:.2f}:d=1.5[m];"
                 "[m][1:a]sidechaincompress=threshold=0.02:ratio=10:attack=15:release=400[md];"
                 "[1:a]apad[v];[v][md]amix=inputs=2:duration=shortest:normalize=0[a]",
                 "-map", "0:v", "-map", "[a]"]
