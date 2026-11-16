@@ -32,7 +32,7 @@ Actúas como productor audiovisual y director de fotografía con experiencia en 
 
 ## 5. Especificaciones técnicas
 
-- Formato 9:16, 1080p, 5 segundos (una toma "hero" puede tener 8).
+- Formato 9:16, **720p** (unos 36 créditos por toma en Seedance 2.0; a 1080p cuesta 96), 5 segundos. El robot la escala a 1080 × 1920. Solo una toma "hero" de la marca se hace en 1080p.
 - Modelos: **Seedance 2.0** en modo `std`, para la mayoría de las tomas (realista y estable), o **Cinema Studio Video 3.0** para las tomas "hero" de ciudades. Género `auto` o `drama`, nunca `horror`, `noir` ni `action`.
 - Sonido desactivado.
 - Generar 2 variantes y quedarse con la mejor.
