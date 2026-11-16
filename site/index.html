@@ -174,6 +174,8 @@ tr:last-child td{border-bottom:0}
 .ct .acts{grid-column:1/-1;display:flex;gap:12px;flex-wrap:wrap;align-items:center}
 .btn{font-weight:600;font-size:.86rem;padding:8px 14px;border-radius:8px;border:1px solid var(--sea);background:transparent;color:var(--sea);cursor:pointer}
 .btn.solid{background:var(--sea);color:var(--sheet)}
+.alertas-cta{margin:14px 0;display:flex;flex-wrap:wrap;gap:8px 12px;align-items:center;font-size:.9rem}.alertas-cta .btn{text-decoration:none}
+.fine{font-size:.78rem;color:var(--muted)}
 .pet{background:var(--sheet);border:2px solid var(--ink);border-radius:12px;overflow:hidden}
 .pet .bar2{display:flex;flex-wrap:wrap;gap:10px;align-items:end;padding:14px 18px;border-bottom:1px solid var(--rule)}
 .pet pre{margin:0;padding:20px;white-space:pre-wrap;font:.9rem/1.6 var(--f-body);max-height:520px;overflow:auto}
@@ -416,6 +418,7 @@ textarea{font:400 .92rem var(--f-body);padding:9px 10px;border:1px solid var(--r
     <h1 id="h-lic">Licitaciones abiertas del Caribe: participa, compite y vigila</h1>
     <p class="lede muted">Evaluamos cada proceso abierto con indicadores de riesgo reconocidos internacionalmente, antes de que se adjudique. Cuando una sola empresa se presenta, pierden el Estado y las empresas que no se enteraron.</p>
     <p class="aviso" id="lic-aviso" hidden></p>
+    <p class="alertas-cta"><a class="btn solid" href="https://airtable.com/appThwHnSm6ICO7dG/pagTOGO01C2DgHVnf/form?prefill_Origen=P%C3%A1gina+web" target="_blank" rel="noopener">Recibe alertas de tu sector</a> <span class="muted">Gratis. Te avisamos cuando se abran procesos para tu empresa en el Caribe.</span></p>
     <details class="basisd"><summary>Base metodológica · 6 fuentes internacionales</summary><p class="basis">
       <a href="https://www.open-contracting.org/es/resources/red-flags-in-public-procurement-a-guide-to-using-data-to-detect-and-mitigate-risks/" target="_blank" rel="noopener">Open Contracting Partnership (2024)</a> ·
       <a href="https://blogs.worldbank.org/en/governance/proact-using-data-strengthen-efficiency-and-integrity-public-procurement" target="_blank" rel="noopener">Banco Mundial, ProACT</a> ·
@@ -586,12 +589,15 @@ textarea{font:400 .92rem var(--f-body);padding:9px 10px;border:1px solid var(--r
     <h2>Tratamiento de datos personales</h2>
     <p>En cumplimiento de la Ley 1581 de 2012 y sus decretos reglamentarios:</p>
     <ul>
-      <li>La página no pide registro ni recoge datos personales de quienes la visitan. Lo que escribes en los generadores de documentos se procesa en tu propio navegador y no se envía ni se guarda en nuestros servidores.</li>
+      <li>Para navegar la página no hace falta registrarse. Lo que escribes en los generadores de documentos se procesa en tu propio navegador y no se envía ni se guarda en nuestros servidores.</li>
+      <li><b>Alertas de licitaciones.</b> Si te inscribes en el formulario "Recibe alertas de tu sector", recogemos el nombre de la empresa, tu nombre, correo y, si lo das, tu WhatsApp, junto con los departamentos y sectores que te interesan. Los usamos solo para enviarte alertas de procesos de contratación, información de Marea Pública y, si lo aceptas, invitarte a probar nuevos servicios. No los vendemos ni los compartimos con terceros. El formulario y la base de datos funcionan en Airtable (Formagrid Inc., Estados Unidos), que actúa como encargado del tratamiento. Los conservamos mientras sigas inscrito; puedes darte de baja cuando quieras.</li>
+      <li><b>Estadísticas de visitas.</b> Contamos las visitas con GoatCounter, que no usa cookies ni identifica a las personas: solo registra la sección visitada, la página de origen y datos técnicos agregados (navegador, país, tamaño de pantalla).</li>
       <li>Tu navegador guarda localmente el último filtro que usaste, solo para mostrártelo de nuevo. Puedes borrarlo limpiando los datos del sitio.</li>
       <li>No publicamos nombres de personas naturales. Los contratistas con cédula no se identifican; las entidades públicas y las personas jurídicas aparecen con el nombre que publica SECOP II.</li>
       <li>El alojamiento de la página (GitHub) y el servicio de tipografías (Google Fonts) pueden registrar datos técnicos de la conexión, como la dirección IP, conforme a sus propias políticas.</li>
       <li>Como titular puedes conocer, actualizar, rectificar o pedir la supresión de tus datos, y revocar una autorización, escribiendo a <a href="mailto:contacto@mareapublica.com">contacto@mareapublica.com</a>. Respondemos dentro de los términos de la Ley 1581 de 2012.</li>
     </ul>
+    <p class="fine">Responsable del tratamiento: Juan Camilo García Vergara, C.C. 72.273.078, Barranquilla (Atlántico). Correo para consultas y reclamos: contacto@mareapublica.com. Política vigente desde el 16 de noviembre de 2026.</p>
     <h2>Corrección y derecho de réplica</h2>
     <ul>
       <li>Si una entidad o empresa encuentra un dato que no corresponde a la fuente, puede pedir su corrección indicando la ficha, el dato y el documento que lo contradice.</li>
@@ -1100,10 +1106,12 @@ function route(){
   ['veeduria','licitaciones','metodo','legal'].forEach(x=>document.getElementById('v-'+x).hidden=x!==view);
   document.querySelectorAll('.nav a').forEach(a=>{if(a.dataset.v===view)a.setAttribute('aria-current','page');else a.removeAttribute('aria-current');});
 }
-window.addEventListener('hashchange',()=>{route();window.scrollTo(0,0);});
+window.addEventListener('hashchange',()=>{route();window.scrollTo(0,0);try{window.goatcounter&&window.goatcounter.count&&window.goatcounter.count({path:location.pathname+location.hash});}catch(e){}});
 document.addEventListener('click',e=>{const b=e.target.closest('[data-jump]');if(!b)return;const t=document.getElementById(b.dataset.jump);if(t)t.scrollIntoView({behavior:'smooth',block:'start'});});
 try{if(window.matchMedia('(min-width:761px)').matches)document.getElementById('smalls-d').open=true;}catch(_){}
 try{const s=JSON.parse(localStorage.getItem('mp-scope')||'null');if(s&&typeof s.dep==='number')scope=s;}catch(_){}
 route();
 })();
 </script>
+<script>window.goatcounter={path:function(){return location.pathname+location.hash}};</script>
+<script data-goatcounter="https://mareapublica.goatcounter.com/count" async src="https://gc.zgo.at/count.js"></script>
