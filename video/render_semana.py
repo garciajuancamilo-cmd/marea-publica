@@ -136,7 +136,7 @@ def guion(data):
 # La voz recibe la forma "hablada"; los subtítulos muestran la forma escrita.
 PRONUNCIACION = {
     "MiPymes": "/mi ˈpimes/", "MiPyme": "/mi ˈpime/", "mipymes": "/mi ˈpimes/",
-    "SECOP": "/ˈsekop/", "NIT": "/nit/", "UNSPSC": "U N S P S C",
+    "SECOP": "/seˈkop/", "NIT": "/nit/", "UNSPSC": "U N S P S C",
     "Magangué": "/maɣaŋˈɡe/", "Ciénaga": "/ˈsjenaɣa/", "Riohacha": "/rioˈat͡ʃa/",
     "Mompós": "/momˈpos/", "Uribia": "/uˈɾiβja/",
 }
