@@ -61,3 +61,11 @@ Indicadores que se miran cada semana: seguidores nuevos, alcance a no seguidores
 - A las 24 horas y a los 7 días de cada pieza: cifras de Instagram y Facebook, y una lectura corta de qué funcionó, qué no y qué cambiar.
 - Cada domingo (lo hace la tarea diaria): resumen de la semana con el crecimiento de seguidores, la mejor y la peor pieza, y una recomendación concreta para la semana siguiente.
 - Las conclusiones se aplican: si un tipo de gancho, hora o formato gana dos semanas seguidas, pasa a ser la regla.
+
+## 8. TikTok
+
+- Cuenta @marea_publica, personal (no de empresa: la verificación de empresa pide RUT y Cámara de Comercio). El enlace de la bio se habilita a los 1.000 seguidores; mientras tanto el caption dice "búscalo en mareapublica.com", nunca "link en la bio".
+- Se programa en TikTok Studio (tiktok.com/tiktokstudio) desde el navegador de la app de Claude, con la sesión de Juan Camilo. Los videos se dejan en Películas › Marea Publica TikTok y él los elige en "Seleccionar video"; TikTok no deja cargarlos desde otro sitio.
+- Siempre activar "Contenido generado por IA" (en Mostrar más) y no poner música de TikTok encima.
+- Esperar a que termine la "Comprobación de contenido rápida" antes de tocar Programar: si no, TikTok ofrece "Publicar ahora".
+- En el caption no usar emojis con selector de variación (como 🏝️): desordenan el editor. 3 a 5 hashtags.
