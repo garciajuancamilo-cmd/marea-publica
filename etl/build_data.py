@@ -455,8 +455,24 @@ def main() -> None:
     comp = {"tot": tot, "uno": uno, "ent": dict(c_ent), "seg": dict(c_seg), "dep": dict(c_dep),
             "plazo": plazo, "tope": tope}
 
+    # Respaldo: si el conjunto de procesos de SECOP llega incompleto (le pasa a datos.gov.co
+    # cuando recarga la tabla), se conservan los últimos datos buenos de Licitaciones.
+    lic_fecha = hoy.isoformat()
+    try:
+        prev = json.load(open(os.path.join(os.path.dirname(OUT), "data.json"), encoding="utf-8"))
+    except Exception:
+        prev = {}
+    prev_comp, prev_lic = prev.get("comp") or {}, prev.get("lic") or []
+    if comp["tot"] < 5000 and prev_comp.get("tot", 0) >= 5000:
+        log(f"AVISO: historial de procesos incompleto ({comp['tot']}); se conserva el anterior")
+        comp = prev_comp
+        if len(lic) < 20 and prev_lic:
+            lic = [r for r in prev_lic if r[7] >= manana]
+            lic_fecha = (prev.get("meta") or {}).get("lic_fecha") or (prev.get("meta") or {}).get("fecha")
+            log(f"AVISO: procesos abiertos desde respaldo del {lic_fecha} ({len(lic)} siguen abiertos)")
+
     data = {
-        "meta": {"fecha": hoy.isoformat(), "desde": DESDE,
+        "meta": {"fecha": hoy.isoformat(), "desde": DESDE, "lic_fecha": lic_fecha,
                  "fuente": f"SECOP II · datos.gov.co ({CONTRATOS}, {PROCESOS})"},
         "deps": DEPS,
         "depTot": [list(dep_tot.get(d, (0, 0))) for d in DEPS],

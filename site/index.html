@@ -208,6 +208,7 @@ tr:last-child td{border-bottom:0}
 footer{border-top:2px solid var(--ink);padding-block:18px 40px;font-size:.84rem;color:var(--muted)}
 footer .wrap{display:flex;flex-direction:column;gap:8px}
 .flinks{display:flex;gap:6px 16px;flex-wrap:wrap}
+.aviso{margin:12px 0;padding:10px 14px;border-left:3px solid #cf4a1c;background:rgba(207,74,28,.08);font-size:.92rem}
 .flinks a{color:var(--sea);font-weight:600}
 /* v1.2 */
 .doors{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:10px;margin-top:6px}
@@ -414,6 +415,7 @@ textarea{font:400 .92rem var(--f-body);padding:9px 10px;border:1px solid var(--r
     <span class="eyebrow">Sistema de Alerta Temprana · Banderas rojas · Módulo ex ante</span>
     <h1 id="h-lic">Licitaciones abiertas del Caribe: participa, compite y vigila</h1>
     <p class="lede muted">Evaluamos cada proceso abierto con indicadores de riesgo reconocidos internacionalmente, antes de que se adjudique. Cuando una sola empresa se presenta, pierden el Estado y las empresas que no se enteraron.</p>
+    <p class="aviso" id="lic-aviso" hidden></p>
     <details class="basisd"><summary>Base metodológica · 6 fuentes internacionales</summary><p class="basis">
       <a href="https://www.open-contracting.org/es/resources/red-flags-in-public-procurement-a-guide-to-using-data-to-detect-and-mitigate-risks/" target="_blank" rel="noopener">Open Contracting Partnership (2024)</a> ·
       <a href="https://blogs.worldbank.org/en/governance/proact-using-data-strengthen-efficiency-and-integrity-public-procurement" target="_blank" rel="noopener">Banco Mundial, ProACT</a> ·
@@ -687,6 +689,7 @@ function hero(){
   const dm=Object.values(D.dm); const s=i=>dm.reduce((a,x)=>a+x[i],0);
   const j26=s(24), jav=(s(0)+s(12))/2, veda=[25,26,27,28,29].reduce((a,i)=>a+s(i),0);
   $('#hero-eye').textContent='Caribe colombiano · 8 departamentos · datos al '+fecha(D.meta.fecha);
+  if(D.meta.lic_fecha&&D.meta.lic_fecha!==D.meta.fecha){const av=$('#lic-aviso');av.textContent='SECOP no entregó hoy la lista completa de procesos. Mostramos los que seguían abiertos según la consulta del '+fecha(D.meta.lic_fecha)+'. Verifica cada proceso en SECOP II antes de presentarte.';av.hidden=false;}
   $('#lede').innerHTML='Desde enero de 2024, las entidades de los ocho departamentos firmaron <b>'+nf.format(REG.n)+'</b> contratos por <b>'+copM(REG.v)+'</b>. Siete de cada diez ('+pct(dirN/REG.n)+') fueron por contratación directa, sin competencia; por valor son el '+pct(dirV/REG.v)+'.';
   $('#figs').innerHTML=[
     ['v',copM(REG.v),'contratado desde 2024'],
