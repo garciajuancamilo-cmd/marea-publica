@@ -1,0 +1,112 @@
+{
+  "yo": {
+    "id": "122096336307555942",
+    "name": "marea-bot"
+  },
+  "permisos": {
+    "data": [
+      {
+        "permission": "read_insights",
+        "status": "granted"
+      },
+      {
+        "permission": "pages_show_list",
+        "status": "granted"
+      },
+      {
+        "permission": "business_management",
+        "status": "granted"
+      },
+      {
+        "permission": "instagram_basic",
+        "status": "granted"
+      },
+      {
+        "permission": "instagram_manage_insights",
+        "status": "granted"
+      },
+      {
+        "permission": "instagram_content_publish",
+        "status": "granted"
+      },
+      {
+        "permission": "pages_read_engagement",
+        "status": "granted"
+      },
+      {
+        "permission": "pages_manage_posts",
+        "status": "granted"
+      },
+      {
+        "permission": "public_profile",
+        "status": "granted"
+      }
+    ]
+  },
+  "paginas": {
+    "data": [
+      {
+        "id": "1416225291579687",
+        "name": "Marea Pública",
+        "instagram_business_account": {
+          "id": "17841429924528640",
+          "username": "marea_publica",
+          "followers_count": 2
+        }
+      }
+    ],
+    "paging": {
+      "cursors": {
+        "before": "QVFIVEJGOVoyeU5JdmJXQlRETDJVOUE0SXdPaUpjNnRHX284bjBPSW1lLTc2Mkd4ZAEtQRmU4eHZAVd3JFVG5LUXRwOWx5OWtVVXpzZAmJpRWVOcnFIemZAHVzV3",
+        "after": "QVFIVEJGOVoyeU5JdmJXQlRETDJVOUE0SXdPaUpjNnRHX284bjBPSW1lLTc2Mkd4ZAEtQRmU4eHZAVd3JFVG5LUXRwOWx5OWtVVXpzZAmJpRWVOcnFIemZAHVzV3"
+      }
+    }
+  },
+  "resumen": {
+    "pagina_id": "1416225291579687",
+    "ig_id": "17841429924528640",
+    "ig_usuario": "marea_publica"
+  },
+  "ig_publicacion_limite": {
+    "data": [
+      {
+        "quota_usage": 0,
+        "config": {
+          "quota_total": 100,
+          "quota_duration": 86400
+        }
+      }
+    ]
+  },
+  "ig_recientes": {
+    "data": [
+      {
+        "id": "18102716693559142",
+        "caption": "Esto es Marea Pública 🌊\n\nDesde enero de 2024, las entidades públicas del Caribe colombiano firmaron 387.140 contratos por $59,09 billones. Siete de cada diez fueron por contratación directa, sin competencia entre empresas.\n\nLa contratación directa es legal y a veces se justifica. Pero cuando se vuelve la regla, menos empresas pueden competir.\n\nPor eso creamos Marea Pública: leemos SECOP II todos los días y lo mostramos claro, por departamento, municipio y entidad. Para ciudadanos que quieren vigilar y para MiPymes que quieren contratar con el Estado.\n\n👉 mareapublica.com (link en la bio)\n\nCuando más empresas compiten, el Estado contrata mejor.\nFuente: SECOP II, datos abiertos.\n\n#MareaPública #ContrataciónPública #SECOP #Transparencia #CaribeColombiano #Veeduría #MiPymes",
+        "media_type": "CAROUSEL_ALBUM",
+        "permalink": "https://www.instagram.com/p/Df0kOo2DUWR/",
+        "timestamp": "2026-11-16T23:45:04+0000"
+      },
+      {
+        "id": "17966834484079444",
+        "caption": "Gratis y sin registrarte, esto es lo que encuentras en Marea Pública 👇\n\n🔎 Para vigilar: la ficha de cada departamento, municipio y entidad del Caribe, banderas rojas en contratos firmados, el radar de Ley de Garantías, contratos que pasan por intermediarias y un derecho de petición listo para pedir documentos.\n\n🏗️ Para MiPymes: más de 200 licitaciones abiertas hoy en el Caribe, con filtros por sector, alertas y un generador de observaciones al pliego.\n\nNuestros indicadores se basan en guías de Open Contracting Partnership, Banco Mundial, OCDE, BID y UNODC. Son señales para revisar, no acusaciones.\n\n👉 mareapublica.com\n\n#MareaPública #Licitaciones #ContrataciónPública #SECOP #MiPymes #CaribeColombiano",
+        "media_type": "CAROUSEL_ALBUM",
+        "permalink": "https://www.instagram.com/p/Df0kGguj64o/",
+        "timestamp": "2026-11-16T23:43:56+0000"
+      },
+      {
+        "id": "18654496933043184",
+        "caption": "¿Cómo contrata tu municipio? Averígualo en menos de un minuto:\n\n1️⃣ Entra a mareapublica.com y toca \"Quiero vigilar\".\n2️⃣ Elige tu departamento y tu municipio.\n3️⃣ Lee su ficha: cuántos contratos firmó, por cuánto, cuántos sin competencia y sus señales de alerta.\n\n¿Qué encontraste? Cuéntanos en los comentarios 👇\n\nFuente: SECOP II, datos abiertos.\n#MareaPública #ContrataciónPública #SECOP #Transparencia #CaribeColombiano #Veeduría",
+        "media_type": "CAROUSEL_ALBUM",
+        "permalink": "https://www.instagram.com/p/Df0j-fRD7yn/",
+        "timestamp": "2026-11-16T23:42:51+0000"
+      }
+    ],
+    "paging": {
+      "cursors": {
+        "before": "QVFIVDVHblZAUTTVkYkVZAblladFhNd0ZAaOEF6dTY3WGJWZADNFOUFFNnRkeTNHcFg3SEdicDItTUNLaDRvT0drY2FqeVVTb1pYS3E5ajU4UjRiY2tCcTU3OVVR",
+        "after": "QVFIVC1JaUxfX0MzeF9Rc291eHJlVVhtSExrcDNoM1gxdm5ObkZAlZAUhVZAjVZAcEVNR1JaU0JJSkRpVzV3ZAEJNck5hZA01HN1JFMG9sYTFWUnZANZAzlFVjkxa0lR"
+      }
+    }
+  }
+}
