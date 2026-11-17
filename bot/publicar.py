@@ -97,6 +97,43 @@ def facebook(pid, ptoken, e):
     r = api("POST", f"{pid}/feed", token=ptoken, message=e["caption"], **params)
     return {"post_id": r.get("id")}
 
+AT_TOKEN = os.environ.get("AIRTABLE_TOKEN", "").strip()
+AT_BASE, AT_TABLA = "appThwHnSm6ICO7dG", "tbltHspCkOSLKg0PF"  # Marea Pública · Piezas de contenido
+
+def airtable(pieza_id, estado=None, link=None, nota=None):
+    """Refleja en Airtable lo que hizo el robot. Si no hay token o falla, no detiene la publicación."""
+    if not AT_TOKEN or not pieza_id or PRUEBA:
+        return
+    url = f"https://api.airtable.com/v0/{AT_BASE}/{AT_TABLA}"
+    h = {"Authorization": "Bearer " + AT_TOKEN, "Content-Type": "application/json"}
+    try:
+        q = urllib.parse.urlencode({"filterByFormula": "{ID}='%s'" % pieza_id, "maxRecords": 1})
+        with urllib.request.urlopen(urllib.request.Request(url + "?" + q, headers=h), timeout=60) as r:
+            recs = json.load(r).get("records", [])
+        if not recs:
+            print("Airtable: no encontré la pieza", pieza_id); return
+        rec = recs[0]
+        campos = {}
+        if estado: campos["Estado"] = estado
+        if link: campos["Link publicado"] = link
+        if nota:
+            previa = rec["fields"].get("Notas del editor") or ""
+            campos["Notas del editor"] = (previa + "\n\n" if previa else "") + nota
+        body = json.dumps({"fields": campos, "typecast": True}).encode()
+        urllib.request.urlopen(urllib.request.Request(url + "/" + rec["id"], data=body, headers=h, method="PATCH"), timeout=60)
+        print("Airtable:", pieza_id, "→", estado or "nota")
+    except Exception as ex:
+        print("Airtable: no se pudo actualizar", pieza_id, ex)
+
+def enlaces(res):
+    partes = []
+    ig = res.get("instagram") or {}
+    if ig.get("permalink"): partes.append("IG: " + ig["permalink"])
+    fb = res.get("facebook") or {}
+    fid = fb.get("post_id") or fb.get("video_id")
+    if fid: partes.append("FB: https://www.facebook.com/" + str(fid))
+    return " | ".join(partes)
+
 def vigente(e, ahora):
     """Control previo: None si la pieza puede salir; si no, el motivo para retenerla."""
     hasta = e.get("vigente_hasta")
@@ -135,6 +172,7 @@ def main():
                     os.makedirs(RET, exist_ok=True)
                     json.dump({"id": e["id"], "fecha": ahora.isoformat(), "motivo": motivo},
                               open(os.path.join(RET, e["id"] + ".json"), "w"), ensure_ascii=False, indent=1)
+                    airtable(e.get("airtable_id"), nota="Retenida por el robot (" + ahora.date().isoformat() + "): " + motivo)
                 continue
             pendientes.append((cuando, e))
     pendientes.sort(key=lambda x: x[0])
@@ -154,6 +192,13 @@ def main():
                 print(e["id"], red, "ERROR", ex)
         if not PRUEBA:
             json.dump(res, open(os.path.join(HECHO, e["id"] + ".json"), "w"), ensure_ascii=False, indent=1)
+            ok = [r for r in e["redes"] if "error" not in (res.get(r) or {})]
+            if ok:
+                malas = [r for r in e["redes"] if r not in ok]
+                airtable(e.get("airtable_id"), estado="Publicado", link=enlaces(res),
+                         nota=("Error al publicar en: " + ", ".join(malas)) if malas else None)
+            else:
+                airtable(e.get("airtable_id"), nota="El robot no pudo publicar (" + ahora.date().isoformat() + "); revisar.")
         else:
             os.makedirs(os.path.join(RAIZ, "estado"), exist_ok=True)
             json.dump(res, open(os.path.join(RAIZ, "estado", e["id"] + ".json"), "w"), ensure_ascii=False, indent=1)

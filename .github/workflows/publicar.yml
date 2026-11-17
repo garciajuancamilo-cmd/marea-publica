@@ -24,6 +24,7 @@ jobs:
       - name: Publicar lo aprobado y vencido
         env:
           META_TOKEN: ${{ secrets.META_TOKEN }}
+          AIRTABLE_TOKEN: ${{ secrets.AIRTABLE_TOKEN }}
           PRUEBA: ${{ github.event.inputs.prueba || '0' }}
         run: python bot/publicar.py
       - name: Registrar lo publicado
