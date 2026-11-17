@@ -55,9 +55,33 @@ def instagram(ig, e):
     esperar(cid)
     if PRUEBA:
         return {"contenedor": cid, "prueba": True}
-    m = api("POST", f"{ig}/media_publish", creation_id=cid)
+    inicio = dt.datetime.now(dt.timezone.utc) - dt.timedelta(minutes=2)
+    try:
+        m = api("POST", f"{ig}/media_publish", creation_id=cid)
+    except RuntimeError as ex:
+        # Con cuentas nuevas Instagram a veces responde "action is blocked" y publica igual minutos después.
+        encontrado = confirmar_ig(ig, e["caption"], inicio)
+        if encontrado:
+            encontrado["nota"] = "Instagram respondió error pero la publicación salió: " + str(ex)[:200]
+            return encontrado
+        raise
     link = api("GET", m["id"], fields="permalink").get("permalink")
     return {"media_id": m["id"], "permalink": link}
+
+def confirmar_ig(ig, caption, desde, intentos=6, espera=60):
+    """Busca en las publicaciones recientes una con el mismo inicio de caption creada después de `desde`."""
+    clave = (caption or "").strip()[:60]
+    for _ in range(intentos):
+        try:
+            lista = api("GET", f"{ig}/media", fields="id,caption,timestamp,permalink", limit=10).get("data", [])
+        except RuntimeError:
+            lista = []
+        for m in lista:
+            t = dt.datetime.strptime(m["timestamp"], "%Y-%m-%dT%H:%M:%S%z")
+            if t >= desde and (m.get("caption") or "").strip()[:60] == clave:
+                return {"media_id": m["id"], "permalink": m.get("permalink"), "confirmado_despues_de_error": True}
+        time.sleep(espera)
+    return None
 
 def facebook(pid, ptoken, e):
     if PRUEBA:  # sube una foto sin publicar para validar el permiso de la página
