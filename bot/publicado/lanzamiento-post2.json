@@ -2,7 +2,10 @@
  "id": "lanzamiento-post2",
  "fecha": "2026-11-16T23:42:19.582128+00:00",
  "instagram": {
-  "error": "POST 17841429924528640/media_publish: {\"error\":{\"message\":\"Application request limit reached\",\"code\":4,\"type\":\"OAuthException\",\"error_subcode\":2207051,\"is_transient\":false,\"error_user_msg\":\"We restrict certain activity to protect our community. Tell us if you think we made a mistake.\",\"error_user_title\":\"action is blocked\",\"fbtrace_id\":\"Ad1iA2OTL9n4sQMcxbAGF7V\"}}"
+  "media_id": "17966834484079444",
+  "permalink": "https://www.instagram.com/p/Df0kGguj64o/",
+  "confirmado_despues_de_error": true,
+  "nota": "Instagram respondió \"action is blocked\" pero publicó: POST 17841429924528640/media_publish: {\"error\":{\"message\":\"Application request limit reached\",\"code\":4,\"type\":\"OAuthException\",\"error_subcode\":2207051,\"is_trans"
  },
  "facebook": {
   "post_id": "1416225291579687_122103816519546568"
