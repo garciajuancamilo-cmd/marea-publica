@@ -29,6 +29,7 @@ for p in out["paginas"].get("data", []):
 out["resumen"] = res
 if res["ig_id"]:
     out["ig_publicacion_limite"] = get(f"{res['ig_id']}/content_publishing_limit", fields="config,quota_usage")
+    out["ig_recientes"] = get(f"{res['ig_id']}/media", fields="id,caption,media_type,timestamp,permalink", limit=10)
 os.makedirs("estado", exist_ok=True)
 json.dump(out, open("estado/meta.json", "w"), ensure_ascii=False, indent=2)
 print(json.dumps(res, ensure_ascii=False))
