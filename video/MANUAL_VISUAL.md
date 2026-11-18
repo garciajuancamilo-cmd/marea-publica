@@ -57,3 +57,9 @@ Checklist antes de generar: ¿se entiende sin sonido?, ¿frena el scroll?, ¿dej
 - **Ciudades (12):** Barranquilla (malecón del río Magdalena; puente Pumarejo), Cartagena (murallas al atardecer; bahía), Santa Marta (bahía), Valledupar (río Guatapurí), Riohacha (muelle), Montería (río Sinú), Sincelejo (calle comercial al atardecer), San Andrés (mar de siete colores), Ciénaga Grande (manglar), Sucre (sabana).
 - **Temas (10):** carpetas y documentos sobre un escritorio, manos en un portátil con hojas de cálculo genéricas, obra vial en construcción, aula escolar vacía, taller de una MiPyme, tienda de barrio abriendo, sala de reuniones con personas de espaldas, mapa físico del Caribe sobre una mesa, puerto con contenedores al atardecer, oficina pública genérica vista desde fuera, de lejos.
 - **Marca (3):** olas que llegan a la orilla en cámara lenta, marea que sube sobre la arena, horizonte del mar al amanecer.
+
+## Pronunciación de la voz
+
+- La voz recibe el texto "hablado" y los subtítulos el escrito: las correcciones van en el diccionario `PRONUNCIACION` de `video/render_semana.py`, que usan todos los videos.
+- Antes de generar la voz, revisar en el guion los nombres de lugares, entidades y siglas, y agregar al diccionario los que la voz pueda acentuar mal.
+- **Cesar** (el departamento) es aguda: ce-SAR, nunca "César". Corregido el 17 nov 2026 tras el reel de licitaciones (MP-20261117-IG), que salió con "César".

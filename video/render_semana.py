@@ -140,6 +140,8 @@ PRONUNCIACION = {
     "SECOP": "/seˈkop/", "NIT": "/nit/", "UNSPSC": "U N S P S C",
     "Magangué": "/maɣaŋˈɡe/", "Ciénaga": "/ˈsjenaɣa/", "Riohacha": "/rioˈat͡ʃa/",
     "Mompós": "/momˈpos/", "Uribia": "/uˈɾiβja/",
+    # Departamento del Cesar: aguda (ce-SAR), no el nombre César.
+    "Cesar": "Cesár",  # la tilde fuerza el acento en -SAR
 }
 ETIQUETA = re.compile(r"\[[^\]]+\]\s*")
 
