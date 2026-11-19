@@ -1,0 +1,232 @@
+{
+ "fecha": "2026-11-19T00:16:25.613185+00:00",
+ "ig_usuario": "marea_publica",
+ "ig_seguidores": 7,
+ "fb_pagina": "Marea Pública",
+ "piezas": {
+  "lanzamiento-post1": {
+   "publicado": "2026-11-16T23:42:19.582128+00:00",
+   "ig": {
+    "permalink": "https://www.instagram.com/p/Df0kOo2DUWR/",
+    "id": "18102716693559142",
+    "comments_count": 0,
+    "like_count": 1,
+    "media_type": "CAROUSEL_ALBUM",
+    "timestamp": "2026-11-16T23:45:04+0000",
+    "reach": 94,
+    "views": 142,
+    "likes": 1,
+    "comments": 0,
+    "saved": 0,
+    "shares": 1,
+    "total_interactions": 3,
+    "profile_visits": 5,
+    "follows": 0
+   },
+   "fb": {
+    "id": "1416225291579687_122103817443546568",
+    "compartidos": 0,
+    "comentarios": null,
+    "reacciones": null,
+    "error": "(#10) This endpoint requires the 'pages_read_user_content' permission or the 'Page Public Content Access' feature. Refer to https://developers.facebook.com/docs/apps/review/login-permissions#manage-pages and https://developers.facebook.com/docs/apps/review/feature#reference-PAGES_ACCESS for details.",
+    "post_clicks": 0,
+    "post_video_views": 0
+   }
+  },
+  "lanzamiento-post2": {
+   "publicado": "2026-11-16T23:42:19.582128+00:00",
+   "ig": {
+    "permalink": "https://www.instagram.com/p/Df0kGguj64o/",
+    "id": "17966834484079444",
+    "comments_count": 0,
+    "like_count": 1,
+    "media_type": "CAROUSEL_ALBUM",
+    "timestamp": "2026-11-16T23:43:56+0000",
+    "reach": 6,
+    "views": 22,
+    "likes": 1,
+    "comments": 0,
+    "saved": 0,
+    "shares": 0,
+    "total_interactions": 1,
+    "profile_visits": 0,
+    "follows": 0
+   },
+   "fb": {
+    "id": "1416225291579687_122103816519546568",
+    "compartidos": 0,
+    "comentarios": null,
+    "reacciones": null,
+    "error": "(#10) This endpoint requires the 'pages_read_user_content' permission or the 'Page Public Content Access' feature. Refer to https://developers.facebook.com/docs/apps/review/login-permissions#manage-pages and https://developers.facebook.com/docs/apps/review/feature#reference-PAGES_ACCESS for details.",
+    "post_clicks": 0,
+    "post_video_views": 0
+   }
+  },
+  "lanzamiento-post3": {
+   "publicado": "2026-11-16T23:42:19.582128+00:00",
+   "ig": {
+    "permalink": "https://www.instagram.com/p/Df0j-fRD7yn/",
+    "id": "18654496933043184",
+    "comments_count": 0,
+    "like_count": 1,
+    "media_type": "CAROUSEL_ALBUM",
+    "timestamp": "2026-11-16T23:42:51+0000",
+    "reach": 5,
+    "views": 10,
+    "likes": 1,
+    "comments": 0,
+    "saved": 0,
+    "shares": 0,
+    "total_interactions": 1,
+    "profile_visits": 0,
+    "follows": 0
+   },
+   "fb": {
+    "id": "1416225291579687_122103815775546568",
+    "compartidos": 0,
+    "comentarios": null,
+    "reacciones": null,
+    "error": "(#10) This endpoint requires the 'pages_read_user_content' permission or the 'Page Public Content Access' feature. Refer to https://developers.facebook.com/docs/apps/review/login-permissions#manage-pages and https://developers.facebook.com/docs/apps/review/feature#reference-PAGES_ACCESS for details.",
+    "post_clicks": 1,
+    "post_video_views": 0
+   }
+  },
+  "lanzamiento-reel": {
+   "publicado": "2026-11-17T23:50:04.468174+00:00",
+   "ig": {
+    "permalink": "https://www.instagram.com/reel/Df3JnlhCA_4/",
+    "id": "18249031894314662",
+    "comments_count": 0,
+    "like_count": 0,
+    "media_type": "VIDEO",
+    "timestamp": "2026-11-17T23:50:42+0000",
+    "reach": 124,
+    "views": 139,
+    "likes": 0,
+    "comments": 0,
+    "saved": 0,
+    "shares": 0,
+    "total_interactions": 1,
+    "ig_reels_avg_watch_time": 4630,
+    "ig_reels_video_view_total_time": 611237
+   },
+   "fb": {
+    "id": "1437887624666588",
+    "compartidos": 0,
+    "comentarios": null,
+    "reacciones": null,
+    "error": "(#100) Tried accessing nonexisting field (shares)"
+   }
+  },
+  "licitaciones-20261117": {
+   "publicado": "2026-11-18T00:26:03.619726+00:00",
+   "ig": {
+    "permalink": "https://www.instagram.com/reel/Df3NvHwiHgo/",
+    "id": "18106333832644343",
+    "comments_count": 0,
+    "like_count": 2,
+    "media_type": "VIDEO",
+    "timestamp": "2026-11-18T00:26:37+0000",
+    "reach": 90,
+    "views": 102,
+    "likes": 2,
+    "comments": 0,
+    "saved": 1,
+    "shares": 0,
+    "total_interactions": 3,
+    "ig_reels_avg_watch_time": 6152,
+    "ig_reels_video_view_total_time": 615292
+   },
+   "fb": {
+    "id": "1441542834810477",
+    "compartidos": 0,
+    "comentarios": null,
+    "reacciones": null,
+    "error": "(#100) Tried accessing nonexisting field (shares)"
+   }
+  },
+  "radar-20261116": {
+   "publicado": "2026-11-17T17:37:27.763007+00:00",
+   "ig": {
+    "permalink": "https://www.instagram.com/reel/Df2fFfWDKBq/",
+    "id": "18051727841817836",
+    "comments_count": 0,
+    "like_count": 1,
+    "media_type": "VIDEO",
+    "timestamp": "2026-11-17T17:38:59+0000",
+    "reach": 4,
+    "views": 8,
+    "likes": 1,
+    "comments": 0,
+    "saved": 0,
+    "shares": 0,
+    "total_interactions": 1,
+    "ig_reels_avg_watch_time": 16245,
+    "ig_reels_video_view_total_time": 113721
+   },
+   "fb": {
+    "id": "1035947042850354",
+    "compartidos": 0,
+    "comentarios": null,
+    "reacciones": null,
+    "error": "(#100) Tried accessing nonexisting field (shares)"
+   }
+  }
+ },
+ "fb_seguidores": {
+  "followers_count": 1,
+  "fan_count": 1,
+  "id": "1416225291579687"
+ },
+ "ig_cuenta": {
+  "profile_views": [
+   {
+    "id": "17841429924528640/insights/profile_views/day",
+    "name": "profile_views",
+    "period": "day",
+    "title": "Profile visits",
+    "description": "The number of times your profile was visited.",
+    "total_value": {
+     "value": 12
+    }
+   }
+  ],
+  "reach": [
+   {
+    "id": "17841429924528640/insights/reach/day",
+    "name": "reach",
+    "period": "day",
+    "title": "Accounts reached",
+    "description": "The number of unique accounts that have seen your content, at least once, including in ads. Content includes posts, stories, reels, videos and live videos. Reach is different from impressions, which may include multiple views of your content by the same accounts. This metric is estimated and in development.",
+    "total_value": {
+     "value": 258
+    }
+   }
+  ],
+  "follower_count": [],
+  "website_clicks": [
+   {
+    "id": "17841429924528640/insights/website_clicks/day",
+    "name": "website_clicks",
+    "period": "day",
+    "title": "Website link taps",
+    "description": "The number of times the link to your website was tapped.",
+    "total_value": {
+     "value": 0
+    }
+   }
+  ],
+  "accounts_engaged": [
+   {
+    "id": "17841429924528640/insights/accounts_engaged/day",
+    "name": "accounts_engaged",
+    "period": "day",
+    "title": "Accounts engaged",
+    "description": "The number of accounts that have interacted with your content, including in ads. Content includes posts, stories, reels, videos and live videos. Interactions can include actions such as likes, saves, comments, shares or replies. These metrics are estimated and in development.",
+    "total_value": {
+     "value": 4
+    }
+   }
+  ]
+ }
+}
